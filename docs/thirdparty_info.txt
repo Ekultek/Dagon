@@ -1,0 +1,3 @@
+Tiger hashing - https://github.com/browning/tiger-hash-python
+Blake hashing - http://www.seanet.com/~bugbee/crypto/blake/
+MD2 hashing - http://urchin.earth.li/~twic/md2.py

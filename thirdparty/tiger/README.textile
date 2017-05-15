@@ -1,0 +1,12 @@
+h3. tiger-hash-python
+
+This is an implementation of the tiger hashing algorithm in pure python.
+The algorithm was created by Ross Anderson and Eli Biham.
+Thanks to David Bern (odie5533) for completing this python implementation!
+
+h3. Example Usage
+
+pre. >>> import tiger
+>>> tiger.hash("")
+'24F0130C63AC933216166E76B1BB925FF373DE2D49584E7A'
+

@@ -1,5 +1,5 @@
-import itertools
 import os
+import itertools
 
 from bin.verify_hashes.verify import verify_hash_type
 from lib.settings import FUNC_DICT
@@ -38,7 +38,7 @@ def word_generator(length_min=7, length_max=15, perms=False):
                 break
 
 
-def create_wordlist(max_length=1000000, max_word_length=10, warning=True):
+def create_wordlist(max_length=10000000, max_word_length=10, warning=True):
     """
       Create a bruteforcing wordlist
 

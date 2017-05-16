@@ -4,6 +4,8 @@ import logging
 import time
 import random
 import string
+import base64
+import requests
 from colorlog import ColoredFormatter
 from lib.algorithms.hashing_algs import *
 
@@ -20,7 +22,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.0.1.1"
+VERSION = "1.0.2.2"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -31,6 +33,8 @@ VERSION_STRING = "\033[92mv{}\033[0m(\033[{}m\033[1mdev\033[0m)".format(VERSION,
 SAYING = "\033[30mAdvanced Hash Manipulation\033[0m"
 # Clone link
 CLONE = "\033[30mhttps://github.com/ekultek/dagon.git\033[0m"
+# Homepage link
+HOMEPAGE = "\033[30mhttps://ekultek.github.io/Dagon/\033[0m"
 # Sexy banner to display
 BANNER = """\033[91m
 '||''|.
@@ -41,7 +45,8 @@ BANNER = """\033[91m
                   .|....'  \033[0m
 {} ... {}
 Clone: {}
-""".format(SAYING, VERSION_STRING, CLONE)
+Home: {}
+""".format(SAYING, VERSION_STRING, CLONE, HOMEPAGE)
 # Algorithm function dict
 FUNC_DICT = {
     "md2": md2, "md4": md4, "md5": md5,
@@ -55,6 +60,18 @@ FUNC_DICT = {
 }
 # Regular expression to see if you already have a bruteforce wordlist created
 WORDLIST_RE = re.compile("Dagon-bfdict-[a-zA-Z]{7}.txt")
+# Wordlist links
+WORDLIST_LINKS = [
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2FhODgyMDk5ZWQxYzNlZjAwNWYzYWY2ZjhmYmFhZTExL3Jhdy84ODQ4NjBhNjAzZWQ0MjE3MTgyN2E1MmE3M2VjNzAzMjNhOGExZWY5L2dpc3RmaWxlMS50eHQ=',
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzAwNWU3OWQ2NmU2MzA2YWI0MzZjOGJmYTc1ZTRiODMwL3Jhdy8xNjY5YjNjMDFmMjRhM2Q2OTMwZDNmNDE1Mjk3ZTg5OGQ1YjY2NGUzL29wZW53YWxsXzMudHh0',
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzE4NTBmM2EwZGNjNDE0YWZlOGM3NjYyMjBlOTYxYjE4L3Jhdy9iYWQ0NTA0NjcwY2FmM2UxNDY1NWI2ZjJlZGQ0MjJmOTJjMzI2MWI5L215c3BhY2UudHh0',
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzBkYWU2YTI5MjgzMjcyNmE2Y2MyN2VlNmVjOTdmMTFjL3Jhdy84MWFkOWFkOWUwZjQxMmY2YjIwMTM3MDI2NDcxZGRmNDJlN2JjMjkyL2pvaG4udHh0',
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2Q4ZjZiYjE2MGEzYzY2YzgyNWEwYWY0NDdhMDM1MDVhL3Jhdy83MWI4NmM5MGU3NDRkZjM0YzY3ODFjM2U0MmFjMThkOGM4ZjdkYjNlL2NhaW4udHh0',
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2JmM2MwYjQwMTVlYzlkMzY4YzBlNTczNzQ0MTAzYmU1L3Jhdy9lNzBhMThmOTUwNGYwZmMyYjRhMWRmN2M0Mjg2YjcyOWUyMzQ5ODljL29wZW53YWxsXzIudHh0',
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzQ1ZTExZDBhMzNjZGE1YjM3NDM5OGYyMDgxYjEwZWZiL3Jhdy8wNzQ1ZGMzNjFlZDU5NjJiMjNkYjUxM2FkOWQyOTNlODk0YjI0YTY0L2RjLnR4dA==',
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzNmMzcxMWUzMDdlOGM0ZTM0MDkzYzI1OGFkN2UzZWZkL3Jhdy9hMjNiYmM3YTgxNTZhOGU5NTU3NmViYTA3MmIwZDg4ZTJmYjk1MzZiL2dtYWlsXzIudHh0',
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2U3MzE4MGM3MGZmMzY3NDFhM2M4NzIzMDZiNTFhOTU1L3Jhdy9jODE0YjFjOTZiNGJkYzZlYTRlZDE3MmMzNDIwOTg2NTBjOTcyYWZjL2J0NC50eHQ='
+]
 
 
 def verify_python_version():
@@ -95,6 +112,33 @@ def prompt(question, choices):
       > :return: a prompt
     """
     return raw_input("[{} PROMPT] {}[{}]: ".format(time.strftime("%H:%M:%S"), question, choices))
+
+
+def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS)):
+    """
+      Download a random wordlist from some wordslits I have laying around
+
+      > :param b64link: a base64 encoded wordlist link
+    """
+    filename = random_salt_generator(use_string=True)[0]
+    LOGGER.info("Beginning download..")
+    with open("{}.txt".format(filename), "a+") as wordlist:
+        response = requests.get(base64.b64decode(b64link), stream=True)
+        total_length = response.headers.get('content-length')
+        if total_length is None:
+            wordlist.write(response.content)
+        else:
+            start = time.time()
+            downloaded = 0
+            total_length = int(total_length)
+            for data in response.iter_content(chunk_size=1024):
+                downloaded += len(data)
+                wordlist.write(data)
+                done = int(50 * downloaded / total_length)
+                sys.stdout.write("\r[\033[93m{}\033[0m{}]".format("=" * done, " " * (50-done)))
+                sys.stdout.flush()
+    print("")
+    LOGGER.info("Download complete, saved under: {}.txt. Time elapsed: {}s".format(filename, time.time() - start))
 
 
 def random_salt_generator(use_string=False, use_number=False, length=None):

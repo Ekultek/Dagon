@@ -1,5 +1,5 @@
-# Dagon
-#### Named after the prince of Hell, Dagon *(day-gone)* is a advanced hash cracking and manipulation system, capable of bruteforcing multiple hash types, creating bruteforce dictionaries, automatic hashing algorithm verification, random salt generation from unicode to ascii, and much more.
+# Dagon - Advanced Hash Manipulation
+#### Named after the prince of Hell, Dagon *(day-gone)* is an advanced hash cracking and manipulation system, capable of bruteforcing multiple hash types, creating bruteforce dictionaries, automatic hashing algorithm verification, random salt generation from Unicode to ASCII, and much more. 
 
 # Screenshots
 

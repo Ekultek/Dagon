@@ -9,6 +9,7 @@ from lib.settings import match_found
 from lib.settings import prompt
 from lib.settings import random_salt_generator
 
+# The name of the wordlist
 WORDLIST_NAME = "Dagon-bfdict-" + random_salt_generator(use_string=True, length=7)[0] + ".txt"
 
 
@@ -37,7 +38,7 @@ def word_generator(length_min=7, length_max=15, perms=False):
                 break
 
 
-def create_wordlist(max_length=100000, max_word_length=10, warning=True):
+def create_wordlist(max_length=1000000, max_word_length=10, warning=True):
     """
       Create a bruteforcing wordlist
 
@@ -61,7 +62,7 @@ def create_wordlist(max_length=100000, max_word_length=10, warning=True):
             for _ in range(line_count, max_length):
                 lib.write(next(word) + "\n")
         except StopIteration:
-            # if we run out of mutations we'll retry with a word length
+            # if we run out of mutations we'll retry with a different word length
             lib.seek(0, 0)
             err_msg = "Ran out of mutations at {} mutations. You can try upping the max length ".format(len(lib.readlines()))
             err_msg += "or just use what was processed. If you make the choice not to continue "
@@ -78,6 +79,17 @@ def create_wordlist(max_length=100000, max_word_length=10, warning=True):
 
 
 def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None):
+    """
+      Hash the words and verify if they match or not
+
+      > :param verify_hash: the has to be verified
+      > :param wordlist: the wordlist to be used
+      > :param algorithm: the algorithm to be used
+      > :param salt: the salt string
+      > :param placement: where to place the salt if given
+      > :return: the word that matched the hash when hashed, the hash, the amount of tries, and algorithm
+
+    """
     tries = 0
     with open(wordlist) as words:
         for i, word in enumerate(words.readlines(), start=1):
@@ -95,6 +107,9 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None):
 
 
 def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False):
+    """
+      Main function to be used for bruteforcing a hash
+    """
     wordlist_created = False
     if wordlist is None:
         for item in os.listdir(os.getcwd()):
@@ -134,4 +149,3 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                     verf_hash, algorithm.upper()))
         else:
             match_found(results)
-

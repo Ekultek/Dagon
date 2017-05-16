@@ -6,7 +6,7 @@ import sys
 import time
 from bin.attacks.bruteforce.bf_attack import bruteforce_main
 from bin.verify_hashes.verify import verify_hash_type
-from lib.settings import LOGGER, prompt, match_found
+from lib.settings import LOGGER, prompt, match_found, verify_python_version
 from lib.settings import show_banner, show_hidden_banner, random_salt_generator
 
 if __name__ == '__main__':
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     manipulation.add_option("-L", "--least-likely", dest="displayLeastLikely", action="store_true",
                             help="Display the least likely hash types during verification")
     manipulation.add_option("-W", "--wordlist", dest="wordListToUse", metavar="FILE-PATH",
-                            help="Specify a wordlist to use for bruteforcing")
+                            help=optparse.SUPPRESS_HELP)
     manipulation.add_option("-A", "--algorithm", dest="algToUse", metavar="ALGORITHM",
                             help="Specify what algorithm to use for cracking")
     manipulation.add_option("--use-chars", dest="useCharsAsSalt", action="store_true",
@@ -70,6 +70,8 @@ if __name__ == '__main__':
 
     # Pay no attention to the _ it's required :\
     opt, _ = parser.parse_args()
+
+    verify_python_version()
 
     required_args = ["-c", "--crack", "-l", "--hash-list", "-v", "--verify"]
     args_in_params = 0

@@ -4,14 +4,20 @@ import random
 import subprocess
 import sys
 import time
-from bin.attacks.bruteforce.bf_attack import bruteforce_main
+from lib.settings import LOGGER
+from lib.settings import prompt
+from lib.settings import match_found
+from lib.settings import verify_python_version
+from lib.settings import download_rand_wordlist
+from lib.settings import show_banner
+from lib.settings import show_hidden_banner
+from lib.settings import random_salt_generator
 from bin.verify_hashes.verify import verify_hash_type
-from lib.settings import LOGGER, prompt, match_found, verify_python_version
-from lib.settings import show_banner, show_hidden_banner, random_salt_generator
+from bin.attacks.bruteforce.bf_attack import bruteforce_main
 
 if __name__ == '__main__':
 
-    parser = optparse.OptionParser(usage="dagon [c|l] HASH|HASH-LIST")
+    parser = optparse.OptionParser(usage="dagon [c|v|l] HASH|HASH|HASH-LIST --bruteforce")
 
     # Mandatory arguments, required for program to run
     mandatory = optparse.OptionGroup(parser, "Mandatory arguments",
@@ -53,7 +59,7 @@ if __name__ == '__main__':
     manipulation.add_option("--salt-size", dest="saltSizeToUse", metavar="SALT-LENGTH",
                             help="Choose how long you want your salt to be")
     manipulation.add_option("--urandom", dest="useURandomSaltAndRandomPlacement", metavar="LENGTH",
-                            help="Use unicode salt for thehash salting, along with a random placement")
+                            help="Use unicode salt for the hash salting, along with a random placement")
 
     # Misc arguments that you can give to the program
     misc = optparse.OptionGroup(parser, "Miscellaneous arguments",
@@ -62,18 +68,20 @@ if __name__ == '__main__':
                     help="Find out how long it took for the application to find the matching hash")
     misc.add_option("-H", "--hide", action="store_true", dest="hideBanner",
                     help="Hide the application banner and show a mini version of it")
+    misc.add_option("--download", dest="downloadWordList", action="store_true",
+                    help="Download a random wordlist")
 
     parser.add_option_group(mandatory)
     parser.add_option_group(manipulation)
     parser.add_option_group(specifics)
     parser.add_option_group(misc)
 
-    # Pay no attention to the _ it's required :\
+    # Pay no attention to the _ it's required..
     opt, _ = parser.parse_args()
 
     verify_python_version()
 
-    required_args = ["-c", "--crack", "-l", "--hash-list", "-v", "--verify"]
+    required_args = ["-c", "--crack", "-l", "--hash-list", "-v", "--verify", "--download"]
     args_in_params = 0
 
     show_banner() if opt.hideBanner is not True else show_hidden_banner()
@@ -91,6 +99,9 @@ if __name__ == '__main__':
                     args_in_params += 1
             # If you provided an argument continue..
             if args_in_params > 0:
+
+                if opt.downloadWordList is True:
+                    download_rand_wordlist()
 
                 # Benchmark testing
                 if opt.runBenchMarkTest is True:

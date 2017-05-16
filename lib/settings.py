@@ -1,4 +1,5 @@
 import re
+import sys
 import logging
 import time
 import random
@@ -19,7 +20,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.0"
+VERSION = "1.0.1.1"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -54,6 +55,17 @@ FUNC_DICT = {
 }
 # Regular expression to see if you already have a bruteforce wordlist created
 WORDLIST_RE = re.compile("Dagon-bfdict-[a-zA-Z]{7}.txt")
+
+
+def verify_python_version():
+    """
+      Verify python version
+    """
+    current_py_version = sys.version.split(" ")[0]
+    if "2.7" not in current_py_version:
+        LOGGER.fatal("This application requires python 2.7.x to run, You currently have python version {}".format(current_py_version))
+    else:
+        pass
 
 
 def show_banner():

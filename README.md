@@ -18,6 +18,8 @@ Preferable you can close the repository with `git clone https://github.com/ekult
 
 # Basic usage
 
+For full functionality of Dagon please reference the homepage [here](https://ekultek.github.io/Dagon/)
+
 `python dagon.py -h` This will run the help menu and provide a list of all possible flags
 
 `python dagon.py -c <HASH> --bruteforce` This will attempt to bruteforce a given hash
@@ -27,6 +29,8 @@ Preferable you can close the repository with `git clone https://github.com/ekult
 `python dagon.py -v <HASH>` This will try to verify the algorithm used to create the hash
 
 # Installation
+
+Dagon requires python version `2.7.x` to run successfully.
 
  - `git clone https://github.com/ekultek/dagon.git`
  - `cd Dagon`

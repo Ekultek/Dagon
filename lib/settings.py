@@ -22,7 +22,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.0.2.2"
+VERSION = "1.1.2.3"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -54,6 +54,7 @@ FUNC_DICT = {
     "ripemd160": ripemd160,
     "blake224": blake224, "blake256": blake256, "blake384": blake384, "blake512": blake512,
     "sha1": sha1, "sha224": sha224, "sha256": sha256, "sha384": sha384, "sha512": sha512,
+    "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
     "whirlpool": whirlpool,
     "dsa": dsa,
     "tiger192": tiger192
@@ -70,7 +71,10 @@ WORDLIST_LINKS = [
     'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2JmM2MwYjQwMTVlYzlkMzY4YzBlNTczNzQ0MTAzYmU1L3Jhdy9lNzBhMThmOTUwNGYwZmMyYjRhMWRmN2M0Mjg2YjcyOWUyMzQ5ODljL29wZW53YWxsXzIudHh0',
     'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzQ1ZTExZDBhMzNjZGE1YjM3NDM5OGYyMDgxYjEwZWZiL3Jhdy8wNzQ1ZGMzNjFlZDU5NjJiMjNkYjUxM2FkOWQyOTNlODk0YjI0YTY0L2RjLnR4dA==',
     'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzNmMzcxMWUzMDdlOGM0ZTM0MDkzYzI1OGFkN2UzZWZkL3Jhdy9hMjNiYmM3YTgxNTZhOGU5NTU3NmViYTA3MmIwZDg4ZTJmYjk1MzZiL2dtYWlsXzIudHh0',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2U3MzE4MGM3MGZmMzY3NDFhM2M4NzIzMDZiNTFhOTU1L3Jhdy9jODE0YjFjOTZiNGJkYzZlYTRlZDE3MmMzNDIwOTg2NTBjOTcyYWZjL2J0NC50eHQ='
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2U3MzE4MGM3MGZmMzY3NDFhM2M4NzIzMDZiNTFhOTU1L3Jhdy9jODE0YjFjOTZiNGJkYzZlYTRlZDE3MmMzNDIwOTg2NTBjOTcyYWZjL2J0NC50eHQ=',
+    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2JlcnplcmswL1Byb2JhYmxlLVdvcmRsaXN0cy9tYXN0ZXIvRGljdGlvbmFyeS1TdHlsZS9NYWluRW5nbGlzaERpY3Rpb25hcnkudHh0',
+    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvdHdpdHRlci1iYW5uZWQudHh0',
+    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvdHVzY2wudHh0'
 ]
 
 
@@ -116,7 +120,7 @@ def prompt(question, choices):
 
 def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS)):
     """
-      Download a random wordlist from some wordslits I have laying around
+      Download a random wordlist from some wordlists I have laying around
 
       > :param b64link: a base64 encoded wordlist link
     """
@@ -194,6 +198,12 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
       > :param item_found: makes it look pretty for the items
       > :param least_likely: makes more pretty formatting for least likely hashes
     """
+    if data_tuple is None:
+        no_alg_err = "It appears that no algorithm that can match this hash has been implemented yet. "
+        no_alg_err += "If you feel that this is wrong, please make a issue regarding this, and we'll "
+        no_alg_err += "see if we can get it implemented."
+        LOGGER.fatal(no_alg_err)
+        exit(1)
     if data_tuple[0][1] is None and all_types is True:
         LOGGER.warning("Only one possible type found for given hash..")
     sort_cracked = ["Clear Text: ", "Hash: ", "Tries attempted: ", "Algorithm Used: "]
@@ -224,5 +234,4 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
                     if _ is not None:
                         print("[{}] {}".format(item_found, data_tuple[i].upper()))
             print(data_sep)
-
 

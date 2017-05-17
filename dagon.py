@@ -5,11 +5,8 @@ import subprocess
 import sys
 import time
 from lib.settings import LOGGER
-from lib.settings import VERSION
-from lib.settings import CLONE
 from lib.settings import prompt
 from lib.settings import match_found
-from lib.settings import update_system
 from lib.settings import verify_python_version
 from lib.settings import download_rand_wordlist
 from lib.settings import show_banner

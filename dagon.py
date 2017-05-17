@@ -5,8 +5,11 @@ import subprocess
 import sys
 import time
 from lib.settings import LOGGER
+from lib.settings import VERSION
+from lib.settings import CLONE
 from lib.settings import prompt
 from lib.settings import match_found
+from lib.settings import update_system
 from lib.settings import verify_python_version
 from lib.settings import download_rand_wordlist
 from lib.settings import show_banner
@@ -28,6 +31,8 @@ if __name__ == '__main__':
                          help="Provide a file of hashes to crack")
     mandatory.add_option("-v", "--verify", dest="verifyHashType", metavar="HASH",
                          help="Attempt to find the type of algorithm used given a specified hash.")
+    mandatory.add_option("-V", "--verify-list", dest="verifyHashList", metavar="PATH",
+                         help="Run through a file containing hashes (one per line) and attempt to verify them")
 
     # Specific arguments, what do you want the program to do?
     specifics = optparse.OptionGroup(parser, "Specifics on what is to be done arguments",
@@ -70,6 +75,8 @@ if __name__ == '__main__':
                     help="Hide the application banner and show a mini version of it")
     misc.add_option("--download", dest="downloadWordList", action="store_true",
                     help="Download a random wordlist")
+    misc.add_option("--update", dest="updateDagon", action="store_true",
+                    help=optparse.SUPPRESS_HELP)
 
     parser.add_option_group(mandatory)
     parser.add_option_group(manipulation)
@@ -81,7 +88,7 @@ if __name__ == '__main__':
 
     verify_python_version()
 
-    required_args = ["-c", "--crack", "-l", "--hash-list", "-v", "--verify", "--download"]
+    required_args = ["-c", "--crack", "-l", "--hash-list", "-v", "--verify", "-V", "--verify-list"]
     args_in_params = 0
 
     show_banner() if opt.hideBanner is not True else show_hidden_banner()
@@ -93,20 +100,24 @@ if __name__ == '__main__':
         subprocess.call("python dagon.py --help")
     else:
         try:
+            # Download a random wordlist
+            if opt.downloadWordList is True:
+                download_rand_wordlist()
+                exit(0)
+
             # Check that you provided a mandatory argument
             for i, _ in enumerate(sys.argv):
                 if sys.argv[i] in required_args:
                     args_in_params += 1
+
             # If you provided an argument continue..
             if args_in_params > 0:
 
-                if opt.downloadWordList is True:
-                    download_rand_wordlist()
+                print("[*] Starting up at {}..\n".format(time.strftime("%H:%M:%S")))
 
                 # Benchmark testing
                 if opt.runBenchMarkTest is True:
                     start_time = time.time()
-                    LOGGER.info("Benchmark test start: {}".format(start_time))
 
                 # Creating random salts and random placements
                 if opt.randomSaltAndPlacement is True:
@@ -161,11 +172,26 @@ if __name__ == '__main__':
                     match_found(verify_hash_type(opt.verifyHashType, least_likely=opt.displayLeastLikely), kind="else",
                                 all_types=opt.displayLeastLikely)
 
+                # Verify a file of hashes, one per line
+                elif opt.verifyHashList is not None:
+                    with open(opt.verifyHashList) as hashes:
+                        hashes.seek(0, 0)
+                        total_hahes = hashes.readlines()
+                        LOGGER.info("Found a total of {} hashes to verify..".format(len(total_hahes)))
+                        for h in total_hahes:
+                            q = prompt("Attempt to crack hash '{}'".format(h.strip()), "y/N")
+                            if q.lower().startswith("y"):
+                                match_found(verify_hash_type(h.strip(), least_likely=opt.displayLeastLikely), kind="else",
+                                            all_types=opt.displayLeastLikely)
+                            else:
+                                pass
+
                 # Finish the benchmark test
                 if opt.runBenchMarkTest is True:
                     stop_time = time.time()
-                    LOGGER.info("Benchmark test finish: {}".format(stop_time))
-                    LOGGER.info("Time elapsed: {} seconds".format(stop_time - start_time))
+                    LOGGER.info("Time elapsed during benchmark test: {} seconds".format(stop_time - start_time))
+
+                print('\n[*] Shutting down at {}..'.format(time.strftime("%H:%M:%S")))
 
             # You never provided a mandatory argument
             else:

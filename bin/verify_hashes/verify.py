@@ -16,30 +16,29 @@ HASH_TYPE_REGEX = {
          "prestashop")
     ],
     build_re(64): [
-        ("sha256", "sha3256"),
+        ("sha256", "sha3_256"),
         ("haval256", "gost r 34.1194",
          "gost cryptopro sbox", "skein256",
          "skein512(256)", "ventrilo",
          "ripemd256")
     ],
     build_re(128): [
-        ("sha512", "whirlpool"),
-        ("salsa10", "salsa20", "sha3512",
-         "skein512", "skein1024(512)")
+        ("sha512", "whirlpool", "sha3_512"),
+        ("salsa10", "salsa20", "skein512",
+         "skein1024(512)")
     ],
     build_re(56, suffix=""): [
-        ("sha224", "haval224"),
+        ("sha224", "sha3_224"),
         ("sha3224", "shein256(224)",
-         "skein512(224)")
+         "skein512(224)", "haval224")
     ],
     build_re(40): [
         ("sha1", "ripemd160", "dsa"),
         ("doublesha1", "haval160", "tiger160",
-         "has160", "linkedin", "skein256(160)",
-         "skein512(160)")
+         "has160", "skein256(160)", "skein512(160)")
     ],
-    build_re(90, suffix=""): [
-        ("sha384", "sha3384"),
+    build_re(96, suffix=""): [
+        ("sha384", "sha3_384"),
         ("skein512(384)", "skein1024(384")
     ],
     build_re(40, prefix=r"\*", suffix=""):  [
@@ -50,8 +49,8 @@ HASH_TYPE_REGEX = {
         ("tiger192", "xsha (v10.4-v10.6)")
     ],
     re.compile(r"^\$[\w.]{1}\$\w+\$\S{22}$", re.IGNORECASE): [
-        ("wordpress v4.x", "wordpress v3.x"),
-        (None, None)
+        ("wordpress", None),
+        ("PHPass", "Joomla")
     ],
     re.compile(r"^\$\d\w\$\d+\$\S{53}$", re.IGNORECASE): [
         ("blowfish", None),
@@ -59,6 +58,14 @@ HASH_TYPE_REGEX = {
     ],
     re.compile(r"^S:[a-zA-Z0-9]{60}$", re.IGNORECASE): [
         ("oracle", None),
+        (None, None)
+    ],
+    re.compile(r"^[0-9a-z]{4,12}:[0-9a-f]{16,20}:[0-9a-z]{2080}$", re.IGNORECASE): [
+        ("agile", None),
+        (None, None)
+    ],
+    re.compile(r"^[0-9a-f]{64,70}:[a-f0-9]{32,40}:\d+:[a-f0-9]{608,620}$", re.IGNORECASE): [
+        ("cloud", None),
         (None, None)
     ]
 }

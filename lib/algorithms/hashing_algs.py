@@ -1,10 +1,11 @@
 import hashlib
+import sha3
 
 from thirdparty.blake import blake
 from thirdparty.md2 import md2_hash
 from passlib.hash import bcrypt
-from passlib.hash import oracle11
-from passlib.hash import scrypt
+# from passlib.hash import oracle11
+# from passlib.hash import scrypt
 
 from thirdparty.tiger import tiger
 
@@ -37,13 +38,6 @@ def mysql_hash(string, salt=None, front=False, back=False):
 
 def oracle_hash(string, salt=None, front=False, back=False):
     raise NotImplementedError("Oracle hashes are not implemented yet")
-    if salt is not None and front is True and not back:
-        obj = oracle11.hash(salt + string)
-    elif salt is not None and back is True and not front:
-        obj = oracle11.hash(string + salt)
-    else:
-        obj = oracle11.hash(string)
-    return obj
 
 
 def blowfish_hash(string, salt=None, front=False, back=False):
@@ -67,8 +61,6 @@ def blowfish_hash(string, salt=None, front=False, back=False):
 
 def scrypt_hash(string, salt=None, front=False, back=False):
     raise NotImplementedError("Scrypt hashes are not implemented yet")
-    if salt is not None and front is True and not back:
-        obj = scrypt.hash(string)
 
 
 def ripemd160(string, salt=None, front=False, back=False):
@@ -260,7 +252,93 @@ def sha1(string, salt=None, front=False, back=False):
 
 
 def sha2(string, salt=None, front=False, back=False):
-    obj = None
+    raise NotImplementedError("SHA2 is not implemented yet")
+    pass
+
+
+def sha3_224(string, salt=None, front=False, back=False):
+    """
+      Create a SHA3 224 hash from a given string
+
+      > :param string: string to be hashed
+      > :return: an SHA3 224 hash
+
+      Example:
+
+        >>> sha3_224("test")
+        3797bf0afbbfca4a7bbba7602a2b552746876517a7f9b7ce2db0ae7b
+    """
+    obj = sha3.sha3_224()
+    if salt is not None and front is True and not back:
+        obj.update(salt + string)
+    elif salt is not None and back is True and not front:
+        obj.update(string + salt)
+    else:
+        obj.update(string)
+    return obj.hexdigest()
+
+
+def sha3_256(string, salt=None, front=False, back=False):
+    """
+      Create a SHA3 256 hash from a given string
+
+      > :param string: string to be hashed
+      > :return: SHA3 256 hash
+
+      Example:
+        >>> sha3_256("test")
+        36f028580bb02cc8272a9a020f4200e346e276ae664e45ee80745574e2f5ab80
+    """
+    obj = sha3.sha3_256()
+    if salt is not None and front is True and not back:
+        obj.update(salt + string)
+    elif salt is not None and back is True and not front:
+        obj.update(string + salt)
+    else:
+        obj.update(string)
+    return obj.hexdigest()
+
+
+def sha3_384(string, salt=None, front=False, back=False):
+    """
+      Create a SHA3 384 hash from a given string
+
+      > :param string: string to hash
+      > :return: SHA3 384 hash
+
+      Example:
+        >>> sha3_384("test")
+        e516dabb23b6e30026863543282780a3ae0dccf05551cf0295178d7ff0f1b41eecb9db3ff219007c4e097260d58621bd
+    """
+    obj = sha3.sha3_384()
+    if salt is not None and front is True and not back:
+        obj.update(salt + string)
+    elif salt is not None and back is True and not front:
+        obj.update(string + salt)
+    else:
+        obj.update(string)
+    return obj.hexdigest()
+
+
+def sha3_512(string, salt=None, front=False, back=False):
+    """
+      Create an SHA3 512 hash from a given string
+
+      > :param string: string to be hashed
+      > :return: SHA3 512 hash
+
+      Example
+        >>> sha3_512("test")
+        9ece086e9bac491fac5c1d1046ca11d737b92a2b2ebd93f005d7b710110c0a678288166e7fbe796883a4f2e9b3ca9f484f521d0ce464345cc1aec96779149c14
+    """
+    obj = sha3.sha3_512()
+    if salt is not None and front is True and not back:
+        obj.update(salt + string)
+    elif salt is not None and back is True and not front:
+        obj.update(string + salt)
+    else:
+        obj.update(string)
+    return obj.hexdigest()
 
 
 def sha224(string, salt=None, front=False, back=False):

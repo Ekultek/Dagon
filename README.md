@@ -28,6 +28,8 @@ For full functionality of Dagon please reference the homepage [here](https://eku
 
 `python dagon.py -v <HASH>` This will try to verify the algorithm used to create the hash
 
+`python dagon.py -V <FILE-PATH>` This will attempt to verify each hash in a file, one per line
+
 # Installation
 
 Dagon requires python version `2.7.x` to run successfully.
@@ -40,4 +42,9 @@ This should install all the dependencies that you will need to run Dagon
 
 # Contributions
 
-Of course all contributions are not only welcome, they are needed! This project needs your help to become better! See something wrong? Find an algorithm that you want implemented? Find a bug, or an issue? Well make an issue or a pull request and lets get that problem sorted! Together we can accomplish anything.
+All contributions are greatly appreciated and helpful. When you contribute you will get your name placed on the homepage underneath contributions with a link to your contribution. You will also get massive respect from me, and that's a pretty cool thing. What I'm looking for in contributions is some of the following:
+
+ - Hashing algorithm creations, specifically; A quicker MD2 algorithm, full Tiger algorithms, Keychain algorithms for cloud and agile
+ - More wordlists to download from, please make sure that the link is encoded
+ - Rainbow table attack implementation
+ - More regular expressions to verify different hash types

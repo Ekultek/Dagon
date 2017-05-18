@@ -1,17 +1,22 @@
-import optparse
+#! usr/bin/env python
+
 import os
-import random
-import subprocess
 import sys
 import time
-from lib.settings import LOGGER
+import random
+import optparse
+import subprocess
+
+from lib.settings import CLONE
 from lib.settings import prompt
+from lib.settings import LOGGER
 from lib.settings import match_found
-from lib.settings import verify_python_version
-from lib.settings import download_rand_wordlist
 from lib.settings import show_banner
+from lib.settings import update_system
 from lib.settings import show_hidden_banner
 from lib.settings import random_salt_generator
+from lib.settings import verify_python_version
+from lib.settings import download_rand_wordlist
 from bin.verify_hashes.verify import verify_hash_type
 from bin.attacks.bruteforce.bf_attack import bruteforce_main
 
@@ -36,10 +41,8 @@ if __name__ == '__main__':
                                      description="These arguments tell the program what to do")
     specifics.add_option("-b", "--bruteforce", action="store_true", dest="bruteforceCrack",
                          help="Attempt to bruteforce a given hash")
-    specifics.add_option("-d", "--dict-attack", dest="dickAttackCrack", metavar="FILE-PATH",
-                         help=optparse.SUPPRESS_HELP)
     specifics.add_option("-r", "--rainbow", dest="rainbowTableAttack", metavar="FILE-PATH",
-                         help=optparse.SUPPRESS_HELP)
+                         help=optparse.SUPPRESS_HELP)  # Not implemented yet
 
     # Manipulation arguments to manipulate the hashes into what you want them to be
     manipulation = optparse.OptionGroup(parser, "Manipulation arguments",
@@ -51,7 +54,7 @@ if __name__ == '__main__':
     manipulation.add_option("-L", "--least-likely", dest="displayLeastLikely", action="store_true",
                             help="Display the least likely hash types during verification")
     manipulation.add_option("-W", "--wordlist", dest="wordListToUse", metavar="FILE-PATH",
-                            help=optparse.SUPPRESS_HELP)
+                            help="Specify a wordlist to do the cracking with")  # Not implemented yet
     manipulation.add_option("-A", "--algorithm", dest="algToUse", metavar="ALGORITHM",
                             help="Specify what algorithm to use for cracking")
     manipulation.add_option("--use-chars", dest="useCharsAsSalt", action="store_true",
@@ -62,6 +65,8 @@ if __name__ == '__main__':
                             help="Choose how long you want your salt to be")
     manipulation.add_option("--urandom", dest="useURandomSaltAndRandomPlacement", metavar="LENGTH",
                             help="Use unicode salt for the hash salting, along with a random placement")
+    manipulation.add_option("--perms", dest="useMutationsForWordList", metavar="WORD-TO-MUTATE",
+                            help=optparse.SUPPRESS_HELP)
 
     # Misc arguments that you can give to the program
     misc = optparse.OptionGroup(parser, "Miscellaneous arguments",
@@ -73,7 +78,7 @@ if __name__ == '__main__':
     misc.add_option("--download", dest="downloadWordList", action="store_true",
                     help="Download a random wordlist")
     misc.add_option("--update", dest="updateDagon", action="store_true",
-                    help=optparse.SUPPRESS_HELP)
+                    help="Update the program to the latest development version")  # Not implemented yet
 
     parser.add_option_group(mandatory)
     parser.add_option_group(manipulation)
@@ -91,8 +96,7 @@ if __name__ == '__main__':
     show_banner() if opt.hideBanner is not True else show_hidden_banner()
 
     if len(sys.argv) <= 1:
-        LOGGER.fatal("You have failed to provide a flag for to the application and have been "
-                     "redirected to the help menu.")
+        LOGGER.fatal("You have failed to provide a flag to the application and have been redirected to the help menu.")
         time.sleep(1.7)
         subprocess.call("python dagon.py --help")
     else:
@@ -100,6 +104,17 @@ if __name__ == '__main__':
             # Download a random wordlist
             if opt.downloadWordList is True:
                 download_rand_wordlist()
+                exit(0)
+
+            if opt.updateDagon is True:
+                LOGGER.info("Update in progress..")
+                update_status = update_system()
+                if update_status == 1:
+                    LOGGER.info("Dagon is already equal with origin master.")
+                elif update_status == -1:
+                    LOGGER.error("Dagon experienced an error while updating, please download manually from: {}".format(CLONE))
+                else:
+                    LOGGER.info("Dagon has successfully updated to the latest version.")
                 exit(0)
 
             # Check that you provided a mandatory argument
@@ -130,7 +145,7 @@ if __name__ == '__main__':
                 # Unicode random salt and placement
                 elif opt.useURandomSaltAndRandomPlacement is not None:
                     salt, placement = str(os.urandom(int(opt.useURandomSaltAndRandomPlacement))), random.choice(["front",
-                                                                                                                    "back"])
+                                                                                                                 "back"])
                     LOGGER.info("Using urandom salt: '{}' on the {} of the hash...".format(salt, placement))
 
                 # No salt or placement
@@ -161,7 +176,7 @@ if __name__ == '__main__':
                     except Exception as e:
                         LOGGER.fatal("Failed with error code: {}. Check the file and try again..".format(e))
 
-                # TODO:/ create the dict and rainbow attacks
+                # TODO:/ create rainbow attacks
 
                 # Verify a given hash to see what type of algorithm might have been used
                 elif opt.verifyHashType is not None:

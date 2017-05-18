@@ -25,6 +25,12 @@ After the wordlist has been generated, you will be able to crack the password, u
 
 ![cracking](https://cloud.githubusercontent.com/assets/14183473/26104116/f8538cda-3a01-11e7-87a7-7136042ffc0e.PNG)
 
+#### _Doing a dictionary attack_:
+
+To do a dictionary attack you will just need to use the wordlist flag in order for the bruteforce section to read from the wordlist. 
+
+![wordlist_attack](https://cloud.githubusercontent.com/assets/14183473/26204867/c28c226a-3ba5-11e7-8e0f-4410d1deb3ef.PNG)
+
 #### _Cracking a hash list_:
 
 To crack a list of hashes (file of hashes) you can use the `-l/--hash-list` flag. You will need to provide a full path to a file so that Dagon can attempt to crack each hash. Lets use a file with three hashes in three different algorithms, SHA1, MD5, and WHIRLPOOL. Notice how it will prompt you if you want to crack the hash or not:
@@ -79,9 +85,6 @@ You can also change the salt size, because hey, who uses 12 character salts anym
 Updates that will be coming to Dagon soon include:
 
  - Rainbow table cracking
- - Dictionary attacks
- - The ability to download random dictionaries from random sources
- - Salsa hashing algorithms
- - Full Tiger algorithms
+ - Further implementation of hashing algorithms
 
 

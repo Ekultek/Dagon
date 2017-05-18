@@ -50,7 +50,8 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True):
     warn_msg = "It is highly advised to use a dictionary attack over bruteforce. "
     warn_msg += "Bruteforce requires extreme amounts of memory to accomplish and "
     warn_msg += "it is possible that it could take a lifetime to successfully crack "
-    warn_msg += "your hash."
+    warn_msg += "your hash. To run a dictionary attack all you need to do is pass "
+    warn_msg += "the --wordlist flag with the path to your wordlist."
     if warning is True:
         LOGGER.warning(warn_msg)
 

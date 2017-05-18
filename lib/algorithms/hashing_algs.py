@@ -1,12 +1,9 @@
 import hashlib
 import sha3
 
+from passlib.hash import bcrypt
 from thirdparty.blake import blake
 from thirdparty.md2 import md2_hash
-from passlib.hash import bcrypt
-# from passlib.hash import oracle11
-# from passlib.hash import scrypt
-
 from thirdparty.tiger import tiger
 
 

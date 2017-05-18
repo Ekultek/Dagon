@@ -22,7 +22,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.1.3.4"
+VERSION = "1.1.3.5"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -30,11 +30,11 @@ VERSION_STRING = "\033[92mv{}\033[0m(\033[{}m\033[1mdev\033[0m)".format(VERSION,
     VERSION) >= 4 else \
     "\033[92mv{}\033[0m(\033[{}m\033[1mstable\033[0m)".format(VERSION, TYPE_COLORS["stable"])
 # Program saying
-SAYING = "\033[30mAdvanced Hash Manipulation\033[0m"
+SAYING = "\033[97mAdvanced Hash Manipulation\033[0m"
 # Clone link
-CLONE = "\033[30mhttps://github.com/ekultek/dagon.git\033[0m"
+CLONE = "\033[97mhttps://github.com/ekultek/dagon.git\033[0m"
 # Homepage link
-HOMEPAGE = "\033[30mhttps://ekultek.github.io/Dagon/\033[0m"
+HOMEPAGE = "\033[97mhttps://ekultek.github.io/Dagon/\033[0m"
 # Sexy banner to display
 BANNER = """\033[91m
 '||''|.
@@ -235,3 +235,13 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
                         print("[{}] {}".format(item_found, data_tuple[i].upper()))
             print(data_sep)
 
+
+def update_system():
+    import subprocess
+    updater = subprocess.check_output("git pull origin master")
+    if "Already up-to-date." in updater:
+        return 1
+    elif "error" or "Error" in updater:
+        return -1
+    else:
+        return 0

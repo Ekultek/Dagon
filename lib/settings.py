@@ -22,7 +22,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.1.3.5"
+VERSION = "1.2.3.6"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -49,7 +49,7 @@ Home: {}
 """.format(SAYING, VERSION_STRING, CLONE, HOMEPAGE)
 # Algorithm function dict
 FUNC_DICT = {
-    "md2": md2, "md4": md4, "md5": md5,
+    "md2": md2, "md4": md4, "md5": md5, "half md5": half_md5,
     "mysql": mysql_hash, "blowfish": blowfish_hash, "oracle": oracle_hash,
     "ripemd160": ripemd160,
     "blake224": blake224, "blake256": blake256, "blake384": blake384, "blake512": blake512,
@@ -124,7 +124,7 @@ def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS)):
 
       > :param b64link: a base64 encoded wordlist link
     """
-    filename = random_salt_generator(use_string=True)[0]
+    filename = "Download-" + random_salt_generator(use_string=True)[0]
     LOGGER.info("Beginning download..")
     with open("{}.txt".format(filename), "a+") as wordlist:
         response = requests.get(base64.b64decode(b64link), stream=True)
@@ -139,7 +139,7 @@ def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS)):
                 downloaded += len(data)
                 wordlist.write(data)
                 done = int(50 * downloaded / total_length)
-                sys.stdout.write("\r[\033[93m{}\033[0m{}]".format("=" * done, " " * (50-done)))
+                sys.stdout.write("\r[\033[93m{}\033[0m{}]".format("#" * done, " " * (50-done)))
                 sys.stdout.flush()
     print("")
     LOGGER.info("Download complete, saved under: {}.txt. Time elapsed: {}s".format(filename, time.time() - start))
@@ -148,11 +148,6 @@ def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS)):
 def random_salt_generator(use_string=False, use_number=False, length=None):
     """
       Create a random string of salt to append to the beginning of a hash
-
-      > :param use_string:
-      > :param use_number:
-      > :param length:
-      > :return:
 
       Example:
         >>> random_salt_generator(use_string=True)
@@ -237,6 +232,7 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
 
 
 def update_system():
+    """ Update Dagon to the newest development version """
     import subprocess
     updater = subprocess.check_output("git pull origin master")
     if "Already up-to-date." in updater:

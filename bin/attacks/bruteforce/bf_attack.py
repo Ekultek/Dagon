@@ -13,7 +13,7 @@ from lib.settings import random_salt_generator
 WORDLIST_NAME = "Dagon-bfdict-" + random_salt_generator(use_string=True, length=7)[0] + ".txt"
 
 
-def word_generator(length_min=7, length_max=15, perms=False):
+def word_generator(length_min=7, length_max=15, perms=""):
     """
       Generate the words to be used for bruteforcing
       > :param length_min: minimum length for the word
@@ -28,17 +28,16 @@ def word_generator(length_min=7, length_max=15, perms=False):
       aaaaac
       ...
     """
-    chrs = 'abc'
-    for n in range(length_min, length_max + 1):
-        for xs in itertools.product(chrs, repeat=n):
-            if perms is False:
+    if perms == "":
+        chrs = 'abc'
+        for n in range(length_min, length_max + 1):
+            for xs in itertools.product(chrs, repeat=n):
                 yield ''.join(xs)
-            else:
-                LOGGER.fatal("Permutations are not supported yet")
-                break
+    else:
+        raise NotImplementedError("Permutations are not implemented yet.")
 
 
-def create_wordlist(max_length=10000000, max_word_length=10, warning=True):
+def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms=""):
     """
       Create a bruteforcing wordlist
 
@@ -56,7 +55,7 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True):
         LOGGER.warning(warn_msg)
 
     with open(WORDLIST_NAME, "a+") as lib:
-        word = word_generator(length_max=max_word_length)
+        word = word_generator(length_max=max_word_length, perms=perms)
         lib.seek(0, 0)
         line_count = len(lib.readlines())
         try:
@@ -107,7 +106,7 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None):
                 return word.strip(), hashed, tries, algorithm
 
 
-def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False):
+def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, perms=""):
     """
       Main function to be used for bruteforcing a hash
     """
@@ -121,14 +120,16 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
             pass
         else:
             LOGGER.info("Creating wordlist..")
-            create_wordlist()
+            create_wordlist(perms=perms)
     else:
         LOGGER.info("Reading from, {}..".format(wordlist))
 
     if algorithm is None:
         hash_type = verify_hash_type(verf_hash, least_likely=all_algs)
-        LOGGER.info("Found {} possible hash types to run against {} ".format(len(hash_type),
-                                                                             hash_type))
+        LOGGER.info("Found {} possible hash types to run against: {} ".format(len(hash_type) - 1 if hash_type[1] is None
+                                                                              else len(hash_type),
+                                                                              hash_type[0] if hash_type[1] is None else
+                                                                              hash_type))
         for alg in hash_type:
             LOGGER.info("Starting bruteforce with {}..".format(alg.upper()))
             bruteforcing = hash_words(verf_hash, wordlist, alg, salt=salt, placement=placement)

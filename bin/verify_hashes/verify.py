@@ -15,6 +15,10 @@ HASH_TYPE_REGEX = {
          "lotus Notes/Domino 5", "skype", "zipmonster",
          "prestashop")
     ],
+    build_re(16): [
+        ("half md5", None),
+        (None, None)
+    ],
     build_re(64): [
         ("sha256", "sha3_256"),
         ("haval256", "gost r 34.1194",

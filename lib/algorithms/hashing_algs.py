@@ -1,4 +1,5 @@
 import hashlib
+import random
 import sha3
 
 from passlib.hash import bcrypt
@@ -225,6 +226,36 @@ def md5(string, salt=None, front=False, back=False):
     else:
         obj.update(string)
     return obj.hexdigest()
+
+
+def half_md5(string, salt=None, front=False, back=False, posx=""):
+    """
+      Create half of an MD5 hash
+
+      > :param string: string to be hashed
+      > :param posx: position to return
+      > :return: half an MD5 hash
+
+      Example:
+        >>> half_md5("test")
+        098f6bcd4621d373
+    """
+    obj = hashlib.md5()
+    if salt is not None and front is True and not back:
+        obj.update(salt + string)
+    elif salt is not None and back is True and not front:
+        obj.update(string + salt)
+    else:
+        obj.update(string)
+
+    if posx == "left":
+        return obj.hexdigest()[:16]
+    elif posx == "right":
+        return obj.hexdigest()[16:]
+    elif posx == "mid":
+        return obj.hexdigest()[8:-8]
+    else:
+        return random.choice([obj.hexdigest()[:16], obj.hexdigest()[8:-8], obj.hexdigest()[16:]])
 
 
 def sha1(string, salt=None, front=False, back=False):

@@ -22,7 +22,7 @@ from bin.attacks.bruteforce.bf_attack import bruteforce_main
 
 if __name__ == '__main__':
 
-    parser = optparse.OptionParser(usage="dagon [c|v|l] HASH|HASH|HASH-LIST --bruteforce")
+    parser = optparse.OptionParser(usage="dagon [c|v|l] HASH|HASH|HASH-LIST --bruteforce [OPTS]")
 
     # Mandatory arguments, required for program to run
     mandatory = optparse.OptionGroup(parser, "Mandatory arguments",
@@ -51,10 +51,6 @@ if __name__ == '__main__':
                             help="Choose your salt and placement to use in the hashing")
     manipulation.add_option("-R", "--rand-salt", dest="randomSaltAndPlacement", action="store_true",
                             help="Random generate the salt and the placement to put the salt in")
-    manipulation.add_option("-L", "--least-likely", dest="displayLeastLikely", action="store_true",
-                            help="Display the least likely hash types during verification")
-    manipulation.add_option("-W", "--wordlist", dest="wordListToUse", metavar="FILE-PATH",
-                            help="Specify a wordlist to do the cracking with")  # Not implemented yet
     manipulation.add_option("-A", "--algorithm", dest="algToUse", metavar="ALGORITHM",
                             help="Specify what algorithm to use for cracking")
     manipulation.add_option("--use-chars", dest="useCharsAsSalt", action="store_true",
@@ -65,23 +61,35 @@ if __name__ == '__main__':
                             help="Choose how long you want your salt to be")
     manipulation.add_option("--urandom", dest="useURandomSaltAndRandomPlacement", metavar="LENGTH",
                             help="Use unicode salt for the hash salting, along with a random placement")
-    manipulation.add_option("--perms", dest="useMutationsForWordList", metavar="WORD-TO-MUTATE",
-                            help=optparse.SUPPRESS_HELP)
+    manipulation.add_option("--posx", dest="returnThisPartOfHash", metavar="POSITION",
+                            help=optparse.SUPPRESS_HELP)  # Not implemented yet
+
+    # Manipulate your dictionary attacks with these options
+    dictionary_attack_opts = optparse.OptionGroup(parser, "Dictionary attack arguments",
+                                                  description="These are the options available to manipulate your "
+                                                              "dict attacks")
+    dictionary_attack_opts.add_option("-W", "--wordlist", dest="wordListToUse", metavar="FILE-PATH",
+                                      help="Specify a wordlist to do the cracking with")
+    dictionary_attack_opts.add_option("--perms", dest="useMutationsForWordList", metavar="WORD-TO-MUTATE",
+                                      help=optparse.SUPPRESS_HELP)
+    dictionary_attack_opts.add_option("--download", dest="downloadWordList", action="store_true",
+                                      help="Download a random wordlist")
 
     # Misc arguments that you can give to the program
     misc = optparse.OptionGroup(parser, "Miscellaneous arguments",
                                 description="Misc arguments that can be given to help with processing")
+    misc.add_option("-L", "--least-likely", dest="displayLeastLikely", action="store_true",
+                    help="Display the least likely hash types during verification")
     misc.add_option("-B", "--benchmark", dest="runBenchMarkTest", action="store_true",
                     help="Find out how long it took for the application to find the matching hash")
     misc.add_option("-H", "--hide", action="store_true", dest="hideBanner",
                     help="Hide the application banner and show a mini version of it")
-    misc.add_option("--download", dest="downloadWordList", action="store_true",
-                    help="Download a random wordlist")
     misc.add_option("--update", dest="updateDagon", action="store_true",
                     help="Update the program to the latest development version")  # Not implemented yet
 
     parser.add_option_group(mandatory)
     parser.add_option_group(manipulation)
+    parser.add_option_group(dictionary_attack_opts)
     parser.add_option_group(specifics)
     parser.add_option_group(misc)
 

@@ -28,18 +28,19 @@ HASH_TYPE_REGEX = {
     ],
     build_re(128): [
         ("sha512", "whirlpool", "sha3_512"),
-        ("salsa10", "salsa20", "skein512",
-         "skein1024(512)")
+        ("salsa10", "salsa20",
+         "skein512", "skein1024(512)")
     ],
     build_re(56, suffix=""): [
         ("sha224", "sha3_224"),
-        ("sha3224", "shein256(224)",
-         "skein512(224)", "haval224")
+        ("shein256(224)", "skein512(224)",
+         "haval224")
     ],
     build_re(40): [
-        ("sha1", "ripemd160", "dsa"),
+        ("sha1", "ripemd160"),
         ("doublesha1", "haval160", "tiger160",
-         "has160", "skein256(160)", "skein512(160)")
+         "has160", "skein256(160)", "skein512(160)",
+         "dsa")
     ],
     build_re(96, suffix=""): [
         ("sha384", "sha3_384"),

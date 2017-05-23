@@ -78,7 +78,7 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
     exit(0)
 
 
-def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None):
+def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx=""):
     """
       Hash the words and verify if they match or not
 
@@ -95,18 +95,18 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None):
         for i, word in enumerate(words.readlines(), start=1):
             if salt is not None:
                 if placement == "front":
-                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, front=True)
+                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, front=True, posx=posx)
                 else:
-                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, back=True)
+                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, back=True, posx=posx)
             else:
-                hashed = FUNC_DICT[algorithm.lower()](word.strip())
+                hashed = FUNC_DICT[algorithm.lower()](word.strip(), posx=posx)
             tries += 1
 
             if hashed == verify_hash:
                 return word.strip(), hashed, tries, algorithm
 
 
-def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, perms=""):
+def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, perms="", posx=""):
     """
       Main function to be used for bruteforcing a hash
     """
@@ -132,7 +132,7 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                                                                               hash_type))
         for alg in hash_type:
             LOGGER.info("Starting bruteforce with {}..".format(alg.upper()))
-            bruteforcing = hash_words(verf_hash, wordlist, alg, salt=salt, placement=placement)
+            bruteforcing = hash_words(verf_hash, wordlist, alg, salt=salt, placement=placement, posx=posx)
             if bruteforcing is None:
                 LOGGER.warning("Unable to find a match for '{}', using {}..".format(verf_hash, alg.upper()))
             else:
@@ -140,12 +140,12 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                 break
     else:
         LOGGER.info("Using algorithm, {}..".format(algorithm.upper()))
-        results = hash_words(verf_hash, wordlist, algorithm, salt=salt, placement=placement)
+        results = hash_words(verf_hash, wordlist, algorithm, salt=salt, placement=placement, posx=posx)
         if results is None:
             LOGGER.warning("Unable to find a match using {}..".format(algorithm.upper()))
             verifiy = prompt("Would you like to attempt to verify the hash type automatically and crack it", "y/N")
             if verifiy.lower().startswith("y"):
-                bruteforce_main(verf_hash, wordlist=wordlist, salt=salt, placement=placement)
+                bruteforce_main(verf_hash, wordlist=wordlist, salt=salt, placement=placement, posx=posx)
             else:
                 LOGGER.warning("Unable to produce a result for given hash '{}' using {}.. Exiting..".format(
                     verf_hash, algorithm.upper()))

@@ -8,7 +8,7 @@ from thirdparty.md2 import md2_hash
 from thirdparty.tiger import tiger
 
 
-def mysql_hash(string, salt=None, front=False, back=False):
+def mysql_hash(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a hash identical to the one that MySQL uses
 
@@ -34,7 +34,7 @@ def mysql_hash(string, salt=None, front=False, back=False):
     return "*{}".format(obj2.upper())
 
 
-def oracle_hash(string, salt=None, front=False, back=False):
+def oracle_hash(string, salt=None, front=False, back=False, **placeholder):
     raise NotImplementedError("Oracle hashes are not implemented yet")
 
 
@@ -57,7 +57,7 @@ def blowfish_hash(string, salt=None, front=False, back=False):
         return bcrypt.hash(string)
 
 
-def scrypt_hash(string, salt=None, front=False, back=False):
+def scrypt_hash(string, salt=None, front=False, back=False, **placeholder):
     raise NotImplementedError("Scrypt hashes are not implemented yet")
 
 
@@ -82,7 +82,7 @@ def ripemd160(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def blake224(string, salt=None, front=False, back=False):
+def blake224(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a Blake224 hash from given string
 
@@ -103,7 +103,7 @@ def blake224(string, salt=None, front=False, back=False):
     return digest
 
 
-def blake256(string, salt=None, front=False, back=False):
+def blake256(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a Blake256 hash from a given string
 
@@ -124,7 +124,7 @@ def blake256(string, salt=None, front=False, back=False):
     return digest
 
 
-def blake384(string, salt=None, front=False, back=False):
+def blake384(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a bBlake384 hash from a given string
 
@@ -145,7 +145,7 @@ def blake384(string, salt=None, front=False, back=False):
     return digest
 
 
-def blake512(string, salt=None, front=False, back=False):
+def blake512(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a Blake512 hash from a given string
 
@@ -166,7 +166,7 @@ def blake512(string, salt=None, front=False, back=False):
     return digest
 
 
-def md2(string, salt=None, front=False, back=False):
+def md2(string, salt=None, front=False, back=False, **placeholder):
     """
       Create an MD2 hash from a given string
 
@@ -186,7 +186,7 @@ def md2(string, salt=None, front=False, back=False):
     return obj
 
 
-def md4(string, salt=None, front=False, back=False):
+def md4(string, salt=None, front=False, back=False, **placeholder):
     """
     Create an MD4 hash from a given string
 
@@ -207,7 +207,7 @@ def md4(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def md5(string, salt=None, front=False, back=False):
+def md5(string, salt=None, front=False, back=False, **placeholder):
     """
       Create an MD5 hash from a given string
 
@@ -228,7 +228,7 @@ def md5(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def half_md5(string, salt=None, front=False, back=False, posx=""):
+def half_md5(string, salt=None, front=False, back=False, posx="", **placeholder):
     """
       Create half of an MD5 hash
 
@@ -248,6 +248,7 @@ def half_md5(string, salt=None, front=False, back=False, posx=""):
     else:
         obj.update(string)
 
+    # Return the position specified
     if posx == "left":
         return obj.hexdigest()[:16]
     elif posx == "right":
@@ -258,7 +259,7 @@ def half_md5(string, salt=None, front=False, back=False, posx=""):
         return random.choice([obj.hexdigest()[:16], obj.hexdigest()[8:-8], obj.hexdigest()[16:]])
 
 
-def sha1(string, salt=None, front=False, back=False):
+def sha1(string, salt=None, front=False, back=False, **placeholder):
     """
       Create an SHA1 hash from a given string
 
@@ -279,7 +280,7 @@ def sha1(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def sha2(string, salt=None, front=False, back=False):
+def sha2(string, salt=None, front=False, back=False, **placeholder):
     raise NotImplementedError("SHA2 is not implemented yet")
     pass
 
@@ -306,7 +307,7 @@ def sha3_224(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def sha3_256(string, salt=None, front=False, back=False):
+def sha3_256(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a SHA3 256 hash from a given string
 
@@ -327,7 +328,7 @@ def sha3_256(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def sha3_384(string, salt=None, front=False, back=False):
+def sha3_384(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a SHA3 384 hash from a given string
 
@@ -348,7 +349,7 @@ def sha3_384(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def sha3_512(string, salt=None, front=False, back=False):
+def sha3_512(string, salt=None, front=False, back=False, **placeholder):
     """
       Create an SHA3 512 hash from a given string
 
@@ -369,7 +370,7 @@ def sha3_512(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def sha224(string, salt=None, front=False, back=False):
+def sha224(string, salt=None, front=False, back=False, **placeholder):
     """
        Create a SHA224 hash from a given string
 
@@ -390,7 +391,7 @@ def sha224(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def sha256(string, salt=None, front=False, back=False):
+def sha256(string, salt=None, front=False, back=False, **placeholder):
     """
       Create an SHA256 hash from a given string
 
@@ -411,7 +412,7 @@ def sha256(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def sha384(string, salt=None, front=False, back=False):
+def sha384(string, salt=None, front=False, back=False, **placeholder):
     """
       Create an SHA384 hash from a given string
 
@@ -432,7 +433,7 @@ def sha384(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def sha512(string, salt=None, front=False, back=False):
+def sha512(string, salt=None, front=False, back=False, **placeholder):
     """
       Create an SHA512 hash from a given string
 
@@ -453,7 +454,7 @@ def sha512(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def whirlpool(string, salt=None, front=False, back=False):
+def whirlpool(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a WHIRLPOOL hash from a given string
 
@@ -474,7 +475,7 @@ def whirlpool(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def dsa(string, salt=None, front=False, back=False):
+def dsa(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a DSA hash from a given string
 
@@ -495,7 +496,7 @@ def dsa(string, salt=None, front=False, back=False):
     return obj.hexdigest()
 
 
-def tiger192(string, salt=None, front=False, back=False):
+def tiger192(string, salt=None, front=False, back=False, **placeholder):
     """
       Hash a password using Tiger192
 

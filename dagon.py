@@ -51,7 +51,7 @@ if __name__ == '__main__':
                             help="Choose your salt and placement to use in the hashing")
     manipulation.add_option("-R", "--rand-salt", dest="randomSaltAndPlacement", action="store_true",
                             help="Random generate the salt and the placement to put the salt in")
-    manipulation.add_option("-A", "--algorithm", dest="algToUse", metavar="ALGORITHM",
+    manipulation.add_option("-A", "--algorithm", dest="algToUse", metavar="ALGORITHM-IDENTIFIER",
                             help="Specify what algorithm to use for cracking")
     manipulation.add_option("--use-chars", dest="useCharsAsSalt", action="store_true",
                             help="Use random characters for the salt")
@@ -62,7 +62,8 @@ if __name__ == '__main__':
     manipulation.add_option("--urandom", dest="useURandomSaltAndRandomPlacement", metavar="LENGTH",
                             help="Use unicode salt for the hash salting, along with a random placement")
     manipulation.add_option("--posx", dest="returnThisPartOfHash", metavar="POSITION",
-                            help=optparse.SUPPRESS_HELP)  # Not implemented yet
+                            help="Choose which part of the hashes you want to return, "
+                                 "only valid for half algorithms functions")
 
     # Manipulate your dictionary attacks with these options
     dictionary_attack_opts = optparse.OptionGroup(parser, "Dictionary attack arguments",
@@ -164,7 +165,7 @@ if __name__ == '__main__':
                 if opt.bruteforceCrack is True and opt.hashToCrack is not None and opt.hashListToCrack is None:
                     try:
                         bruteforce_main(opt.hashToCrack, algorithm=opt.algToUse, wordlist=opt.wordListToUse,
-                                        salt=salt, placement=placement)
+                                        salt=salt, placement=placement, posx=opt.returnThisPartOfHash)
                     except Exception as e:
                         LOGGER.fatal("{} failed with error code: '{}'".format(os.path.basename(__file__), e))
 
@@ -178,7 +179,7 @@ if __name__ == '__main__':
                                     LOGGER.info("Cracking hash number {}..".format(i))
                                     bruteforce_main(hash_to_crack.strip(), algorithm=opt.algToUse,
                                                     wordlist=opt.wordListToUse, salt=salt,
-                                                    placement=placement)
+                                                    placement=placement, posx=opt.returnThisPartOfHash)
 
                                     print("\n")
                     except Exception as e:

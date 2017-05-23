@@ -2,7 +2,7 @@ import hashlib
 import random
 import sha3
 
-from passlib.hash import bcrypt
+from passlib.hash import bcrypt, oracle11, oracle10
 from thirdparty.blake import blake
 from thirdparty.md2 import md2_hash
 from thirdparty.tiger import tiger
@@ -34,8 +34,14 @@ def mysql_hash(string, salt=None, front=False, back=False, **placeholder):
     return "*{}".format(obj2.upper())
 
 
-def oracle_hash(string, salt=None, front=False, back=False, **placeholder):
+def wordpress(string, salt=None, **placeholder):
+    raise NotImplementedError("Wordpress hashes are not implemented yet.")
+    pass
+
+
+def oracle_hash(string, salt=None, oracle_version=11, **placeholder):
     raise NotImplementedError("Oracle hashes are not implemented yet")
+    pass
 
 
 def blowfish_hash(string, salt=None, front=False, back=False):
@@ -256,6 +262,7 @@ def half_md5(string, salt=None, front=False, back=False, posx="", **placeholder)
     elif posx == "mid":
         return obj.hexdigest()[8:-8]
     else:
+        # Randomly return a half MD5 string
         return random.choice([obj.hexdigest()[:16], obj.hexdigest()[8:-8], obj.hexdigest()[16:]])
 
 
@@ -285,7 +292,7 @@ def sha2(string, salt=None, front=False, back=False, **placeholder):
     pass
 
 
-def sha3_224(string, salt=None, front=False, back=False):
+def sha3_224(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a SHA3 224 hash from a given string
 
@@ -476,24 +483,7 @@ def whirlpool(string, salt=None, front=False, back=False, **placeholder):
 
 
 def dsa(string, salt=None, front=False, back=False, **placeholder):
-    """
-      Create a DSA hash from a given string
-
-      > :param string: string to be hashed
-      > :return: a DSA hash
-
-      Example:
-        >>> dsa("test")
-        a94a8fe5ccb19ba61c4c0873d391e987982fbbd3
-    """
-    obj = hashlib.new("DSA")
-    if salt is not None and front is True and not back:
-        obj.update(salt + string)
-    elif salt is not None and back is True and not front:
-        obj.update(string + salt)
-    else:
-        obj.update(string)
-    return obj.hexdigest()
+    raise NotImplementedError("DSA hashes are not implemented yet")
 
 
 def tiger192(string, salt=None, front=False, back=False, **placeholder):

@@ -22,7 +22,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.2.3.6"
+VERSION = "1.2.4.7"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -241,3 +241,7 @@ def update_system():
         return -1
     else:
         return 0
+
+
+def find_func_by_identifier(identity_number):
+    pass

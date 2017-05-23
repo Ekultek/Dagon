@@ -2,7 +2,6 @@ import re
 import sys
 import logging
 import time
-import random
 import string
 import base64
 import requests
@@ -22,7 +21,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.2.4.7"
+VERSION = "1.2.5.8"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -243,5 +242,20 @@ def update_system():
         return 0
 
 
-def find_func_by_identifier(identity_number):
-    pass
+'''def find_func_by_identifier(identity_number):
+
+    FUNC_DICT = {
+    "md2": md2, "md4": md4, "md5": md5, "half md5": half_md5,
+    "mysql": mysql_hash, "blowfish": blowfish_hash, "oracle": oracle_hash,
+    "ripemd160": ripemd160,
+    "blake224": blake224, "blake256": blake256, "blake384": blake384, "blake512": blake512,
+    "sha1": sha1, "sha224": sha224, "sha256": sha256, "sha384": sha384, "sha512": sha512,
+    "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
+    "whirlpool": whirlpool,
+    "dsa": dsa,
+    "tiger192": tiger192
+    }
+
+    identifiers = {
+        0: "md5",
+    }'''

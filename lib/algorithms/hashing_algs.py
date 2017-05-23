@@ -61,7 +61,7 @@ def scrypt_hash(string, salt=None, front=False, back=False, **placeholder):
     raise NotImplementedError("Scrypt hashes are not implemented yet")
 
 
-def ripemd160(string, salt=None, front=False, back=False):
+def ripemd160(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a RipeMD160 hash from a given string
 

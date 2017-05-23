@@ -1,3 +1,4 @@
+import os
 import re
 import sys
 import logging
@@ -21,7 +22,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.2.5.8"
+VERSION = "1.2.6.8"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -33,15 +34,17 @@ SAYING = "\033[97mAdvanced Hash Manipulation\033[0m"
 # Clone link
 CLONE = "\033[97mhttps://github.com/ekultek/dagon.git\033[0m"
 # Homepage link
-HOMEPAGE = "\033[97mhttps://ekultek.github.io/Dagon/\033[0m"
+HOMEPAGE = "\033[97+mhttps://ekultek.github.io/Dagon/\033[0m"
+# Issue page
+DAGON_ISSUE_LINK = "https://github.com/Ekultek/Dagon/issues/new"
 # Sexy banner to display
 BANNER = """\033[91m
 '||''|.
- ||   ||   ....     ... .   ...   .. ...
- ||    || '' .||   || ||  .|  '|.  ||  ||
- ||    || .|' ||    |''   ||   ||  ||  ||
-.||...|'  '|..'|'  '||||.  '|..|' .||. ||. [][][]
-                  .|....'  \033[0m
+ ||   ||   ....    ... .   ...   .. ...
+ ||    || '' .||  ||_||  .|  '|.  ||  ||
+ ||    || .|' ||   |''   ||   ||  ||  ||
+.||...|'  '|..'|' '||||.  '|..|' .||. ||. [][][]
+                 .|....'\033[0m
 {} ... {}
 Clone: {}
 Home: {}
@@ -49,13 +52,12 @@ Home: {}
 # Algorithm function dict
 FUNC_DICT = {
     "md2": md2, "md4": md4, "md5": md5, "half md5": half_md5,
-    "mysql": mysql_hash, "blowfish": blowfish_hash, "oracle": oracle_hash,
+    "mysql": mysql_hash, "blowfish": blowfish_hash,
     "ripemd160": ripemd160,
     "blake224": blake224, "blake256": blake256, "blake384": blake384, "blake512": blake512,
     "sha1": sha1, "sha224": sha224, "sha256": sha256, "sha384": sha384, "sha512": sha512,
     "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
     "whirlpool": whirlpool,
-    "dsa": dsa,
     "tiger192": tiger192
 }
 # Regular expression to see if you already have a bruteforce wordlist created
@@ -74,6 +76,8 @@ WORDLIST_LINKS = [
     'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2JlcnplcmswL1Byb2JhYmxlLVdvcmRsaXN0cy9tYXN0ZXIvRGljdGlvbmFyeS1TdHlsZS9NYWluRW5nbGlzaERpY3Rpb25hcnkudHh0',
     'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvdHdpdHRlci1iYW5uZWQudHh0',
     'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvdHVzY2wudHh0'
+    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvMTBfbWlsbGlvbl9wYXNzd29yZF9saXN0X3RvcF8xMDAwMDAwLnR4dA=='
+    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvTGl6YXJkX1NxdWFkLnR4dA=='
 ]
 
 
@@ -242,20 +246,11 @@ def update_system():
         return 0
 
 
-'''def find_func_by_identifier(identity_number):
-
-    FUNC_DICT = {
-    "md2": md2, "md4": md4, "md5": md5, "half md5": half_md5,
-    "mysql": mysql_hash, "blowfish": blowfish_hash, "oracle": oracle_hash,
-    "ripemd160": ripemd160,
-    "blake224": blake224, "blake256": blake256, "blake384": blake384, "blake512": blake512,
-    "sha1": sha1, "sha224": sha224, "sha256": sha256, "sha384": sha384, "sha512": sha512,
-    "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
-    "whirlpool": whirlpool,
-    "dsa": dsa,
-    "tiger192": tiger192
-    }
-
-    identifiers = {
-        0: "md5",
-    }'''
+def show_available_algs():
+    """ Show all algorithms available in the program """
+    misc_info_msg = "There are currently {} available algorithms in Dagon. "
+    misc_info_msg += "To suggest the creation of a new algorithm please go "
+    misc_info_msg += "here {} and make an issue."
+    LOGGER.info(misc_info_msg.format(len(FUNC_DICT.keys()), DAGON_ISSUE_LINK))
+    for i, item in enumerate(FUNC_DICT.keys(), start=1):
+        print("\033[94m[{}]\033[0m {}".format(i, item.upper()))

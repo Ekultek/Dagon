@@ -14,6 +14,7 @@ from lib.settings import match_found
 from lib.settings import show_banner
 from lib.settings import update_system
 from lib.settings import show_hidden_banner
+from lib.settings import show_available_algs
 from lib.settings import random_salt_generator
 from lib.settings import verify_python_version
 from lib.settings import download_rand_wordlist
@@ -86,7 +87,9 @@ if __name__ == '__main__':
     misc.add_option("-H", "--hide", action="store_true", dest="hideBanner",
                     help="Hide the application banner and show a mini version of it")
     misc.add_option("--update", dest="updateDagon", action="store_true",
-                    help="Update the program to the latest development version")  # Not implemented yet
+                    help="Update the program to the latest development version")
+    misc.add_option("--avail-algs", action="store_true", dest="showAvailableAlgorithms",
+                    help="Show all available algorithms that are currently functional.")
 
     parser.add_option_group(mandatory)
     parser.add_option_group(manipulation)
@@ -113,6 +116,10 @@ if __name__ == '__main__':
             # Download a random wordlist
             if opt.downloadWordList is True:
                 download_rand_wordlist()
+                exit(0)
+
+            if opt.showAvailableAlgorithms is True:
+                show_available_algs()
                 exit(0)
 
             if opt.updateDagon is True:

@@ -79,12 +79,37 @@ You can also change the salt size, because hey, who uses 12 character salts anym
 
 ![salt_size](https://cloud.githubusercontent.com/assets/14183473/26105647/5dad0be6-3a08-11e7-8757-bb6bc9e375c2.PNG)
 
+### Algorithms available and ID numbers
 
-### Future updates:
+#### Algorithms currently available
 
-Updates that will be coming to Dagon soon include:
+ - MD2        > 120
+ - MD4        > 130
+ - MD5        > 100
+ - Half MD5   > 110
+ - Blake224   > 200
+ - Blake256   > 210
+ - Blake384   > 220 
+ - Blake512   > 230
+ - SHA1       > 300
+ - SHA224     > 310
+ - SHA256     > 320
+ - SHA384     > 330
+ - SHA512     > 340
+ - SHA3 224   > 400
+ - SHA3 256   > 410
+ - SHA3 384   > 420
+ - SHA3 512   > 430
+ - Ripemd-160 > 600
+ - Tiger192   > 700
+ - Whirlpool  > 800
+ - Blowfish   > 500
+ - MySQL      > 510
 
- - Rainbow table cracking
- - Further implementation of hashing algorithms
+#### Algorithms in the process of being created
 
-
+ - DSA
+ - Oracle
+ - Scrypt
+ - SHA2
+ - Wordpress

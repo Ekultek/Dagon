@@ -86,7 +86,6 @@ You can also change the salt size, because hey, who uses 12 character salts anym
  - MD2        > 120
  - MD4        > 130
  - MD5        > 100
- - Half MD5   > 110
  - Blake224   > 200
  - Blake256   > 210
  - Blake384   > 220 
@@ -105,6 +104,13 @@ You can also change the salt size, because hey, who uses 12 character salts anym
  - Whirlpool  > 800
  - Blowfish   > 500
  - MySQL      > 510
+ 
+#### Special algorithms currently available
+
+ - MD5(MD5(pass)+MD5(salt))> 140
+ - MDd5(MD5(pass))         > 141
+ - Half MD5                > 142
+ - MD5(salt+pass+salt)     > 143
 
 #### Algorithms in the process of being created
 

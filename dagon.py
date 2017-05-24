@@ -13,6 +13,8 @@ from lib.settings import LOGGER
 from lib.settings import match_found
 from lib.settings import show_banner
 from lib.settings import update_system
+from lib.settings import VERSION_STRING
+from lib.settings import algorithm_pointers
 from lib.settings import show_hidden_banner
 from lib.settings import show_available_algs
 from lib.settings import random_salt_generator
@@ -90,6 +92,10 @@ if __name__ == '__main__':
                     help="Update the program to the latest development version")
     misc.add_option("--avail-algs", action="store_true", dest="showAvailableAlgorithms",
                     help="Show all available algorithms that are currently functional.")
+    misc.add_option("--all-algs", action="store_true", dest="showAllAlgorithms",
+                    help="Use in conjunction with --avail-algs to show future supported algorithms")
+    misc.add_option("--version", action="store_true", dest="displayVersionInfo",
+                    help="Display the version information and exit.")
 
     parser.add_option_group(mandatory)
     parser.add_option_group(manipulation)
@@ -118,10 +124,17 @@ if __name__ == '__main__':
                 download_rand_wordlist()
                 exit(0)
 
+            # Output all supported algorithms
             if opt.showAvailableAlgorithms is True:
-                show_available_algs()
+                show_available_algs(show_all=opt.showAllAlgorithms)
                 exit(0)
 
+            # Display the version and exit
+            if opt.displayVersionInfo is True:
+                LOGGER.info(VERSION_STRING)
+                exit(0)
+
+            # Update Dagon
             if opt.updateDagon is True:
                 LOGGER.info("Update in progress..")
                 update_status = update_system()
@@ -171,7 +184,7 @@ if __name__ == '__main__':
                 # Bruteforce this shit
                 if opt.bruteforceCrack is True and opt.hashToCrack is not None and opt.hashListToCrack is None:
                     try:
-                        bruteforce_main(opt.hashToCrack, algorithm=opt.algToUse, wordlist=opt.wordListToUse,
+                        bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse), wordlist=opt.wordListToUse,
                                         salt=salt, placement=placement, posx=opt.returnThisPartOfHash)
                     except Exception as e:
                         LOGGER.fatal("{} failed with error code: '{}'".format(os.path.basename(__file__), e))
@@ -184,7 +197,7 @@ if __name__ == '__main__':
                                 crack_or_not = prompt("Attempt to crack: '{}'".format(hash_to_crack.strip()), "y/N")
                                 if crack_or_not.lower().startswith("y"):
                                     LOGGER.info("Cracking hash number {}..".format(i))
-                                    bruteforce_main(hash_to_crack.strip(), algorithm=opt.algToUse,
+                                    bruteforce_main(hash_to_crack.strip(), algorithm=algorithm_pointers(opt.algToUse),
                                                     wordlist=opt.wordListToUse, salt=salt,
                                                     placement=placement, posx=opt.returnThisPartOfHash)
 

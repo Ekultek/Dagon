@@ -108,7 +108,7 @@ You can also change the salt size, because hey, who uses 12 character salts anym
 #### Special algorithms currently available
 
  - MD5(MD5(pass)+MD5(salt))> 140
- - MDd5(MD5(pass))         > 141
+ - MD5(MD5(pass))         > 141
  - Half MD5                > 142
  - MD5(salt+pass+salt)     > 143
 

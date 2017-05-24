@@ -21,7 +21,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.2.7.9"
+VERSION = "1.3.7.9"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -50,7 +50,8 @@ Home: {}
 """.format(SAYING, VERSION_STRING, CLONE, HOMEPAGE)
 # Algorithm function dict
 FUNC_DICT = {
-    "md2": md2, "md4": md4, "md5": md5, "half md5": half_md5,
+    "md2": md2, "md4": md4, "md5": md5, "half md5": half_md5, "md5(md5(pass)+md5(salt))": md5_pass_salt,
+    "md5(md5(pass))": md5_md5_pass, "md5(salt+pass+salt)": md5_salt_pass_salt,
     "mysql": mysql_hash, "blowfish": blowfish_hash,
     "ripemd160": ripemd160,
     "blake224": blake224, "blake256": blake256, "blake384": blake384, "blake512": blake512,
@@ -61,13 +62,29 @@ FUNC_DICT = {
 }
 # Identity numbers
 IDENTIFICATION = {
-    100: "md5", 110: "half md5", 120: "md2", 130: "md4",
+    # MD indicators
+    100: "md5", 110: "md2", 120: "md4",
+    # MD special indicators
+    140: "md5(md5(pass)+md5(salt))", 141: "md5(md5(pass))", 142: "half md5",
+    143: "md5(salt+pass+salt)",
+
+    # Blake indicators
     200: "blake224", 210: "blake256", 220: "blake384", 230: "blake512",
+
+    # SHA indicators
     300: "sha1", 310: "sha224", 320: "sha256", 330: "sha384", 340: "sha512",
     400: "sha3_224", 410: "sha3_256", 420: "sha3_384", 430: "sha3_512",
+
+    # Database and external hash indicators
     500: "blowfish", 510: "mysql",
+
+    # Ripemd indicators
     600: "ripemd160",
+
+    # Tiger indicators
     700: "tiger192",
+
+    # Other
     800: "whirlpool"
 }
 # Regular expression to see if you already have a bruteforce wordlist created
@@ -158,7 +175,7 @@ def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS)):
     LOGGER.info("Download complete, saved under: {}.txt. Time elapsed: {}s".format(filename, time.time() - start))
 
 
-def random_salt_generator(use_string=False, use_number=False, length=None):
+def random_salt_generator(use_string=False, use_number=False, length=None, warning=True):
     """
       Create a random string of salt to append to the beginning of a hash
 
@@ -191,7 +208,8 @@ def random_salt_generator(use_string=False, use_number=False, length=None):
         for _ in range(0, length):
             salt.append(random.choice(str(string.digits + string.ascii_letters)))
     else:
-        LOGGER.warning("No choice given as salt, defaulting to numbers..")
+        if warning is True:
+            LOGGER.warning("No choice given as salt, defaulting to numbers..")
         for _ in range(0, length):
             salt.append(str(random.randint(0, 9)))
     return ''.join(salt), random.choice(placement)

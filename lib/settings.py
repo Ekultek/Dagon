@@ -1,4 +1,3 @@
-import os
 import re
 import sys
 import logging
@@ -22,7 +21,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.2.6.8"
+VERSION = "1.2.7.9"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -34,7 +33,7 @@ SAYING = "\033[97mAdvanced Hash Manipulation\033[0m"
 # Clone link
 CLONE = "\033[97mhttps://github.com/ekultek/dagon.git\033[0m"
 # Homepage link
-HOMEPAGE = "\033[97+mhttps://ekultek.github.io/Dagon/\033[0m"
+HOMEPAGE = "\033[97mhttps://ekultek.github.io/Dagon/\033[0m"
 # Issue page
 DAGON_ISSUE_LINK = "https://github.com/Ekultek/Dagon/issues/new"
 # Sexy banner to display
@@ -59,6 +58,17 @@ FUNC_DICT = {
     "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
     "whirlpool": whirlpool,
     "tiger192": tiger192
+}
+# Identity numbers
+IDENTIFICATION = {
+    100: "md5", 110: "half md5", 120: "md2", 130: "md4",
+    200: "blake224", 210: "blake256", 220: "blake384", 230: "blake512",
+    300: "sha1", 310: "sha224", 320: "sha256", 330: "sha384", 340: "sha512",
+    400: "sha3_224", 410: "sha3_256", 420: "sha3_384", 430: "sha3_512",
+    500: "blowfish", 510: "mysql",
+    600: "ripemd160",
+    700: "tiger192",
+    800: "whirlpool"
 }
 # Regular expression to see if you already have a bruteforce wordlist created
 WORDLIST_RE = re.compile("Dagon-bfdict-[a-zA-Z]{7}.txt")
@@ -246,11 +256,32 @@ def update_system():
         return 0
 
 
-def show_available_algs():
+def show_available_algs(show_all=False, supp="+", not_yet="-"):
     """ Show all algorithms available in the program """
-    misc_info_msg = "There are currently {} available algorithms in Dagon. "
+    being_worked_on = ["oracle", "wordpress", "scrypt", "sha2", "dsa"]
+    misc_info_msg = "There are currently {} supported algorithms in Dagon. "
     misc_info_msg += "To suggest the creation of a new algorithm please go "
-    misc_info_msg += "here {} and make an issue."
-    LOGGER.info(misc_info_msg.format(len(FUNC_DICT.keys()), DAGON_ISSUE_LINK))
-    for i, item in enumerate(FUNC_DICT.keys(), start=1):
-        print("\033[94m[{}]\033[0m {}".format(i, item.upper()))
+    misc_info_msg += "make an issue here {}"
+    LOGGER.info(misc_info_msg.format(len(IDENTIFICATION), DAGON_ISSUE_LINK))
+    for item in sorted(IDENTIFICATION.keys()):
+        print("\033[94m[{}]\033[0m {}".format(supp, IDENTIFICATION[item].upper()))
+    if show_all is True:
+        print("\nNot implemented yet:")
+        for item in sorted(being_worked_on):
+            print("\033[91m[{}]\033[0m {}".format(not_yet, item.upper()))
+
+
+def algorithm_pointers(pointer_identity):
+    """ Point to the correct algorithm given by an identification number """
+    if pointer_identity is None:
+        pass
+    else:
+        try:
+            if int(pointer_identity) in IDENTIFICATION.keys():
+                return IDENTIFICATION[int(pointer_identity)]
+            else:
+                LOGGER.fatal("The algorithm identification number you have specified is invalid."
+                             " Valid identification numbers are: {}".format([i for i in sorted(IDENTIFICATION)]))
+        except ValueError:
+            LOGGER.fatal("The algorithm identification number you have specified is invalid."
+                         " Valid identification numbers are: {}".format([i for i in sorted(IDENTIFICATION)]))

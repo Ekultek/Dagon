@@ -1,6 +1,7 @@
 import hashlib
 import random
 import sha3
+import lib
 
 from passlib.hash import bcrypt, oracle11, oracle10
 from thirdparty.blake import blake
@@ -264,6 +265,73 @@ def half_md5(string, salt=None, front=False, back=False, posx="", **placeholder)
     else:
         # Randomly return a half MD5 string
         return random.choice([obj.hexdigest()[:16], obj.hexdigest()[8:-8], obj.hexdigest()[16:]])
+
+
+def md5_pass_salt(string, salt=None, **placeholder):
+    """
+      Create an MD5 password in a specific salting order $md5(md5($pass)+md5($salt))
+
+      > :param string: string to get hashed
+      > :return: a hashed password in $md5(md5($pass)+md5($salt)) format
+
+      Example:
+        >>> md5_pass_salt("test")
+        06315beb4110dc8be4669fc68efc92ea
+    """
+    if salt is None:
+        salt = lib.settings.random_salt_generator(warning=False)[0]
+    obj1 = hashlib.md5()
+    obj2 = hashlib.md5()
+    obj3 = hashlib.md5()
+    obj1.update(string)
+    obj2.update(salt)
+    hash1 = obj1.hexdigest()
+    hash2 = obj2.hexdigest()
+    obj3.update(hash1 + hash2)
+    return obj3.hexdigest()
+
+
+def md5_md5_pass(string, salt=None, front=False, back=False, **placeholder):
+    """
+      Create an MD5 hash in a specific order $md5(md5($pass))
+
+      > :param string: string to be hashed
+      > :return: a hashed password in md5(md5($pass)) format
+
+      Example:
+        >>> md5_md5_pass("test")
+        fb469d7ef430b0baf0cab6c436e70375
+    """
+    obj1 = hashlib.md5()
+    obj2 = hashlib.md5()
+    if salt is not None and front is True and not back:
+        obj1.update(salt + string)
+    elif salt is not None and back is True and not front:
+        obj1.update(string + salt)
+    else:
+        obj1.update(string)
+    hash1 = obj1.hexdigest()
+    obj2.update(hash1)
+    return obj2.hexdigest()
+
+
+def md5_salt_pass_salt(string, salt=None, **placeholder):
+    """
+      Create a MD5 hash in a specific format md5($salt+$pass+$salt)
+
+      > :param string: string to be hashed
+      > :return: a hashed password in md5(salt+pass+salt) format
+
+      Example:
+        >>> md5_salt_pass_salt("test", salt="1234")
+        4d4f7f073a628fc11ba04f58793bb106
+    """
+    if salt is None:
+        salt = lib.settings.random_salt_generator(warning=False)
+    split_by = int(round(len(salt)/2))
+    obj1 = hashlib.md5()
+    obj1.update(salt[0:split_by] + string + salt[-split_by:])
+    return obj1.hexdigest()
 
 
 def sha1(string, salt=None, front=False, back=False, **placeholder):

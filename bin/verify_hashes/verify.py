@@ -9,8 +9,10 @@ def build_re(hex_len, prefix=r"", suffix=r"(:.+)?"):
 
 HASH_TYPE_REGEX = {
     build_re(32): [
-        ("md5", "md4", "md2"),  # Most likely
-        ("double md5", "lm", "ripe128", "haval128",  # Least likely
+        ("md5", "md4", "md2",
+         "md5(md5(pass)+md5(salt))", "md5(md5(pass))",
+         "md5(salt+pass+salt)"),  # Most likely
+        ("lm", "ripe128", "haval128",  # Least likely
          "tiger128", "skein256(128)", "skein512(128",
          "lotus Notes/Domino 5", "skype", "zipmonster",
          "prestashop")

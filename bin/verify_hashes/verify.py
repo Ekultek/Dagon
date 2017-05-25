@@ -1,4 +1,5 @@
 import re
+from lib.settings import LOGGER
 
 
 # Has to be the first function so I can use it in the regex
@@ -8,6 +9,10 @@ def build_re(hex_len, prefix=r"", suffix=r"(:.+)?"):
 
 
 HASH_TYPE_REGEX = {
+    build_re(20): [
+        ("half sha1", None),
+        (None, None)
+    ],
     build_re(32): [
         ("md5", "md4", "md2",
          "md5(md5(pass)+md5(salt))", "md5(md5(pass))",
@@ -39,7 +44,7 @@ HASH_TYPE_REGEX = {
          "haval224")
     ],
     build_re(40): [
-        ("sha1", "ripemd160"),
+        ("sha1", "ripemd160", "sha1(sha1(pass))"),
         ("doublesha1", "haval160", "tiger160",
          "has160", "skein256(160)", "skein512(160)",
          "dsa")
@@ -52,8 +57,8 @@ HASH_TYPE_REGEX = {
         ("mysql 5.x", "mysql 4.1")
     ],
     build_re(48, suffix=""): [
-        ("haval192", "sha1(oracle)"),
-        ("tiger192", "xsha (v10.4-v10.6)")
+        ("tiger192", None),
+        ("haval192", "sha1(oracle)", "xsha v10.4-v10.6")
     ],
     re.compile(r"^\$[\w.]{1}\$\w+\$\S{22}$", re.IGNORECASE): [
         ("wordpress", None),
@@ -95,3 +100,7 @@ def verify_hash_type(hash_to_verify, least_likely=False):
             return HASH_TYPE_REGEX[regex]
         elif regex.match(hash_to_verify) and not least_likely:
             return HASH_TYPE_REGEX[regex][0]
+        else:
+            pass
+    LOGGER.fatal("Unable to find an algorithm to match the given hash.")
+    exit(1)

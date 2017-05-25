@@ -21,7 +21,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.3.8.10"
+VERSION = "1.3.9.11"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -56,6 +56,7 @@ FUNC_DICT = {
     "ripemd160": ripemd160,
     "blake224": blake224, "blake256": blake256, "blake384": blake384, "blake512": blake512,
     "sha1": sha1, "sha224": sha224, "sha256": sha256, "sha384": sha384, "sha512": sha512,
+    "half sha1": half_sha1, "sha1(sha1(pass))": sha1_sha1_pass,
     "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
     "whirlpool": whirlpool,
     "tiger192": tiger192
@@ -65,8 +66,8 @@ IDENTIFICATION = {
     # MD indicators
     100: "md5", 110: "md2", 120: "md4",
     # MD special indicators
-    140: "md5(md5(pass)+md5(salt))", 141: "md5(md5(pass))", 142: "half md5",
-    143: "md5(salt+pass+salt)",
+    130: "md5(md5(pass)+md5(salt))", 131: "md5(md5(pass))", 132: "half md5",
+    133: "md5(salt+pass+salt)",
 
     # Blake indicators
     200: "blake224", 210: "blake256", 220: "blake384", 230: "blake512",
@@ -74,6 +75,8 @@ IDENTIFICATION = {
     # SHA indicators
     300: "sha1", 310: "sha224", 320: "sha256", 330: "sha384", 340: "sha512",
     400: "sha3_224", 410: "sha3_256", 420: "sha3_384", 430: "sha3_512",
+    # SHA special indicators
+    351: "half sha1", 352: "sha1(sha1(pass))",
 
     # Database and external hash indicators
     500: "blowfish", 510: "mysql",

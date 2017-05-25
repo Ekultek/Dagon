@@ -355,6 +355,54 @@ def sha1(string, salt=None, front=False, back=False, **placeholder):
     return obj.hexdigest()
 
 
+def half_sha1(string, salt=None, front=False, back=False, posx="", **placeholder):
+    """
+      Create half of an SHA1 hash
+
+      > :param string: string to be hashed
+      > :return: half an SHA1 hash
+
+      Example:
+        >>> half_sha1("test")
+        a94a8fe5ccb19ba61c4c
+    """
+    obj = hashlib.sha1()
+    if salt is not None and front is True and not back:
+        obj.update(salt + string)
+    elif salt is not None and back is True and not front:
+        obj.update(string + salt)
+    else:
+        obj.update(string)
+
+    if posx == "left":
+        return obj.hexdigest()[:20]
+    elif posx == "right":
+        return obj.hexdigest()[:20]
+    elif posx == "mid":
+        return obj.hexdigest()[10:-10]
+    else:
+        placement_opts = ["left", "right", "mid"]
+        return half_sha1(string, salt=salt, front=front, back=back, posx=random.choice(placement_opts))
+
+
+def sha1_sha1_pass(string, **placeholder):
+    """
+      Create an SHA1 hash in SHA1(SHA1($pass)) format
+
+      > :param string: string to be hashed
+      > :return: hashed string in SHA1(SHA1($pass)) format
+
+      Example:
+        >>> sha1_sha1_pass("test")
+        c4033bff94b567a190e33faa551f411caef444f2
+    """
+    obj1 = hashlib.sha1()
+    obj2 = hashlib.sha1()
+    obj1.update(string)
+    obj2.update(obj1.hexdigest())
+    return obj2.hexdigest()
+
+
 def sha2(string, salt=None, front=False, back=False, **placeholder):
     raise NotImplementedError("SHA2 is not implemented yet")
     pass

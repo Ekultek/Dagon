@@ -1,5 +1,6 @@
 import re
 from lib.settings import LOGGER
+from lib.settings import DAGON_ISSUE_LINK
 
 
 # Has to be the first function so I can use it in the regex
@@ -102,5 +103,8 @@ def verify_hash_type(hash_to_verify, least_likely=False):
             return HASH_TYPE_REGEX[regex][0]
         else:
             pass
-    LOGGER.fatal("Unable to find an algorithm to match the given hash.")
+    error_msg = "Unable to find any algorithms to match the given hash. "
+    error_msg += "If you feel this algorithm should be implemented make "
+    error_msg += "an issue here: {}"
+    LOGGER.fatal(error_msg.format(DAGON_ISSUE_LINK))
     exit(1)

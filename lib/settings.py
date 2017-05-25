@@ -21,7 +21,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.3.9.11"
+VERSION = "1.3.9.12"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -239,7 +239,7 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
     if kind == "cracked":
         print(data_sep + "\n" + "[{}] Match found:\n".format(item_found) + data_sep)
         for i, item in enumerate(sort_cracked):
-            print("[{}] {}{}".format(item_found, item, data_tuple[i]))
+            print("[{}] {}{}".format(item_found, item, data_tuple[i].upper() if i == 3 else data_tuple[i]))
         print(data_sep)
     else:
         if all_types is True:

@@ -66,6 +66,7 @@ def blowfish_hash(string, salt=None, front=False, back=False):
 
 def scrypt_hash(string, salt=None, front=False, back=False, **placeholder):
     raise NotImplementedError("Scrypt hashes are not implemented yet")
+    pass
 
 
 def ripemd160(string, salt=None, front=False, back=False, **placeholder):

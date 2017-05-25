@@ -121,3 +121,8 @@ You can also change the salt size, because hey, who uses 12 character salts anym
  - Scrypt
  - SHA2
  - Wordpress
+ 
+## Shout out to contributors
+
+ - 4w4k3 (Alisson Moretto)
+     The creator of Insanity Framework. Thank you for being an all around badass. When you get a chance go check out the repo's: https://github.com/4w4k3

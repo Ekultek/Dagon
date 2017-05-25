@@ -327,7 +327,7 @@ def md5_salt_pass_salt(string, salt=None, **placeholder):
         4d4f7f073a628fc11ba04f58793bb106
     """
     if salt is None:
-        salt = lib.settings.random_salt_generator(warning=False)
+        salt = lib.settings.random_salt_generator(warning=False)[0]
     split_by = int(round(len(salt)/2))
     obj1 = hashlib.md5()
     obj1.update(salt[0:split_by] + string + salt[-split_by:])

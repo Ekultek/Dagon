@@ -116,7 +116,7 @@ if __name__ == '__main__':
     if len(sys.argv) <= 1:
         LOGGER.fatal("You have failed to provide a flag to the application and have been redirected to the help menu.")
         time.sleep(1.7)
-        subprocess.call("python dagon.py --help")
+        subprocess.call("python dagon.py --help", shell=True)
     else:
         try:
             # Download a random wordlist
@@ -237,7 +237,7 @@ if __name__ == '__main__':
             # You never provided a mandatory argument
             else:
                 LOGGER.fatal("Missing mandatory argument, redirecting to help menu..")
-                subprocess.call("python dagon.py --help")
+                subprocess.call("python dagon.py --help", shell=True)
 
         # Why you gotta interrupt my awesome?
         except KeyboardInterrupt:

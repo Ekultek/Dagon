@@ -12,6 +12,10 @@ Verify what algorithm was used to create that hash you're trying to crack. You c
 Random salting, unicode random salting, or you can make your own choice on the salt.
 ![salting](https://cloud.githubusercontent.com/assets/14183473/26070692/1eb062f0-396b-11e7-91bb-4238bd241bef.PNG)
 
+# Demo video
+
+[![demo](https://cloud.githubusercontent.com/assets/14183473/26458859/27a9b61e-413a-11e7-8bd4-0583eae12ddd.PNG)](https://vimeo.com/218966256)
+
 # Download
 
 Preferable you can close the repository with `git clone https://github.com/ekultek/dagon.git` alternativley you can download the zip or tarball [here](https://github.com/ekultek/dagon/releases)

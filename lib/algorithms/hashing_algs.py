@@ -1,5 +1,6 @@
 import hashlib
 import random
+import zlib
 import sha3
 import lib
 
@@ -622,3 +623,28 @@ def tiger192(string, salt=None, front=False, back=False, **placeholder):
         obj = tiger.hash(string)
     return obj.lower()
 
+
+def crc32(string, salt=None, front=False, back=False, use_hex=False, **placeholder):
+    """
+      Create a CRC32 hash from a given string
+
+      > :param string: string to be hashed
+      > :return: a CRC32 hash
+
+      Example:
+        >>> crc32("test")
+        d87f7e0c
+        >>> crc32("test", use_hex=True)
+        0xd87f7e0cL
+    """
+    if salt is not None and front is True and not back:
+        long_int = hex(zlib.crc32(salt + string) % 2**32)
+    elif salt is not None and back is True and not front:
+        long_int = hex(zlib.crc32(string + salt) % 2**32)
+    else:
+        long_int = hex(zlib.crc32(string) % 2**32)
+
+    if not use_hex:
+        return str(long_int)[2:-1]
+    else:
+        return long_int

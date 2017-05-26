@@ -21,7 +21,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.3.9.12"
+VERSION = "1.4.9.13"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -58,7 +58,7 @@ FUNC_DICT = {
     "sha1": sha1, "sha224": sha224, "sha256": sha256, "sha384": sha384, "sha512": sha512,
     "half sha1": half_sha1, "sha1(sha1(pass))": sha1_sha1_pass,
     "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
-    "whirlpool": whirlpool,
+    "whirlpool": whirlpool, "crc32": crc32,
     "tiger192": tiger192
 }
 # Identity numbers
@@ -88,7 +88,7 @@ IDENTIFICATION = {
     700: "tiger192",
 
     # Other
-    800: "whirlpool"
+    800: "whirlpool", 900: "crc32"
 }
 # Regular expression to see if you already have a bruteforce wordlist created
 WORDLIST_RE = re.compile("Dagon-bfdict-[a-zA-Z]{7}.txt")
@@ -284,8 +284,11 @@ def show_available_algs(show_all=False, supp="+", not_yet="-"):
     misc_info_msg += "To suggest the creation of a new algorithm please go "
     misc_info_msg += "make an issue here {}"
     LOGGER.info(misc_info_msg.format(len(IDENTIFICATION), DAGON_ISSUE_LINK))
+    print
+    print("     ID#   Alg:")
+    print("     ---   ----")
     for item in sorted(IDENTIFICATION.keys()):
-        print("\033[94m[{}]\033[0m {}".format(supp, IDENTIFICATION[item].upper()))
+        print("\033[94m[{}]\033[0m  {}   {}".format(supp, item, IDENTIFICATION[item].upper()))
     if show_all is True:
         print("\nNot implemented yet:")
         for item in sorted(being_worked_on):

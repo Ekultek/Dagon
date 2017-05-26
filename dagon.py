@@ -67,6 +67,8 @@ if __name__ == '__main__':
     manipulation.add_option("--posx", dest="returnThisPartOfHash", metavar="POSITION",
                             help="Choose which part of the hashes you want to return, "
                                  "only valid for half algorithms functions")
+    manipulation.add_option("--use-hex", action="store_true", dest="useHexCodeNotHash",
+                            help="Use the CRC32 hexcode instead of the hash")
 
     # Manipulate your dictionary attacks with these options
     dictionary_attack_opts = optparse.OptionGroup(parser, "Dictionary attack arguments",
@@ -96,6 +98,8 @@ if __name__ == '__main__':
                     help="Use in conjunction with --avail-algs to show future supported algorithms")
     misc.add_option("--version", action="store_true", dest="displayVersionInfo",
                     help="Display the version information and exit.")
+    misc.add_option("--batch", action="store_true", dest="runInBatchMode",
+                    help="Run in batch and skip the questions")
 
     parser.add_option_group(mandatory)
     parser.add_option_group(manipulation)
@@ -169,13 +173,13 @@ if __name__ == '__main__':
                 # If you provided your own salt and your own placements
                 elif opt.saltToUseAndPlacement is not None:
                     salt, placement = opt.saltToUseAndPlacement[0], opt.saltToUseAndPlacement[1].lower()
-                    LOGGER.info("Using salt: '{}' on the {} of the hash...".format(salt, placement))
+                    LOGGER.info("Using salt: '{}' on the '{}' of the hash...".format(salt, placement))
 
                 # Unicode random salt and placement
                 elif opt.useURandomSaltAndRandomPlacement is not None:
                     salt, placement = str(os.urandom(int(opt.useURandomSaltAndRandomPlacement))), random.choice(["front",
                                                                                                                  "back"])
-                    LOGGER.info("Using urandom salt: '{}' on the {} of the hash...".format(salt, placement))
+                    LOGGER.info("Using urandom salt: '{}' on the '{}' of the hash...".format(salt, placement))
 
                 # No salt or placement
                 else:
@@ -185,25 +189,31 @@ if __name__ == '__main__':
                 if opt.bruteforceCrack is True and opt.hashToCrack is not None and opt.hashListToCrack is None:
                     try:
                         bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse), wordlist=opt.wordListToUse,
-                                        salt=salt, placement=placement, posx=opt.returnThisPartOfHash)
+                                        salt=salt, placement=placement, posx=opt.returnThisPartOfHash,
+                                        use_hex=opt.useHexCodeNotHash)
                     except Exception as e:
-                        LOGGER.fatal("{} failed with error code: '{}'".format(os.path.basename(__file__), e))
+                        LOGGER.fatal("{} failed with error code: '{}'".format(os.path.basename(__file__), e.message))
 
                 # Bruteforce a list of hashes
                 elif opt.bruteforceCrack is True and opt.hashListToCrack is not None and opt.hashToCrack is None:
                     try:
                         with open(opt.hashListToCrack) as hashes:
                             for i, hash_to_crack in enumerate(hashes.readlines(), start=1):
-                                crack_or_not = prompt("Attempt to crack: '{}'".format(hash_to_crack.strip()), "y/N")
+                                if opt.runInBatchMode is True:
+                                    crack_or_not = "y"
+                                else:
+                                    crack_or_not = prompt("Attempt to crack: '{}'".format(hash_to_crack.strip()), "y/N")
+
                                 if crack_or_not.lower().startswith("y"):
                                     LOGGER.info("Cracking hash number {}..".format(i))
                                     bruteforce_main(hash_to_crack.strip(), algorithm=algorithm_pointers(opt.algToUse),
                                                     wordlist=opt.wordListToUse, salt=salt,
-                                                    placement=placement, posx=opt.returnThisPartOfHash)
+                                                    placement=placement, posx=opt.returnThisPartOfHash,
+                                                    use_hex=opt.useHexCodeNotHash)
 
                                     print("\n")
                     except Exception as e:
-                        LOGGER.fatal("Failed with error code: {}. Check the file and try again..".format(e))
+                        LOGGER.fatal("Failed with error code: '{}'. Check the file and try again..".format(e.message))
 
                 # TODO:/ create rainbow attacks
 
@@ -220,7 +230,13 @@ if __name__ == '__main__':
                         total_hahes = hashes.readlines()
                         LOGGER.info("Found a total of {} hashes to verify..".format(len(total_hahes)))
                         for h in total_hahes:
-                            q = prompt("Attempt to crack hash '{}'".format(h.strip()), "y/N")
+                            print
+                            LOGGER.info("Analyzing hash: '{}'".format(h.strip()))
+                            if opt.runInBatchMode is True:
+                                q = "y"
+                            else:
+                                q = prompt("Attempt to verify hash '{}'".format(h.strip()), "y/N")
+
                             if q.lower().startswith("y"):
                                 match_found(verify_hash_type(h.strip(), least_likely=opt.displayLeastLikely), kind="else",
                                             all_types=opt.displayLeastLikely)

@@ -9,7 +9,13 @@ def build_re(hex_len, prefix=r"", suffix=r"(:.+)?"):
     return re.compile(regex_string, re.IGNORECASE)
 
 
+# Top: Most likely algorithm
+# Bottom: Least likely algorithm (may not be implemented)
 HASH_TYPE_REGEX = {
+    build_re(8): [
+        ("crc32", None),
+        (None, None)
+    ],
     build_re(20): [
         ("half sha1", None),
         (None, None)
@@ -17,8 +23,8 @@ HASH_TYPE_REGEX = {
     build_re(32): [
         ("md5", "md4", "md2",
          "md5(md5(pass)+md5(salt))", "md5(md5(pass))",
-         "md5(salt+pass+salt)"),  # Most likely
-        ("lm", "ripe128", "haval128",  # Least likely
+         "md5(salt+pass+salt)"),
+        ("lm", "ripe128", "haval128",
          "tiger128", "skein256(128)", "skein512(128",
          "lotus Notes/Domino 5", "skype", "zipmonster",
          "prestashop")

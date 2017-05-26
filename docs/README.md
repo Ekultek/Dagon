@@ -104,6 +104,7 @@ You can also change the salt size, because hey, who uses 12 character salts anym
  - Whirlpool  > 800
  - Blowfish   > 500
  - MySQL      > 510
+ - CRC32      > 900
  
 #### Special algorithms currently available
 

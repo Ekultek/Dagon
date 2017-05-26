@@ -4,6 +4,7 @@ import itertools
 from bin.verify_hashes.verify import verify_hash_type
 from lib.settings import FUNC_DICT
 from lib.settings import LOGGER
+from lib.settings import DAGON_ISSUE_LINK
 from lib.settings import WORDLIST_RE
 from lib.settings import match_found
 from lib.settings import prompt
@@ -78,7 +79,7 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
     exit(0)
 
 
-def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx=""):
+def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx="", use_hex=False):
     """
       Hash the words and verify if they match or not
 
@@ -95,18 +96,19 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx
         for i, word in enumerate(words.readlines(), start=1):
             if salt is not None:
                 if placement == "front":
-                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, front=True, posx=posx)
+                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, front=True, posx=posx, use_hex=use_hex)
                 else:
-                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, back=True, posx=posx)
+                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, back=True, posx=posx, use_hex=use_hex)
             else:
-                hashed = FUNC_DICT[algorithm.lower()](word.strip(), posx=posx)
+                hashed = FUNC_DICT[algorithm.lower()](word.strip(), posx=posx, use_hex=use_hex)
             tries += 1
 
             if hashed == verify_hash:
                 return word.strip(), hashed, tries, algorithm
 
 
-def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, perms="", posx=""):
+def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, perms="", posx="",
+                    use_hex=False):
     """
       Main function to be used for bruteforcing a hash
     """
@@ -131,13 +133,22 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                                                                               hash_type[0] if hash_type[1] is None else
                                                                               hash_type))
         for alg in hash_type:
-            LOGGER.info("Starting bruteforce with {}..".format(alg.upper()))
-            bruteforcing = hash_words(verf_hash, wordlist, alg, salt=salt, placement=placement, posx=posx)
-            if bruteforcing is None:
-                LOGGER.warning("Unable to find a match for '{}', using {}..".format(verf_hash, alg.upper()))
-            else:
-                match_found(bruteforcing)
+            if alg is None:
+                err_msg = "Ran out of algorithms to try. There are no more algorithms "
+                err_msg += "currently available that match this hashes length, and complexity. "
+                err_msg += "Please attempt to use your own wordlist (switch '--wordlist'), "
+                err_msg += "download one (switch '--download'), use salt (switch -S SALT), "
+                err_msg += "or find the algorithm type and create a issue here {}.. "
+                LOGGER.fatal(err_msg.format(DAGON_ISSUE_LINK))
                 break
+            else:
+                LOGGER.info("Starting bruteforce with {}..".format(alg.upper()))
+                bruteforcing = hash_words(verf_hash, wordlist, alg, salt=salt, placement=placement, posx=posx, use_hex=use_hex)
+                if bruteforcing is None:
+                    LOGGER.warning("Unable to find a match for '{}', using {}..".format(verf_hash, alg.upper()))
+                else:
+                    match_found(bruteforcing)
+                    break
     else:
         LOGGER.info("Using algorithm, {}..".format(algorithm.upper()))
         results = hash_words(verf_hash, wordlist, algorithm, salt=salt, placement=placement, posx=posx)
@@ -145,7 +156,7 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
             LOGGER.warning("Unable to find a match using {}..".format(algorithm.upper()))
             verifiy = prompt("Would you like to attempt to verify the hash type automatically and crack it", "y/N")
             if verifiy.lower().startswith("y"):
-                bruteforce_main(verf_hash, wordlist=wordlist, salt=salt, placement=placement, posx=posx)
+                bruteforce_main(verf_hash, wordlist=wordlist, salt=salt, placement=placement, posx=posx, use_hex=use_hex)
             else:
                 LOGGER.warning("Unable to produce a result for given hash '{}' using {}.. Exiting..".format(
                     verf_hash, algorithm.upper()))

@@ -138,7 +138,7 @@ def show_hidden_banner():
 
       > :return: a hidden banner
     """
-    print("\n\n{} {}\nClone: {}\n\n".format(SAYING, VERSION_STRING, CLONE))
+    print("Dagon .. {} {}\nClone: {}\n".format(SAYING, VERSION_STRING, CLONE))
 
 
 def prompt(question, choices):
@@ -310,3 +310,7 @@ def algorithm_pointers(pointer_identity):
         except ValueError:
             LOGGER.fatal("The algorithm identification number you have specified is invalid."
                          " Valid identification numbers are: {}".format([i for i in sorted(IDENTIFICATION)]))
+
+
+def integrity_check():
+    pass

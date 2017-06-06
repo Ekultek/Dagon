@@ -23,7 +23,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.4.9.13"
+VERSION = "1.5.9.14"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -38,7 +38,7 @@ CLONE = "\033[97mhttps://github.com/ekultek/dagon.git\033[0m"
 HOMEPAGE = "\033[97mhttps://ekultek.github.io/Dagon/\033[0m"
 # Issue page
 DAGON_ISSUE_LINK = "https://github.com/Ekultek/Dagon/issues/new"
-# Sexy banner to display
+# Sexy banner to display when asked for
 BANNER = """\033[91m
 '||''|.
  ||   ||   ....    ... .   ...   .. ...

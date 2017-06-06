@@ -1,4 +1,4 @@
-654119b4f8737a8ff334994428b824d8 *./.git/COMMIT_EDITMSG
+1d47963702825d9cd51f3f1afd5806a1 *./.git/COMMIT_EDITMSG
 728d365e907cee0a16f3032bfb114f7b *./.git/config
 a0a7c3fff21f2aea3cfa1d0316dd816c *./.git/description
 4cf2d64e44205fe628ddd534e1151b58 *./.git/HEAD
@@ -12,11 +12,11 @@ ce562e08d8098926a3862fc6e7905199 *./.git/hooks/applypatch-msg.sample
 2ad18ec82c20af7b5926ed9cea6aeedd *./.git/hooks/pre-receive.sample
 7dfe15854212a30f346da5255c1d794b *./.git/hooks/prepare-commit-msg.sample
 517f14b9239689dff8bda3022ebd9004 *./.git/hooks/update.sample
-7bbe90cba3644db3730f55a349c25a18 *./.git/index
+b80e9d5faef5394dc491d6046eea1b63 *./.git/index
 036208b4a1ab4a235d75c181e685e5a3 *./.git/info/exclude
-a8f91e32a9bc1eff7b5be8b332583a5b *./.git/logs/HEAD
+f9b738159ca5b4d75173c362778b07d7 *./.git/logs/HEAD
 69312b9f39c68fa0a61cc063e8d98a94 *./.git/logs/refs/heads/1.3
-1ff03be3d79b687f02bf174ea661d91e *./.git/logs/refs/heads/master
+0cced7a2b15c35d5226e31a9ea321e1e *./.git/logs/refs/heads/master
 5d0eb0c3bd9ceab1d8f9a3f2e3fa43f3 *./.git/logs/refs/remotes/origin/HEAD
 e67c66d2b3df606b2ed17ec143e67847 *./.git/logs/refs/remotes/origin/master
 6724bccc5a4b59f7d66b97040014b82a *./.git/objects/08/f4553e10daf3d79308e316870ea2463be199eb
@@ -27,6 +27,7 @@ d9fab6c22b184eecf16cbece8f3caae9 *./.git/objects/0a/fcc0aeea789743dd0274ee251ec0
 9b0456f9085f49aa91b1219e8e91e8b7 *./.git/objects/27/defe25b664f680d28aed699b093f4f26b815e3
 554443e47640549bea548a92c7bc4244 *./.git/objects/2f/4fcd45b5df988c82410dfecc1b5b9c8de0dea5
 c89d7680f3174ca2a26a05b52e51dea2 *./.git/objects/2f/6b197a8744e1a3d887a1899e3e3906db6432b2
+066d588606047d900b0e8f09c339d321 *./.git/objects/30/f48ef78f8f185236eb4bcd4c247064193724fe
 440a81ca157bee8bce8ac949330e841a *./.git/objects/31/953739078798aa6bcc736a8513b6993323ebbd
 50d9c7cd7e6049408d30b63102cfbc9b *./.git/objects/34/497ea48d3b2df3ec24039401b7d80a9cfc9216
 b9150c332e8f877205c76d2ef794233c *./.git/objects/35/85a5aee90762e1306fe6819f5cf7d648549b05
@@ -35,6 +36,7 @@ e1c253497d43b81c6a12bc223360cf2d *./.git/objects/36/9fd1a2eb79445a3c3b241e6fa715
 979a1f38330cad8932e813162128fac1 *./.git/objects/3e/ac1b747e7cf719d49ea3b9fb2da7f935a0c521
 0fb1787e4d979935b117d4966fd2a817 *./.git/objects/3f/09e3b32e7e71cb6776c0c9b3b25b0e6194d575
 47b064ababea22ba222b74b77d46c430 *./.git/objects/44/e47bcbf8337a2b860bafb563516ccd8f0675bd
+4802a039ffb9ec4dec08cc906e7065e2 *./.git/objects/46/b9c59e518f44e685d62421326ac676509268b6
 5bd048fb285fe06f8db4d19b27901890 *./.git/objects/47/adb9c6f2c739c6a32b942de97ea84dffdde5c0
 e55f0bbc8c493a97c7c0591e370ab5ee *./.git/objects/49/de415199b8dec50b26e29dbaf5b7f07843fd78
 890984c21044d23f0efa68e93c9c6125 *./.git/objects/51/3a348776d932e288bbe7cc65183d16528e90f3
@@ -51,14 +53,17 @@ c4cbd7079757c316da3abfd342f667bb *./.git/objects/6e/b8d511cb58ba829ba6bfffa15476
 a2d18507c4ad1ec2184383547ba9b8e9 *./.git/objects/73/a619e5cf2ae2ca2edc506fe3042898b857386c
 bfd8947ba11c166120be702abb8b254a *./.git/objects/78/443ef6d1d1564cdd0eef0f160a28da17f7fc4f
 152c4926c2b96c251104e7a1d3ff7b1b *./.git/objects/83/3eae04b1fda5f6ae259fc7ab3cf8bacfbcb36a
+22df671eaadf0c150374967da932f196 *./.git/objects/83/9df8a88ab6a1c8418f7f3065d5a18a0dfd3ed1
 f9b9a300a4a38c14dca9b6425552b02d *./.git/objects/87/d813a2b4cc033f6f9a8a013da1da5b7534b3d7
 232095d5f936d107d4dd63fb6a535c47 *./.git/objects/88/155d41bf70542c05502bbaf3e990deb690960f
 5eae66049d1a3436cdcee032d589aaf2 *./.git/objects/89/53aabd64b2f7a1ed701c3b440db2f60d68e90d
 fb2a502422ae9199501dfa04090fb150 *./.git/objects/8c/e58dd319d41a3465de04b4a4650d9b5fa7b5af
 bf9eca15ea0d0f0896ec57ce05755b1c *./.git/objects/8d/5e6aeaa9c28876aa15f17499e4b354c1b7d5ab
+96d913cfe5fdb3e7cefe9e45d2008733 *./.git/objects/8f/be5a3cbae0bd03fe95f39e8746f2ab248bf6bf
 d6d5065ea2ced199ce44212220afdaa4 *./.git/objects/8f/c20d20d27a92007bfc2f757ade7f72fb134e6a
 7bd7337cad8e0f92ccfd7d1689a9b234 *./.git/objects/97/78826555481cba57efeec488fad12a1d2e1a08
 117abf4823d0b6ed37a3215332069ea3 *./.git/objects/98/9984d192454436df1f31f3b5395ac7b49d47d0
+35b68f8f3e2d2c1cfd3b73c01dd9ac4f *./.git/objects/9d/c484eba6db565687c70bdeb03b0fd6746bd1c4
 a2110896881b59d8cd1b0fe48b043988 *./.git/objects/9e/d76fcc76ad0306dca40d815816fb8c33c2407c
 d361068dd0c76be96ea82eda27fd7b83 *./.git/objects/a1/71c268ce633145b52e7bebe92f247b3d33c5ce
 e7d5bb4ec3903aa42753d5c70dbe331b *./.git/objects/a4/451f2da5ae4aaf8982ac7a16fcd85c231dc91f
@@ -81,6 +86,7 @@ e6ecec6d3141f557cd02101af5a1fa02 *./.git/objects/cf/5fb1f0413e1ea7bc0af8241ba2eb
 4c9f1b60f275440904cd1496a171bf1c *./.git/objects/dc/b1097e28e2c976eaa3c4f0116046571ef82580
 6eb17a8f5863ebc610d3302b2b0b2deb *./.git/objects/e5/db96cefe9c5be4720cd11cc25231079046c3ba
 a096125e6c699d0f60382f86ba9adeef *./.git/objects/e6/175419c3073bb4494fc50d172ee6909878b399
+af405a9cf934937435d243653b4cc8b4 *./.git/objects/e9/b2dc02d785d6cd7055987b4befad77c4485eb3
 26ffdd5db58d368b78acb5f4c4669132 *./.git/objects/eb/6e5259a9e1ea65ab477f1582738cc7e053fd3d
 bc6e9d9074e39d205841119a1c0d576f *./.git/objects/f3/b3fa052c554592b24f17f8d4048c89ebedeb9b
 39eceb5b02ed9b26edafa5045fd4c170 *./.git/objects/f4/5bf9132a33bd6bf4e1fe160f30e0bd0132e3d8
@@ -90,7 +96,7 @@ bc6e9d9074e39d205841119a1c0d576f *./.git/objects/f3/b3fa052c554592b24f17f8d4048c
 89bed7d559f5a4bff283cee1f7889d07 *./.git/ORIG_HEAD
 80a730b41d6092e20e78b25eac749a3a *./.git/packed-refs
 7f14388f349e8c0007e2e7324b71239d *./.git/refs/heads/1.3
-e4de5ea0668117aafdd5b85ffd0d44d4 *./.git/refs/heads/master
+99c9662a589f0c0c945d1ccdf6f790e7 *./.git/refs/heads/master
 73a00957034783b7b5c8294c54cd3e12 *./.git/refs/remotes/origin/HEAD
 23a6d4724fa052a0fe85ec146fc81309 *./.git/refs/remotes/origin/master
 4939763411e95e9a9cccdec30e5871ab *./.github/ISSUE_TEMPLATE.md
@@ -100,7 +106,7 @@ e4de5ea0668117aafdd5b85ffd0d44d4 *./.git/refs/heads/master
 f3fc0528e775433dcc98271c1b8fcf77 *./.idea/misc.xml
 917d7377a1d655c67504cb92818b05ee *./.idea/modules.xml
 166acef3d301bd241d0d6da15bc5ad3c *./.idea/vcs.xml
-92f25cd0224a73d44d55eda5b462d0e6 *./.idea/workspace.xml
+e715d4947d1436b70023a5cb7ae4f912 *./.idea/workspace.xml
 362ef418166de4c4cff0208c8385baf5 *./bin/attacks/bruteforce/bf_attack.py
 c947cf2000045dec133e2dd5c77672c1 *./bin/attacks/bruteforce/bf_attack.pyc
 d41d8cd98f00b204e9800998ecf8427e *./bin/attacks/bruteforce/__init__.py
@@ -122,11 +128,11 @@ ab323dbddc9253ab89146c8b4960afc5 *./legal/LICENSE.md
 f71e51b97d1372e640d9a38066f5aee1 *./lib/algorithms/hashing_algs.pyc
 d41d8cd98f00b204e9800998ecf8427e *./lib/algorithms/__init__.py
 6b8e975653f216fd4a7c8a40427b45de *./lib/algorithms/__init__.pyc
-f1a77d824fcd6e9b0d370d4d971a6b8c *./lib/settings.py
+8a48f3c35e344477948aa26729f76f02 *./lib/settings.py
 519030c080af7dda1e21e043ac35c298 *./lib/settings.pyc
 d41d8cd98f00b204e9800998ecf8427e *./lib/__init__.py
 9ed1af304a5ef3093ce7c3a9c188b534 *./lib/__init__.pyc
-8db365e5f65ca8e395458eda6b42742a *./md5sum/checksum.md5
+855d348aa05c12704d966432b2b16898 *./md5sum/checksum.md5
 7c583cf45f0703efb90f018825324f50 *./README.md
 36a78d030cbf367e23f0f51992a2ae31 *./requirements.txt
 880998f57f3296b100826c76352ebc84 *./thirdparty/blake/blake.py

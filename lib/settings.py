@@ -1,8 +1,10 @@
 import re
+import os
 import sys
 import logging
 import time
 import string
+import urllib2
 import base64
 import requests
 from colorlog import ColoredFormatter
@@ -312,5 +314,18 @@ def algorithm_pointers(pointer_identity):
                          " Valid identification numbers are: {}".format([i for i in sorted(IDENTIFICATION)]))
 
 
-def integrity_check():
-    pass
+def integrity_check(url="https://raw.githubusercontent.com/Ekultek/Dagon/master/md5sum/checksum.md5",
+                    path="{}/md5sum/checksum.md5"):
+    """ Check the integrity of the program """
+    LOGGER.info("Checking program integrity...")
+    if open(path.format(os.getcwd())).read() == urllib2.urlopen(url).read():
+        pass
+    else:
+        checksum_fail = "MD5 sums did not match from origin master, "
+        checksum_fail += "integrity check has failed, this could be because "
+        checksum_fail += "there is a new version available. Please check "
+        checksum_fail += "for a new version and download that ({}), or be sure "
+        checksum_fail += "that you have not changed any of the applications "
+        checksum_fail += "code."
+        LOGGER.fatal(checksum_fail.format("https://github.com/ekultek/dagon.git"))
+        exit(-1)

@@ -14,6 +14,7 @@ from lib.settings import match_found
 from lib.settings import show_banner
 from lib.settings import update_system
 from lib.settings import VERSION_STRING
+from lib.settings import integrity_check
 from lib.settings import algorithm_pointers
 from lib.settings import show_hidden_banner
 from lib.settings import show_available_algs
@@ -116,6 +117,8 @@ if __name__ == '__main__':
     args_in_params = 0
 
     show_banner() if opt.hideBanner is True else show_hidden_banner()
+
+    integrity_check()
 
     if len(sys.argv) <= 1:
         LOGGER.fatal("You have failed to provide a flag to the application and have been redirected to the help menu.")

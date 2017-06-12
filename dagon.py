@@ -64,7 +64,7 @@ if __name__ == '__main__':
     manipulation.add_option("--salt-size", dest="saltSizeToUse", metavar="SALT-LENGTH",
                             help="Choose how long you want your salt to be")
     manipulation.add_option("--urandom", dest="useURandomSaltAndRandomPlacement", metavar="LENGTH",
-                            help="Use unicode salt for the hash salting, along with a random placement")
+                            help="Use random bytes as the salt, randomness is based on your OS.")
     manipulation.add_option("--posx", dest="returnThisPartOfHash", metavar="POSITION",
                             help="Choose which part of the hashes you want to return, "
                                  "only valid for half algorithms functions")

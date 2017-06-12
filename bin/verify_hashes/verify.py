@@ -21,13 +21,12 @@ HASH_TYPE_REGEX = {
         (None, None)
     ],
     build_re(32): [
-        ("md5", "md4", "md2",
+        ("md5", "md4", "md2", "ntlm",
          "md5(md5(pass)+md5(salt))", "md5(md5(pass))",
          "md5(salt+pass+salt)"),
-        ("lm", "ripe128", "haval128",
+        ("ripe128", "haval128",
          "tiger128", "skein256(128)", "skein512(128",
-         "lotus Notes/Domino 5", "skype", "zipmonster",
-         "prestashop")
+         "skype", "zipmonster", "prestashop")
     ],
     build_re(16): [
         ("half md5", None),
@@ -85,6 +84,10 @@ HASH_TYPE_REGEX = {
     ],
     re.compile(r"^[0-9a-f]{64,70}:[a-f0-9]{32,40}:\d+:[a-f0-9]{608,620}$", re.IGNORECASE): [
         ("cloud", None),
+        (None, None)
+    ],
+    re.compile(r"\{[^{}]*}[a-zA-Z0-9][\w/-]+=?", re.IGNORECASE): [
+        ("ssha", None),
         (None, None)
     ]
 }

@@ -83,9 +83,9 @@ You can also change the salt size, because hey, who uses 12 character salts anym
 
 #### Algorithms currently available
 
- - MD2        > 120
- - MD4        > 130
  - MD5        > 100
+ - MD2        > 110
+ - MD4        > 120
  - Blake224   > 200
  - Blake256   > 210
  - Blake384   > 220 
@@ -99,12 +99,13 @@ You can also change the salt size, because hey, who uses 12 character salts anym
  - SHA3 256   > 410
  - SHA3 384   > 420
  - SHA3 512   > 430
+ - Blowfish   > 500
+ - MySQL      > 510
  - Ripemd-160 > 600
  - Tiger192   > 700
  - Whirlpool  > 800
- - Blowfish   > 500
- - MySQL      > 510
  - CRC32      > 900
+ - NTLM       > 1000
  
 #### Special algorithms currently available
 
@@ -114,6 +115,7 @@ You can also change the salt size, because hey, who uses 12 character salts anym
  - MD5(salt+pass+salt)     > 133
  - HALF SHA1               > 351
  - SHA1(SHA1(pass))        > 352
+ - SSHA                    > 353
 
 #### Algorithms in the process of being created
 

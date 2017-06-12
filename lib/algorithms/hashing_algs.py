@@ -1,8 +1,11 @@
+import os
 import hashlib
 import random
 import zlib
-import sha3
 import lib
+import binascii
+import base64
+import sha3
 
 from passlib.hash import bcrypt, oracle11, oracle10
 from thirdparty.blake import blake
@@ -336,6 +339,29 @@ def md5_salt_pass_salt(string, salt=None, **placeholder):
     return obj1.hexdigest()
 
 
+def ssha(string, salt=None, front=False, back=False, **placeholder):
+    """
+      Create an SSHA hash (seeded salted sha)
+
+      > :param string: string to be hashed
+      > :return: a hashed string
+
+      Example:
+        >>> ssha("test")
+        {SSHA}icUtMxBSzwPv_dSBvwPEwXyK4lo=
+    """
+    if salt is None:
+        salt = os.urandom(4)
+    obj = hashlib.sha1(string)
+    obj.update(salt)
+    if front is True and not back:
+        return "{SSHA}" + base64.urlsafe_b64encode(salt + obj.digest())
+    elif back is True and not front:
+        return "{SSHA}" + base64.urlsafe_b64encode(obj.digest() + salt)
+    else:
+        return "{SSHA}" + base64.urlsafe_b64encode(obj.digest())
+
+
 def sha1(string, salt=None, front=False, back=False, **placeholder):
     """
       Create an SHA1 hash from a given string
@@ -387,7 +413,7 @@ def half_sha1(string, salt=None, front=False, back=False, posx="", **placeholder
         return half_sha1(string, salt=salt, front=front, back=back, posx=random.choice(placement_opts))
 
 
-def sha1_sha1_pass(string, **placeholder):
+def sha1_sha1_pass(string, salt=None, front=False, back=False, **placeholder):
     """
       Create an SHA1 hash in SHA1(SHA1($pass)) format
 
@@ -400,7 +426,12 @@ def sha1_sha1_pass(string, **placeholder):
     """
     obj1 = hashlib.sha1()
     obj2 = hashlib.sha1()
-    obj1.update(string)
+    if salt is not None and front is True and not back:
+        obj1.update(salt + string)
+    elif salt is not None and back is True and not front:
+        obj1.update(string + salt)
+    else:
+        obj1.update(string)
     obj2.update(obj1.hexdigest())
     return obj2.hexdigest()
 
@@ -648,3 +679,21 @@ def crc32(string, salt=None, front=False, back=False, use_hex=False, **placehold
         return str(long_int)[2:-1]
     else:
         return long_int
+
+
+def ntlm(string, **placeholder):
+    """
+      Create an NTLM hash, identical to the one used in Windows protocol
+
+      > :param string: string to be hashed
+      > :return: a NTLM hashed string
+
+      Example:
+        >>> ntlm("test")
+        0cb6948805f797bf2a82807973b89537
+    """
+    obj = hashlib.new("md4")
+    obj.update(string.encode("utf-16le"))
+    data = obj.digest()
+    return binascii.hexlify(data)
+

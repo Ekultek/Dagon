@@ -6,7 +6,6 @@ import lib
 import binascii
 import base64
 import sha3
-
 from passlib.hash import bcrypt, oracle11, oracle10
 from thirdparty.blake import blake
 from thirdparty.md2 import md2_hash

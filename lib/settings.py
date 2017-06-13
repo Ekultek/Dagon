@@ -28,7 +28,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.6.10.16"
+VERSION = "1.6.10.17"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -121,12 +121,12 @@ WORDLIST_LINKS = [
 
 def start_up():
     """ Start the application """
-    print("[*] Starting up at {}..\n".format(time.strftime("%H:%M:%S")))
+    print("\n[*] Starting up at {}..\n".format(time.strftime("%H:%M:%S")))
 
 
 def shutdown(exit_key=0):
     """ Shut down the application """
-    print('\n[*] Shutting down at {}..'.format(time.strftime("%H:%M:%S")))
+    print('\n[*] Shutting down at {}..\n'.format(time.strftime("%H:%M:%S")))
     exit(exit_key)
 
 

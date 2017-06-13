@@ -15,6 +15,7 @@ from lib.settings import show_banner
 from lib.settings import update_system
 from lib.settings import VERSION_STRING
 from lib.settings import integrity_check
+from lib.settings import start_up, shutdown
 from lib.settings import algorithm_pointers
 from lib.settings import show_hidden_banner
 from lib.settings import show_available_algs
@@ -26,7 +27,7 @@ from bin.attacks.bruteforce.bf_attack import bruteforce_main
 
 if __name__ == '__main__':
 
-    parser = optparse.OptionParser(usage="dagon [c|v|l] HASH|HASH|HASH-LIST --bruteforce [OPTS]")
+    parser = optparse.OptionParser(usage="dagon [c|v|V|l] HASH|HASH-LIST --bruteforce [OPTS]")
 
     # Mandatory arguments, required for program to run
     mandatory = optparse.OptionGroup(parser, "Mandatory arguments",
@@ -161,7 +162,7 @@ if __name__ == '__main__':
             # If you provided an argument continue..
             if args_in_params > 0:
 
-                print("[*] Starting up at {}..\n".format(time.strftime("%H:%M:%S")))
+                start_up()
 
                 # Benchmark testing
                 if opt.runBenchMarkTest is True:
@@ -251,7 +252,7 @@ if __name__ == '__main__':
                     stop_time = time.time()
                     LOGGER.info("Time elapsed during benchmark test: {} seconds".format(stop_time - start_time))
 
-                print('\n[*] Shutting down at {}..'.format(time.strftime("%H:%M:%S")))
+                shutdown()
 
             # You never provided a mandatory argument
             else:

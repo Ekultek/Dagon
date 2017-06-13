@@ -1,20 +1,25 @@
 import re
-import os
 import sys
 import logging
 import time
 import string
 import urllib2
-import base64
 import requests
 from colorlog import ColoredFormatter
 from lib.algorithms.hashing_algs import *
 
 # Create logging
-log_level = logging.INFO
+log_level = logging.DEBUG
 logger_format = "[%(log_color)s%(asctime)s %(levelname)s%(reset)s] %(log_color)s%(message)s%(reset)s"
 logging.root.setLevel(log_level)
-formatter = ColoredFormatter(logger_format, datefmt="%H:%M:%S")
+formatter = ColoredFormatter(logger_format, datefmt="%H:%M:%S",
+                             log_colors={
+                                 "DEBUG": "cyan",
+                                 "INFO": "bold,green",
+                                 "WARNING": "yellow",
+                                 "ERROR": "red",
+                                 "CRITICAL": "bold,red"
+                             })
 stream = logging.StreamHandler()
 stream.setLevel(log_level)
 stream.setFormatter(formatter)
@@ -23,7 +28,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.6.9.15"
+VERSION = "1.6.10.16"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -60,7 +65,7 @@ FUNC_DICT = {
     "sha1": sha1, "sha224": sha224, "sha256": sha256, "sha384": sha384, "sha512": sha512,
     "half sha1": half_sha1, "sha1(sha1(pass))": sha1_sha1_pass, "ssha": ssha,
     "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
-    "whirlpool": whirlpool, "crc32": crc32, "ntlm": ntlm,
+    "whirlpool": whirlpool, "crc32": crc32, "ntlm": ntlm, "windows local (ntlm)": ntlm,
     "tiger192": tiger192
 }
 # Identity numbers
@@ -114,13 +119,25 @@ WORDLIST_LINKS = [
 ]
 
 
+def start_up():
+    """ Start the application """
+    print("[*] Starting up at {}..\n".format(time.strftime("%H:%M:%S")))
+
+
+def shutdown(exit_key=0):
+    """ Shut down the application """
+    print('\n[*] Shutting down at {}..'.format(time.strftime("%H:%M:%S")))
+    exit(exit_key)
+
+
 def verify_python_version():
     """
       Verify python version
     """
     current_py_version = sys.version.split(" ")[0]
     if "2.7" not in current_py_version:
-        LOGGER.fatal("This application requires python 2.7.x to run, You currently have python version {}".format(current_py_version))
+        LOGGER.debug("This application requires python 2.7.x to run.. "
+                     "You currently have python version {} installed..".format(current_py_version))
     else:
         pass
 
@@ -235,7 +252,7 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
         no_alg_err += "If you feel that this is wrong, please make a issue regarding this, and we'll "
         no_alg_err += "see if we can get it implemented."
         LOGGER.fatal(no_alg_err)
-        exit(1)
+        shutdown(1)
     if data_tuple[0][1] is None and all_types is True:
         LOGGER.warning("Only one possible type found for given hash..")
     sort_cracked = ["Clear Text: ", "Hash: ", "Tries attempted: ", "Algorithm Used: "]
@@ -307,11 +324,11 @@ def algorithm_pointers(pointer_identity):
             if int(pointer_identity) in IDENTIFICATION.keys():
                 return IDENTIFICATION[int(pointer_identity)]
             else:
-                LOGGER.fatal("The algorithm identification number you have specified is invalid."
-                             " Valid identification numbers are: {}".format([i for i in sorted(IDENTIFICATION)]))
+                LOGGER.fatal("The algorithm identification number you have specified is invalid.")
+                LOGGER.debug("Valid identification numbers are: {}".format([i for i in sorted(IDENTIFICATION)]))
         except ValueError:
-            LOGGER.fatal("The algorithm identification number you have specified is invalid."
-                         " Valid identification numbers are: {}".format([i for i in sorted(IDENTIFICATION)]))
+            LOGGER.fatal("The algorithm identification number you have specified is invalid.")
+            LOGGER.debug("Valid identification numbers are: {}".format([i for i in sorted(IDENTIFICATION)]))
 
 
 def integrity_check(url="https://raw.githubusercontent.com/Ekultek/Dagon/master/md5sum/checksum.md5",
@@ -328,4 +345,4 @@ def integrity_check(url="https://raw.githubusercontent.com/Ekultek/Dagon/master/
         checksum_fail += "that you have not changed any of the applications "
         checksum_fail += "code."
         LOGGER.fatal(checksum_fail.format("https://github.com/ekultek/dagon.git"))
-        exit(-1)
+        shutdown(-1)

@@ -8,6 +8,7 @@ from lib.settings import DAGON_ISSUE_LINK
 from lib.settings import WORDLIST_RE
 from lib.settings import match_found
 from lib.settings import prompt
+from lib.settings import shutdown
 from lib.settings import random_salt_generator
 
 # The name of the wordlist
@@ -51,7 +52,8 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
     warn_msg += "Bruteforce requires extreme amounts of memory to accomplish and "
     warn_msg += "it is possible that it could take a lifetime to successfully crack "
     warn_msg += "your hash. To run a dictionary attack all you need to do is pass "
-    warn_msg += "the --wordlist flag with the path to your wordlist."
+    warn_msg += "the wordlist switch ('--wordlist PATH') with the path to your wordlist. "
+    warn_msg += "(IE: --bruteforce --wordlist ~/dicts/dict.txt)"
     if warning is True:
         LOGGER.warning(warn_msg)
 
@@ -67,16 +69,16 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
             lib.seek(0, 0)
             err_msg = "Ran out of mutations at {} mutations. You can try upping the max length ".format(len(lib.readlines()))
             err_msg += "or just use what was processed. If you make the choice not to continue "
-            err_msg += "the program will add +1 to the max length and try to create the wordlist again.."
+            err_msg += "the program will add +2 to the max length and try to create the wordlist again.."
             LOGGER.error(err_msg)
             q = prompt("Would you like to continue", "y/N")
             if q .lower().startswith("y"):
                 pass
             else:
                 lib.truncate(0)
-                create_wordlist(max_word_length=max_length + 1, warning=False)
+                create_wordlist(max_word_length=max_length + 2, warning=False)
     LOGGER.info("Wordlist generated, words saved to: {}. Please re-run the application, exiting..".format(WORDLIST_NAME))
-    exit(0)
+    shutdown()
 
 
 def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx="", use_hex=False):
@@ -137,11 +139,18 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                 err_msg = "Ran out of algorithms to try. There are no more algorithms "
                 err_msg += "currently available that match this hashes length, and complexity. "
                 err_msg += "Please attempt to use your own wordlist (switch '--wordlist'), "
-                err_msg += "download one (switch '--download'), use salt (switch -S SALT), "
+                err_msg += "download one (switch '--download'), use salt (switch '-S SALT'), "
                 err_msg += "or find the algorithm type and create a issue here {}.. "
                 LOGGER.fatal(err_msg.format(DAGON_ISSUE_LINK))
                 break
             else:
+                if ":" in verf_hash:
+                    LOGGER.debug("It appears that you are trying to crack an '{}' hash, "
+                                 "these hashes have a certain sequence to them that looks "
+                                 "like this 'USERNAME:SID:LM_HASH:NTLM_HASH:::'. What you're "
+                                 "wanting is the NTLM part, of the hash, fix your hash and try "
+                                 "again..".format(alg.upper()))
+                    shutdown(1)
                 LOGGER.info("Starting bruteforce with {}..".format(alg.upper()))
                 bruteforcing = hash_words(verf_hash, wordlist, alg, salt=salt, placement=placement, posx=posx, use_hex=use_hex)
                 if bruteforcing is None:

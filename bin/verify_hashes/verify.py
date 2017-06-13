@@ -1,4 +1,5 @@
 import re
+from lib.settings import shutdown
 from lib.settings import LOGGER
 from lib.settings import DAGON_ISSUE_LINK
 
@@ -86,8 +87,12 @@ HASH_TYPE_REGEX = {
         ("cloud", None),
         (None, None)
     ],
-    re.compile(r"\{[^{}]*}[a-zA-Z0-9][\w/-]+=?", re.IGNORECASE): [
+    re.compile(r"^\{[^{}]*}[a-zA-Z0-9][\w/-]+=?$", re.IGNORECASE): [
         ("ssha", None),
+        (None, None)
+    ],
+    re.compile(r"^\w+:\d+:[a-z0-9]{32}:[a-z0-9]{32}:::$", re.IGNORECASE): [
+        ("windows local (ntlm)", None),
         (None, None)
     ]
 }
@@ -116,4 +121,4 @@ def verify_hash_type(hash_to_verify, least_likely=False):
     error_msg += "If you feel this algorithm should be implemented make "
     error_msg += "an issue here: {}"
     LOGGER.fatal(error_msg.format(DAGON_ISSUE_LINK))
-    exit(1)
+    shutdown(1)

@@ -6,10 +6,11 @@ import lib
 import binascii
 import base64
 import sha3
-from passlib.hash import bcrypt, oracle11, oracle10
+from passlib.hash import bcrypt
 from thirdparty.blake import blake
 from thirdparty.md2 import md2_hash
 from thirdparty.tiger import tiger
+from thirdparty.des import pydes
 
 
 def mysql_hash(string, salt=None, front=False, back=False, **placeholder):
@@ -43,9 +44,48 @@ def wordpress(string, salt=None, **placeholder):
     pass
 
 
-def oracle_hash(string, salt=None, oracle_version=11, **placeholder):
-    raise NotImplementedError("Oracle hashes are not implemented yet")
-    pass
+def oracle_10g(string, salt=None, iv="\0"*8, padding="\0", key="0123456789ABCDEF", **placeholder):
+    """
+      Create a Oracle 10g hash, if no salt is given (username) a random salt will be generated
+
+      > :param string: string to hash
+      > :param iv: IV for the encryption
+      > :param padding: padding for the ecnryption
+      > :param key: cipher key
+      > :return: a hashed password
+
+      Example:
+        >>> oracle_10g("test")
+        5CFC9D5BE82D37A2
+    """
+    if salt is None:
+        salt = lib.settings.random_salt_generator(use_string=True)[0]
+    constr = "".join("\0{}".format(c for c in (string + salt).upper()))
+    cipher = pydes.des(key.decode("hex"), IV=iv, pad=padding)
+    encrypt = cipher.encrypt(constr)[-8:]
+    cipher = pydes.des(encrypt, mode=1, IV=iv, pad=padding)
+    encrypt = cipher.encrypt(constr)
+    return encrypt[-8:].encode("hex").upper()
+    
+
+def oracle_11g(string, salt=None, **placeholder):
+    """
+      Create a Oracle 11g hash, if no salt is provided, salt will be created
+
+      > :param string: string to be hashed
+      > :param salt_size: the size of the salt to be used
+      > :return: an 11g Oracle hash
+
+      Example
+        >>> oracle_11g("test")
+        S:1F5298FFB092EF6543B2ECB52D9F6AA9B2162FA06258684A784165746E6D
+    """
+    if salt is None:
+        salt = lib.settings.random_salt_generator(use_string=True, length=10)[0]
+
+    obj = hashlib.sha1()
+    obj.update(string + salt)
+    return "s:{}{}".format(obj.hexdigest(), salt.encode("hex")).upper()
 
 
 def blowfish_hash(string, salt=None, front=False, back=False):
@@ -695,4 +735,3 @@ def ntlm(string, **placeholder):
     obj.update(string.encode("utf-16le"))
     data = obj.digest()
     return binascii.hexlify(data)
-

@@ -30,7 +30,7 @@ HASH_TYPE_REGEX = {
          "skype", "zipmonster", "prestashop")
     ],
     build_re(16): [
-        ("half md5", None),
+        ("half md5", "oracle 10g"),
         (None, None)
     ],
     build_re(64): [
@@ -76,7 +76,7 @@ HASH_TYPE_REGEX = {
         (None, None)
     ],
     re.compile(r"^S:[a-zA-Z0-9]{60}$", re.IGNORECASE): [
-        ("oracle", None),
+        ("oracle 11g", None),
         (None, None)
     ],
     re.compile(r"^[0-9a-z]{4,12}:[0-9a-f]{16,20}:[0-9a-z]{2080}$", re.IGNORECASE): [

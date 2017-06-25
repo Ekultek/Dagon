@@ -28,7 +28,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.6.10.17"
+VERSION = "1.6.11.18"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -59,7 +59,7 @@ Home: {}
 FUNC_DICT = {
     "md2": md2, "md4": md4, "md5": md5, "half md5": half_md5, "md5(md5(pass)+md5(salt))": md5_pass_salt,
     "md5(md5(pass))": md5_md5_pass, "md5(salt+pass+salt)": md5_salt_pass_salt,
-    "mysql": mysql_hash, "blowfish": blowfish_hash,
+    "mysql": mysql_hash, "blowfish": blowfish_hash, "oracle 11g": oracle_11g, "oracle 10g": oracle_10g,
     "ripemd160": ripemd160,
     "blake224": blake224, "blake256": blake256, "blake384": blake384, "blake512": blake512,
     "sha1": sha1, "sha224": sha224, "sha256": sha256, "sha384": sha384, "sha512": sha512,
@@ -86,7 +86,7 @@ IDENTIFICATION = {
     351: "half sha1", 352: "sha1(sha1(pass))", 353: "ssha",
 
     # Database and external hash indicators
-    500: "blowfish", 510: "mysql",
+    500: "blowfish", 510: "mysql", 520: "oracle 11g", 530: "oracle 10g",
 
     # Ripemd indicators
     600: "ripemd160",

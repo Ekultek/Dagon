@@ -101,6 +101,8 @@ You can also change the salt size, because hey, who uses 12 character salts anym
  - SHA3 512   > 430
  - Blowfish   > 500
  - MySQL      > 510
+ - Oracle 11g > 520
+ - Oracle 10g > 530
  - Ripemd-160 > 600
  - Tiger192   > 700
  - Whirlpool  > 800
@@ -120,7 +122,6 @@ You can also change the salt size, because hey, who uses 12 character salts anym
 #### Algorithms in the process of being created
 
  - DSA
- - Oracle
  - Scrypt
  - SHA2
  - Wordpress

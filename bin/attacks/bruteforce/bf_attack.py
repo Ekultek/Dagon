@@ -144,7 +144,7 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                 LOGGER.fatal(err_msg.format(DAGON_ISSUE_LINK))
                 break
             else:
-                if ":" in verf_hash:
+                if ":::" in verf_hash:
                     LOGGER.debug("It appears that you are trying to crack an '{}' hash, "
                                  "these hashes have a certain sequence to them that looks "
                                  "like this 'USERNAME:SID:LM_HASH:NTLM_HASH:::'. What you're "

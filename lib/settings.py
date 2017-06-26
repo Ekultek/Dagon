@@ -28,7 +28,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.6.11.18"
+VERSION = "1.7.11.19"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -242,7 +242,7 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
     """
       Create a banner for finding a match
 
-      > :param data_tuple: tuple containg the information required
+      > :param data_tuple: tuple containing the information required
       > :param data_sep: what to separate the information with
       > :param item_found: makes it look pretty for the items
       > :param least_likely: makes more pretty formatting for least likely hashes
@@ -270,7 +270,9 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
                     if _ is not None:
                         print("[{}] {}".format(item_found, data_tuple[i].upper()))
                         if i == 2:
-                            print(data_sep + "\n" + "[{}] Least Likely Hash Type(s):\n".format(least_likely) + data_sep)
+                            print(data_sep + "\n" +
+                                  "[{}] Least Likely Hash Type(s)(possibly not be implemented):\n".format(
+                                      least_likely) + data_sep)
                 else:
                     if _ is not None:
                         print("[{}] {}".format(least_likely, data_tuple[i].upper()))
@@ -325,10 +327,10 @@ def algorithm_pointers(pointer_identity):
                 return IDENTIFICATION[int(pointer_identity)]
             else:
                 LOGGER.fatal("The algorithm identification number you have specified is invalid.")
-                LOGGER.debug("Valid identification numbers are: {}".format([i for i in sorted(IDENTIFICATION)]))
+                LOGGER.debug("Valid identification numbers are: {}".format(IDENTIFICATION))
         except ValueError:
             LOGGER.fatal("The algorithm identification number you have specified is invalid.")
-            LOGGER.debug("Valid identification numbers are: {}".format([i for i in sorted(IDENTIFICATION)]))
+            LOGGER.debug("Valid identification numbers are: {}".format(IDENTIFICATION))
 
 
 def integrity_check(url="https://raw.githubusercontent.com/Ekultek/Dagon/master/md5sum/checksum.md5",

@@ -4,3 +4,5 @@
 Dagon-bfdict-*.txt
 # ignore our downloaded dict files
 Download-*.txt
+# ignore the checksums that I create
+checksum.txt

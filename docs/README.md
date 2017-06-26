@@ -27,7 +27,7 @@ After the wordlist has been generated, you will be able to crack the password, u
 
 #### _Doing a dictionary attack_:
 
-To do a dictionary attack you will just need to use the wordlist flag in order for the bruteforce section to read from the wordlist. 
+To do a dictionary attack you will just need to use the wordlist flag (`--wordlist`) in order for the bruteforce section to read from the wordlist. 
 
 ![wordlist_attack](https://cloud.githubusercontent.com/assets/14183473/26204867/c28c226a-3ba5-11e7-8e0f-4410d1deb3ef.PNG)
 
@@ -83,41 +83,41 @@ You can also change the salt size, because hey, who uses 12 character salts anym
 
 #### Algorithms currently available
 
- - MD5        > 100
- - MD2        > 110
- - MD4        > 120
- - Blake224   > 200
- - Blake256   > 210
- - Blake384   > 220 
- - Blake512   > 230
- - SHA1       > 300
- - SHA224     > 310
- - SHA256     > 320
- - SHA384     > 330
- - SHA512     > 340
- - SHA3 224   > 400
- - SHA3 256   > 410
- - SHA3 384   > 420
- - SHA3 512   > 430
- - Blowfish   > 500
- - MySQL      > 510
- - Oracle 11g > 520
- - Oracle 10g > 530
- - Ripemd-160 > 600
- - Tiger192   > 700
- - Whirlpool  > 800
- - CRC32      > 900
- - NTLM       > 1000
+ - MD5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 100
+ - MD2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 110
+ - MD4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 120
+ - Blake224&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 200
+ - Blake256&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 210
+ - Blake384&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 220 
+ - Blake512&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 230
+ - SHA1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 300
+ - SHA224&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 310
+ - SHA256&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 320
+ - SHA384&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 330
+ - SHA512&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 340
+ - SHA3 224&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 400
+ - SHA3 256&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 410
+ - SHA3 384&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 420
+ - SHA3 512&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 430
+ - Blowfish&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 500
+ - MySQL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 510
+ - Oracle 11g&nbsp;&nbsp;&nbsp;> 520
+ - Oracle 10g&nbsp;&nbsp;&nbsp;> 530
+ - Ripemd-160&nbsp;> 600
+ - Tiger192&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 700
+ - Whirlpool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 800
+ - CRC32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 900
+ - NTLM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 1000
  
 #### Special algorithms currently available
 
- - MD5(MD5(pass)+MD5(salt))> 130
- - MD5(MD5(pass))          > 131
- - Half MD5                > 132
- - MD5(salt+pass+salt)     > 133
- - HALF SHA1               > 351
- - SHA1(SHA1(pass))        > 352
- - SSHA                    > 353
+ - MD5(MD5(pass)+MD5(salt))&nbsp;> 130
+ - MD5(MD5(pass))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 131
+ - Half MD5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 132
+ - MD5(salt+pass+salt)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 133
+ - HALF SHA1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 351
+ - SHA1(SHA1(pass))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 352
+ - SSHA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 353
 
 #### Algorithms in the process of being created
 

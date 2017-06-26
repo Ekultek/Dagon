@@ -105,7 +105,7 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx
                 hashed = FUNC_DICT[algorithm.lower()](word.strip(), posx=posx, use_hex=use_hex)
             tries += 1
 
-            if hashed == verify_hash:
+            if verify_hash == hashed:
                 return word.strip(), hashed, tries, algorithm
 
 

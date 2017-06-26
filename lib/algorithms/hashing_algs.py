@@ -39,11 +39,6 @@ def mysql_hash(string, salt=None, front=False, back=False, **placeholder):
     return "*{}".format(obj2.upper())
 
 
-def wordpress(string, salt=None, **placeholder):
-    raise NotImplementedError("Wordpress hashes are not implemented yet.")
-    pass
-
-
 def oracle_10g(string, salt=None, iv="\0"*8, padding="\0", key="0123456789ABCDEF", **placeholder):
     """
       Create a Oracle 10g hash, if no salt is given (username) a random salt will be generated
@@ -105,11 +100,6 @@ def blowfish_hash(string, salt=None, front=False, back=False):
         return bcrypt.hash(string + salt)
     else:
         return bcrypt.hash(string)
-
-
-def scrypt_hash(string, salt=None, front=False, back=False, **placeholder):
-    raise NotImplementedError("Scrypt hashes are not implemented yet")
-    pass
 
 
 def ripemd160(string, salt=None, front=False, back=False, **placeholder):
@@ -475,11 +465,6 @@ def sha1_sha1_pass(string, salt=None, front=False, back=False, **placeholder):
     return obj2.hexdigest()
 
 
-def sha2(string, salt=None, front=False, back=False, **placeholder):
-    raise NotImplementedError("SHA2 is not implemented yet")
-    pass
-
-
 def sha3_224(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a SHA3 224 hash from a given string
@@ -670,10 +655,6 @@ def whirlpool(string, salt=None, front=False, back=False, **placeholder):
     return obj.hexdigest()
 
 
-def dsa(string, salt=None, front=False, back=False, **placeholder):
-    raise NotImplementedError("DSA hashes are not implemented yet")
-
-
 def tiger192(string, salt=None, front=False, back=False, **placeholder):
     """
       Hash a password using Tiger192
@@ -735,3 +716,22 @@ def ntlm(string, **placeholder):
     obj.update(string.encode("utf-16le"))
     data = obj.digest()
     return binascii.hexlify(data)
+
+
+def sha2(string, salt=None, front=False, back=False, **placeholder):
+    raise NotImplementedError("SHA2 hashes are not implemented yet.")
+    pass
+
+
+def scrypt_hash(string, salt=None, front=False, back=False, **placeholder):
+    raise NotImplementedError("Scrypt hashes are not implemented yet.")
+    pass
+
+
+def dsa(string, salt=None, front=False, back=False, **placeholder):
+    raise NotImplementedError("DSA hashes are not implemented yet.")
+
+
+def wordpress(string, salt=None, **placeholder):
+    raise NotImplementedError("Wordpress hashes are not implemented yet.")
+    pass

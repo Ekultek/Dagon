@@ -13,87 +13,72 @@ def build_re(hex_len, prefix=r"", suffix=r"(:.+)?"):
 # Top: Most likely algorithm
 # Bottom: Least likely algorithm (may not be implemented)
 HASH_TYPE_REGEX = {
-    build_re(8): [
-        ("crc32", None),
-        (None, None)
+    build_re(8, prefix="(0x)?", suffix="(L)?"): [
+        ("crc32", None), (None, None)
     ],
     build_re(20): [
-        ("half sha1", None),
-        (None, None)
+        ("half sha1", None), (None, None)
     ],
     build_re(32): [
         ("md5", "md4", "md2", "ntlm",
-         "md5(md5(pass)+md5(salt))", "md5(md5(pass))",
-         "md5(salt+pass+salt)"),
-        ("ripe128", "haval128",
-         "tiger128", "skein256(128)", "skein512(128",
-         "skype", "zipmonster", "prestashop")
+         "md5(md5(pass)+md5(salt))", "md5(md5(pass))", "md5(salt+pass+salt)"),
+        ("ripe128", "haval128", "tiger128",
+         "skein256(128)", "skein512(128", "skype",
+         "zipmonster", "prestashop")
     ],
     build_re(16): [
-        ("half md5", "oracle 10g"),
-        (None, None)
+        ("half md5", "oracle 10g"), (None, None)
     ],
     build_re(64): [
         ("sha256", "sha3_256"),
         ("haval256", "gost r 34.1194",
-         "gost cryptopro sbox", "skein256",
-         "skein512(256)", "ventrilo",
-         "ripemd256")
+         "gost cryptopro sbox", "skein256", "skein512(256)",
+         "ventrilo", "ripemd256")
     ],
     build_re(128): [
         ("sha512", "whirlpool", "sha3_512"),
-        ("salsa10", "salsa20",
-         "skein512", "skein1024(512)")
+        ("salsa10", "salsa20", "skein512",
+         "skein1024(512)")
     ],
     build_re(56, suffix=""): [
         ("sha224", "sha3_224"),
-        ("shein256(224)", "skein512(224)",
-         "haval224")
+        ("shein256(224)", "skein512(224)", "haval224")
     ],
     build_re(40): [
         ("sha1", "ripemd160", "sha1(sha1(pass))"),
-        ("doublesha1", "haval160", "tiger160",
-         "has160", "skein256(160)", "skein512(160)",
-         "dsa")
+        ("haval160", "tiger160", "has160",
+         "skein256(160)", "skein512(160)", "dsa")
     ],
     build_re(96, suffix=""): [
-        ("sha384", "sha3_384"),
-        ("skein512(384)", "skein1024(384")
+        ("sha384", "sha3_384"), ("skein512(384)", "skein1024(384")
     ],
     build_re(40, prefix=r"\*", suffix=""):  [
-        ("mysql 5.x", "mysql 4.1")
+        ("mysql 5.x", "mysql 4.1"), (None, None)
     ],
     build_re(48, suffix=""): [
         ("tiger192", None),
         ("haval192", "sha1(oracle)", "xsha v10.4-v10.6")
     ],
     re.compile(r"^\$[\w.]{1}\$\w+\$\S{22}$", re.IGNORECASE): [
-        ("wordpress", None),
-        ("PHPass", "Joomla")
+        ("wordpress", None), ("Joomla", None)
     ],
     re.compile(r"^\$\d\w\$\d+\$\S{53}$", re.IGNORECASE): [
-        ("blowfish", None),
-        (None, None)
+        ("blowfish", None), (None, None)
     ],
     re.compile(r"^S:[a-zA-Z0-9]{60}$", re.IGNORECASE): [
-        ("oracle 11g", None),
-        (None, None)
+        ("oracle 11g", None), (None, None)
     ],
     re.compile(r"^[0-9a-z]{4,12}:[0-9a-f]{16,20}:[0-9a-z]{2080}$", re.IGNORECASE): [
-        ("agile", None),
-        (None, None)
+        ("agile", None), (None, None)
     ],
     re.compile(r"^[0-9a-f]{64,70}:[a-f0-9]{32,40}:\d+:[a-f0-9]{608,620}$", re.IGNORECASE): [
-        ("cloud", None),
-        (None, None)
+        ("cloud", None), (None, None)
     ],
     re.compile(r"^\{[^{}]*}[a-zA-Z0-9][\w/-]+=?$", re.IGNORECASE): [
-        ("ssha", None),
-        (None, None)
+        ("ssha", None), (None, None)
     ],
     re.compile(r"^\w+:\d+:[a-z0-9]{32}:[a-z0-9]{32}:::$", re.IGNORECASE): [
-        ("windows local (ntlm)", None),
-        (None, None)
+        ("windows local (ntlm)", None), (None, None)
     ]
 }
 

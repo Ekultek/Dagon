@@ -1,2 +1,6 @@
 *.pyc
 .idea/*
+# ignore our bruteforce dict files
+Dagon-bfdict-*.txt
+# ignore our downloaded dict files
+Download-*.txt

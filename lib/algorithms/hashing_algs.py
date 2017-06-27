@@ -102,6 +102,45 @@ def blowfish_hash(string, salt=None, front=False, back=False):
         return bcrypt.hash(string)
 
 
+def postrges(string, salt=None, **placeholder):
+    """
+      Create a PostgreSQL hash, if no salt is provided, salt will be created
+
+      > :param string: string to be hashed
+      > :return: a PostgreSQL hash
+
+      Example:
+        >>> postrges("test", "testing")
+        md55d6685f9c56cdd04d635c7cbed612db3
+    """
+    if salt is None:
+        salt = lib.settings.random_salt_generator(use_string=True)
+    obj = hashlib.md5()
+    obj.update(string + salt)
+    data = obj.hexdigest()
+    return "md5{}".format(data)
+
+
+def mssql_2005(string, salt=None, **placeholder):
+    """
+      Create an MsSQL 2005 hash, if not salt is given, salt will be created
+
+      > :param string: string to be hashed
+      > :return: a MsSQL 2005 hash
+
+      Example:
+        >>> mssql_2005("test", salt="testing")
+        0x010074657374696e673f0414438c1b692da8be7a1211a76d314ea0210f
+    """
+    if salt is None:
+        salt = lib.settings.random_salt_generator(use_string=True)[0]
+    data_string = "".join(map(lambda s: ("%s\0" if ord(s) < 256 else "%s") % s.encode("utf8"), string))
+    obj = hashlib.sha1()
+    obj.update(data_string + salt)
+    hash_data = obj.hexdigest()
+    return "0x0100{}{}".format(salt.encode("hex"), hash_data)
+
+
 def ripemd160(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a RipeMD160 hash from a given string
@@ -733,5 +772,4 @@ def dsa(string, salt=None, front=False, back=False, **placeholder):
 
 
 def wordpress(string, salt=None, **placeholder):
-    raise NotImplementedError("Wordpress hashes are not implemented yet.")
-    pass
+    raise NotImplemented("Wordpress hashes are not implemented yet")

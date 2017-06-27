@@ -28,7 +28,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.7.11.19"
+VERSION = "1.7.11.20"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -115,7 +115,8 @@ WORDLIST_LINKS = [
     'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvdHVzY2wudHh0',
     'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvMTBfbWlsbGlvbl9wYXNzd29yZF9saXN0X3RvcF8xMDAwMDAwLnR4dA==',
     'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvTGl6YXJkX1NxdWFkLnR4dA==',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzZjNTEzNzdhMzM5YzM4YTdiMDIwMjc3NGYyOWQ5MWUyL3Jhdy82MWM1Y2I2NWNkMTljMmI4YjNkYmY4N2EzOTFkN2NkNzcxYjZjZTljL2V4YW1wbGUuZGljdA=='
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzZjNTEzNzdhMzM5YzM4YTdiMDIwMjc3NGYyOWQ5MWUyL3Jhdy82MWM1Y2I2NWNkMTljMmI4YjNkYmY4N2EzOTFkN2NkNzcxYjZjZTljL2V4YW1wbGUuZGljdA==',
+    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2Q0ODc4NWNhODAxMjcwZjc3MzI3NzY1ZDI0Y2Y2MWM4L3Jhdy9iOTg3N2ZjYmVhZGEyMjNjM2I1ZmRhMGJmNWI4YmFiMzBmNmNhNGE0L2dkaWN0LnR4dA=='
 ]
 
 
@@ -301,7 +302,7 @@ def update_system():
 
 def show_available_algs(show_all=False, supp="+", not_yet="-"):
     """ Show all algorithms available in the program """
-    being_worked_on = ["oracle", "wordpress", "scrypt", "sha2", "dsa"]
+    being_worked_on = ["wordpress", "scrypt", "sha2", "dsa"]
     misc_info_msg = "There are currently {} supported algorithms in Dagon. "
     misc_info_msg += "To suggest the creation of a new algorithm please go "
     misc_info_msg += "make an issue here {}"

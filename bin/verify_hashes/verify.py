@@ -19,8 +19,8 @@ HASH_TYPE_REGEX = {
     build_re(20): [
         ("half sha1", None), (None, None)
     ],
-    build_re(32): [
-        ("md5", "md4", "md2", "ntlm",
+    build_re(32, prefix="(md5)?"): [
+        ("md5", "md4", "md2", "ntlm", "postgresql",
          "md5(md5(pass)+md5(salt))", "md5(md5(pass))", "md5(salt+pass+salt)"),
         ("ripe128", "haval128", "tiger128",
          "skein256(128)", "skein512(128", "skype",
@@ -39,6 +39,10 @@ HASH_TYPE_REGEX = {
         ("sha512", "whirlpool", "sha3_512"),
         ("salsa10", "salsa20", "skein512",
          "skein1024(512)")
+    ],
+    build_re(54, prefix="0x0100", suffix=""): [
+        ("mssql 2005", None),
+        (None, None)
     ],
     build_re(56, suffix=""): [
         ("sha224", "sha3_224"),

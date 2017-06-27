@@ -18,11 +18,11 @@ Random salting, unicode random salting, or you can make your own choice on the s
 
 # Download
 
-Preferable you can close the repository with `git clone https://github.com/ekultek/dagon.git` alternativley you can download the zip or tarball [here](https://github.com/ekultek/dagon/releases)
+Preferable you can close the repository with `git clone https://github.com/ekultek/dagon.git` alternatively you can download the zip or tarball [here](https://github.com/ekultek/dagon/releases)
 
 # Basic usage
 
-For full functionality of Dagon please reference the homepage [here](https://ekultek.github.io/Dagon/)
+For full functionality of Dagon please reference the homepage [here](https://ekultek.github.io/Dagon/) or the [user manual](https://github.com/Ekultek/Dagon/wiki)
 
 `python dagon.py -h` This will run the help menu and provide a list of all possible flags
 

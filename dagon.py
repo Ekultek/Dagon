@@ -42,12 +42,12 @@ if __name__ == '__main__':
                          help="Run through a file containing hashes (one per line) and attempt to verify them")
 
     # Specific arguments, what do you want the program to do?
-    specifics = optparse.OptionGroup(parser, "Specifics on what is to be done arguments",
-                                     description="These arguments tell the program what to do")
-    specifics.add_option("-b", "--bruteforce", action="store_true", dest="bruteforceCrack",
-                         help="Attempt to bruteforce a given hash")
-    specifics.add_option("-r", "--rainbow", dest="rainbowTableAttack", metavar="FILE-PATH",
-                         help=optparse.SUPPRESS_HELP)  # Not implemented yet
+    tech = optparse.OptionGroup(parser, "Technique arguments",
+                                description="These arguments tell the program what to do technique wise.")
+    tech.add_option("-b", "--bruteforce", action="store_true", dest="bruteforceCrack",
+                    help="Attempt to bruteforce a given hash")
+    tech.add_option("-r", "--rainbow", dest="rainbowTableAttack", metavar="FILE-PATH",
+                    help=optparse.SUPPRESS_HELP)  # Not implemented yet
 
     # Manipulation arguments to manipulate the hashes into what you want them to be
     manipulation = optparse.OptionGroup(parser, "Manipulation arguments",
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     manipulation.add_option("-S", "--salt", dest="saltToUseAndPlacement", nargs=2, metavar="SALT, PLACEMENT",
                             help="Choose your salt and placement to use in the hashing")
     manipulation.add_option("-R", "--rand-salt", dest="randomSaltAndPlacement", action="store_true",
-                            help="Random generate the salt and the placement to put the salt in")
+                            help="Randomly generate the salt and the placement to put the salt in")
     manipulation.add_option("-A", "--algorithm", dest="algToUse", metavar="ALGORITHM-IDENTIFIER",
                             help="Specify what algorithm to use for cracking")
     manipulation.add_option("--use-chars", dest="useCharsAsSalt", action="store_true",
@@ -89,9 +89,9 @@ if __name__ == '__main__':
     misc.add_option("-L", "--least-likely", dest="displayLeastLikely", action="store_true",
                     help="Display the least likely hash types during verification")
     misc.add_option("-B", "--benchmark", dest="runBenchMarkTest", action="store_true",
-                    help="Find out how long it took for the application to find the matching hash")
+                    help="Find out how long it took to finish the process by timing the application")
     misc.add_option("--banner", action="store_true", dest="hideBanner",
-                    help="Hide the application banner and show a mini version of it")
+                    help="Display the full Dagon banner")
     misc.add_option("--update", dest="updateDagon", action="store_true",
                     help="Update the program to the latest development version")
     misc.add_option("--avail-algs", action="store_true", dest="showAvailableAlgorithms",
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     parser.add_option_group(mandatory)
     parser.add_option_group(manipulation)
     parser.add_option_group(dictionary_attack_opts)
-    parser.add_option_group(specifics)
+    parser.add_option_group(tech)
     parser.add_option_group(misc)
 
     # Pay no attention to the _ it's required..
@@ -114,7 +114,10 @@ if __name__ == '__main__':
 
     verify_python_version()
 
-    required_args = ["-c", "--crack", "-l", "--hash-list", "-v", "--verify", "-V", "--verify-list"]
+    required_args = ["-c", "--crack",
+                     "-l", "--hash-list",
+                     "-v", "--verify",
+                     "-V", "--verify-list"]
     args_in_params = 0
 
     show_banner() if opt.hideBanner is True else show_hidden_banner()

@@ -102,7 +102,7 @@ def blowfish_hash(string, salt=None, front=False, back=False):
         return bcrypt.hash(string)
 
 
-def postrges(string, salt=None, **placeholder):
+def postgres(string, salt=None, **placeholder):
     """
       Create a PostgreSQL hash, if no salt is provided, salt will be created
 
@@ -114,7 +114,7 @@ def postrges(string, salt=None, **placeholder):
         md55d6685f9c56cdd04d635c7cbed612db3
     """
     if salt is None:
-        salt = lib.settings.random_salt_generator(use_string=True)
+        salt = lib.settings.random_salt_generator(use_string=True)[0]
     obj = hashlib.md5()
     obj.update(string + salt)
     data = obj.hexdigest()

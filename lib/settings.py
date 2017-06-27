@@ -28,7 +28,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.8.11.21"
+VERSION = "1.8.12.22"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -60,7 +60,7 @@ FUNC_DICT = {
     "md2": md2, "md4": md4, "md5": md5, "half md5": half_md5, "md5(md5(pass)+md5(salt))": md5_pass_salt,
     "md5(md5(pass))": md5_md5_pass, "md5(salt+pass+salt)": md5_salt_pass_salt,
     "mysql": mysql_hash, "blowfish": blowfish_hash, "oracle 11g": oracle_11g, "oracle 10g": oracle_10g,
-    "mssql 2005": mssql_2005, "postgresql": postrges,
+    "mssql 2005": mssql_2005, "postgresql": postgres,
     "ripemd160": ripemd160,
     "blake224": blake224, "blake256": blake256, "blake384": blake384, "blake512": blake512,
     "sha1": sha1, "sha224": sha224, "sha256": sha256, "sha384": sha384, "sha512": sha512,

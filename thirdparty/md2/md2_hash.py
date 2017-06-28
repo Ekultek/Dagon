@@ -147,7 +147,7 @@ def readchars(f):
 
 
 def printmd2(name, f):
-    print md2h(readchars(f)) + "\t" + name
+    print(md2h(readchars(f)) + "\t" + name)  # compatible with python 3.x
 
 
 """TEST_VECTORS = {

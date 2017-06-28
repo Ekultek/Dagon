@@ -3,7 +3,10 @@ import sys
 import logging
 import time
 import string
-import urllib2
+try:
+    import urllib2
+except ImportError:  # Compatible with Python 3.x
+    import urllib as urllib2
 import requests
 from colorlog import ColoredFormatter
 from lib.algorithms.hashing_algs import *
@@ -28,7 +31,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.8.12.22"
+VERSION = "1.8.13.23"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -132,7 +135,7 @@ def shutdown(exit_key=0):
     exit(exit_key)
 
 
-def verify_python_version():
+'''def verify_python_version():  # gonna comment this out for now
     """
       Verify python version
     """
@@ -141,7 +144,7 @@ def verify_python_version():
         LOGGER.debug("This application requires python 2.7.x to run.. "
                      "You currently have python version {} installed..".format(current_py_version))
     else:
-        pass
+        pass'''
 
 
 def show_banner():
@@ -170,7 +173,10 @@ def prompt(question, choices):
       > :param choices: a string containing choices
       > :return: a prompt
     """
-    return raw_input("[{} PROMPT] {}[{}]: ".format(time.strftime("%H:%M:%S"), question, choices))
+    try:
+        return raw_input("[{} PROMPT] {}[{}]: ".format(time.strftime("%H:%M:%S"), question, choices))
+    except:  # idk what the exception is, so if you know it lemme know
+        return input("[{} PROMPT] {}[{}]: ".format(time.strftime("%H:%M:%S"), question, choices))
 
 
 def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS)):
@@ -273,11 +279,11 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
                         print("[{}] {}".format(item_found, data_tuple[i].upper()))
                         if i == 2:
                             print(data_sep + "\n" +
-                                  "[{}] Least Likely Hash Type(s)(possibly not be implemented):\n".format(
+                                  "[{}] Least Likely Hash Type(s)(possibly not implemented):\n".format(
                                       least_likely) + data_sep)
                 else:
                     if _ is not None:
-                        print("[{}] {}".format(least_likely, data_tuple[i].upper()))
+                        print("[{}] {} {}".format(least_likely, data_tuple[i].upper(), "(not implemented yet)" if _ not in FUNC_DICT.keys() else ""))
 
             print(data_sep)
         else:
@@ -301,16 +307,19 @@ def update_system():
         return 0
 
 
-def show_available_algs(show_all=False, supp="+", not_yet="-"):
+def show_available_algs(show_all=False, supp="+", not_yet="-", spacer1=" "*5, spacer2=" "*3):
     """ Show all algorithms available in the program """
-    being_worked_on = ["wordpress", "scrypt", "sha2", "dsa"]
+    being_worked_on = [
+        "wordpress", "scrypt", "sha2",
+        "dsa", "mssql 2000", "crc64",
+        "haval160", "tiger160"
+    ]
     misc_info_msg = "There are currently {} supported algorithms in Dagon. "
     misc_info_msg += "To suggest the creation of a new algorithm please go "
     misc_info_msg += "make an issue here {}"
     LOGGER.info(misc_info_msg.format(len(IDENTIFICATION), DAGON_ISSUE_LINK))
-    print
-    print("     ID#   Alg:")
-    print("     ---   ----")
+    print("\n{}ID#{}Alg:".format(spacer1, spacer2))
+    print("{}---{}----".format(spacer1, spacer2))
     for item in sorted(IDENTIFICATION.keys()):
         print("\033[94m[{}]\033[0m  {}   {}".format(supp, item, IDENTIFICATION[item].upper()))
     if show_all is True:

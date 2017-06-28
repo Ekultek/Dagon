@@ -759,17 +759,15 @@ def ntlm(string, **placeholder):
 
 def sha2(string, salt=None, front=False, back=False, **placeholder):
     raise NotImplementedError("SHA2 hashes are not implemented yet.")
-    pass
 
 
 def scrypt_hash(string, salt=None, front=False, back=False, **placeholder):
     raise NotImplementedError("Scrypt hashes are not implemented yet.")
-    pass
 
 
 def dsa(string, salt=None, front=False, back=False, **placeholder):
     raise NotImplementedError("DSA hashes are not implemented yet.")
 
 
-def wordpress(string, salt=None, **placeholder):
-    raise NotImplemented("Wordpress hashes are not implemented yet")
+def wordpress(string, salt=None, itoa64="./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", **placeholder):
+    raise NotImplementedError("Wordpress hashes are not implemented yet.")

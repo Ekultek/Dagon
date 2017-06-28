@@ -23,7 +23,7 @@ HASH_TYPE_REGEX = {
         ("md5", "md4", "md2", "ntlm", "postgresql",
          "md5(md5(pass)+md5(salt))", "md5(md5(pass))", "md5(salt+pass+salt)"),
         ("ripe128", "haval128", "tiger128",
-         "skein256(128)", "skein512(128", "skype",
+         "skein256(128)", "skein512(128)", "skype",
          "zipmonster", "prestashop")
     ],
     build_re(16): [

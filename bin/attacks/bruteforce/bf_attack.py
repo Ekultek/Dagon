@@ -159,8 +159,8 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
         results = hash_words(verf_hash, wordlist, algorithm, salt=salt, placement=placement, posx=posx)
         if results is None:
             LOGGER.warning("Unable to find a match using {}..".format(algorithm.upper()))
-            verifiy = prompt("Would you like to attempt to verify the hash type automatically and crack it", "y/N")
-            if verifiy.lower().startswith("y"):
+            verify = prompt("Would you like to attempt to verify the hash type automatically and crack it", "y/N")
+            if verify.lower().startswith("y"):
                 bruteforce_main(verf_hash, wordlist=wordlist, salt=salt, placement=placement, posx=posx, use_hex=use_hex)
             else:
                 LOGGER.warning("Unable to produce a result for given hash '{}' using {}.. Exiting..".format(

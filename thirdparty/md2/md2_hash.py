@@ -86,7 +86,7 @@ class MD2(object):
         self.buf = []
         self.c = [0] * digest_size
         self.d = [0] * (3 * digest_size)
-        if (m != None):
+        if (m is not None):
             self.update(m)
 
     def update(self, m):

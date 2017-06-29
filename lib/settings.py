@@ -31,7 +31,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.8.14.24"
+VERSION = "1.8.15.25"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -62,7 +62,7 @@ Home: {}
 # Algorithm function dict
 FUNC_DICT = {
     "md2": md2, "md4": md4, "md5": md5, "half md5": half_md5, "md5(md5(pass)+md5(salt))": md5_pass_salt,
-    "md5(md5(pass))": md5_md5_pass, "md5(salt+pass+salt)": md5_salt_pass_salt,
+    "md5(md5(pass))": md5_md5_pass, "md5(salt+pass+salt)": md5_salt_pass_salt, "md5(md5(md5(pass)))": md5_md5_md5_pass,
     "mysql": mysql_hash, "blowfish": blowfish_hash, "oracle 11g": oracle_11g, "oracle 10g": oracle_10g,
     "mssql 2005": mssql_2005, "postgresql": postgres,
     "ripemd160": ripemd160,
@@ -80,7 +80,7 @@ IDENTIFICATION = {
     100: "md5", 110: "md2", 120: "md4",
     # MD special indicators
     130: "md5(md5(pass)+md5(salt))", 131: "md5(md5(pass))", 132: "half md5",
-    133: "md5(salt+pass+salt)",
+    133: "md5(salt+pass+salt)", 134: "md5(md5(md5(pass)))",
 
     # Blake indicators
     200: "blake224", 210: "blake256", 220: "blake384", 230: "blake512",

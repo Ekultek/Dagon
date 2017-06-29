@@ -388,6 +388,33 @@ def md5_md5_pass(string, salt=None, front=False, back=False, **placeholder):
     return obj2.hexdigest()
 
 
+def md5_md5_md5_pass(string, salt=None, **placeholder):
+    """
+      Create an MD5 hash in a specific format md5(md5(md5(pass)))
+
+      > :param string: string to be hashed
+      > :return: a MD5 hash in the above format
+
+      Example
+        >>> md5_md5_md5_pass("test")
+        25ab3b38f7afc116f18fa9821e44d561
+        >>> md5_md5_md5_pass("test", salt="0x0011")
+        25ab3b38f7afc116f18fa9821e44d561:0x0011
+    """
+    obj1 = hashlib.md5()
+    obj2 = hashlib.md5()
+    obj3 = hashlib.md5()
+    obj1.update(string)
+    first_hash = obj1.hexdigest()
+    obj2.update(first_hash)
+    second_hash = obj2.hexdigest()
+    obj3.update(second_hash)
+    if salt is None:
+        return obj3.hexdigest()
+    else:
+        return "{}:{}".format(obj3.hexdigest(), salt)
+
+
 def md5_salt_pass_salt(string, salt=None, **placeholder):
     """
       Create a MD5 hash in a specific format md5($salt+$pass+$salt)
@@ -798,3 +825,19 @@ def dsa(string, salt=None, front=False, back=False, **placeholder):
 
 def wordpress(string, salt=None, itoa64="./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", **placeholder):
     raise NotImplementedError("Wordpress hashes are not implemented yet.")
+
+
+def mssql_2000(string, salt=None, **placeholder):
+    raise NotImplementedError("MsSQL 2000 hashes are not implemented yet.")
+
+
+def crc64(string, salt=None, front=False, back=False, use_hex=False, **placeholder):
+    raise NotImplementedError("CRC64 hashes are not implemented yet.")
+
+
+def haval160(string, salt=None, front=False, back=False, **placeholder):
+    raise NotImplementedError("Haval-160 hashes are not implemented yet.")
+
+
+def tiger160(string, salt=None, front=False, back=False, **placeholder):
+    raise NotImplementedError("Tiger-160 hashes are not implemented yet.")

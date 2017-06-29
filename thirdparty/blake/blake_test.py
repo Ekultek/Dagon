@@ -232,7 +232,7 @@ if have_blake and have_blake_wrapper:
                     BLAKEwrap(hashsize).final(testchar * i)):
                 errors += 1
                 print('      *** blake.py and blake_wrapper.py' +
-                      ' do not agree for chr(%d)*%d ***' % (testchar, i))
+                      ' do not agree for chr(%d)*%d ***' % (ord(testchar), i))
         if not errors:
             print('      no errors found')
 

@@ -201,8 +201,8 @@ class _baseDes(object):
 				# Get the default padding.
 				pad = self.getPadding()
 			if pad:
-				data = data[:-self.block_size] + \
-				       data[-self.block_size:].rstrip(pad)
+				data = (data[:-self.block_size] +
+						data[-self.block_size:].rstrip(pad))
 
 		elif padmode == PAD_PKCS5:
 			if _pythonMajorVersion < 3:

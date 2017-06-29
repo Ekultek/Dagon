@@ -35,9 +35,10 @@ VERSION = "1.8.13.23"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
-VERSION_STRING = "\033[92mv{}\033[0m(\033[{}m\033[1mdev\033[0m)".format(VERSION, TYPE_COLORS["dev"]) if len(
-    VERSION) >= 4 else \
-    "\033[92mv{}\033[0m(\033[{}m\033[1mstable\033[0m)".format(VERSION, TYPE_COLORS["stable"])
+if len(VERSION) >= 4:
+    VERSION_STRING = "\033[92mv{}\033[0m(\033[{}m\033[1mdev\033[0m)".format(VERSION, TYPE_COLORS["dev"])
+else:
+    VERSION_STRING = "\033[92mv{}\033[0m(\033[{}m\033[1mstable\033[0m)".format(VERSION, TYPE_COLORS["stable"])
 # Program saying
 SAYING = "\033[97mAdvanced Hash Manipulation\033[0m"
 # Clone link

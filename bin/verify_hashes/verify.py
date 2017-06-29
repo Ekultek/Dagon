@@ -63,7 +63,7 @@ HASH_TYPE_REGEX = {
         ("tiger192", None),
         ("haval192", "sha1(oracle)", "xsha v10.4-v10.6")
     ],
-    re.compile(r"^\$[\w.]{1}\$\w+\$\S{22}$", re.IGNORECASE): [
+    re.compile(r"^\$[\w.]\$\w+\$\S{22}$", re.IGNORECASE): [
         ("wordpress", None), ("Joomla", None)
     ],
     re.compile(r"^\$\d\w\$\d+\$\S{53}$", re.IGNORECASE): [
@@ -78,7 +78,7 @@ HASH_TYPE_REGEX = {
     re.compile(r"^[0-9a-f]{64,70}:[a-f0-9]{32,40}:\d+:[a-f0-9]{608,620}$", re.IGNORECASE): [
         ("cloud", None), (None, None)
     ],
-    re.compile(r"^\{[^{}]*}[a-zA-Z0-9][\w/-]+=?$", re.IGNORECASE): [
+    re.compile(r"^{[^{}]*}[a-zA-Z0-9][\w/-]+=?$", re.IGNORECASE): [
         ("ssha", None), (None, None)
     ],
     re.compile(r"^\w+:\d+:[a-z0-9]{32}:[a-z0-9]{32}:::$", re.IGNORECASE): [

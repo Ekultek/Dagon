@@ -212,36 +212,36 @@ def random_salt_generator(use_string=False, use_number=False, length=None, warni
         >>> random_salt_generator(use_string=True)
         fUFVsatp
     """
-    if length is None:
-        length = 8
-    else:
-        if use_string is True and not use_number:
-            salt_type = "characters"
-        elif use_number is True and not use_string:
-            salt_type = "integers"
-        else:
-            salt_type = "characters and integers"
-        length = int(length)
+    try:
+        salt_length = int(length)
+    except TypeError:
+        salt_length = 8  # default to 8 if length is None
+    except ValueError:
+        raise ValueError('length must be an integer!')  # default to 8 again???
 
-    if length > 12:
-        LOGGER.warning("It is recommended to keep salt length under 12 {} for faster hashing..".format(salt_type))
-    salt = []
-    placement = ["front", "back"]
-    if not use_string and use_number is True:
-        for _ in range(0, length):
-            salt.append(str(random.randint(0, 9)))
-    elif use_string is True and not use_number:
-        for _ in range(0, length):
-            salt.append(random.choice(string.ascii_letters))
-    elif use_string is True and use_number is True:
-        for _ in range(0, length):
-            salt.append(random.choice(str(string.digits + string.ascii_letters)))
-    else:
+    char_set = ''
+    salt_type = []
+    if use_string is True:
+        char_set += string.ascii_letters
+        salt_type.append('characters')
+    if use_number is True:
+        char_set += string.digits
+        salt_type.append('integers')
+    if not salt_type:
+        # if both `use_string` & `use_number` are False, default to digits
         if warning is True:
             LOGGER.warning("No choice given as salt, defaulting to numbers..")
-        for _ in range(0, length):
-            salt.append(str(random.randint(0, 9)))
-    return ''.join(salt), random.choice(placement)
+        char_set = string.digits
+        salt_type.append('integers')
+
+    if salt_length >= 12:
+        LOGGER.warning(
+            "It is recommended to keep salt length under 12 {} for faster hashing..".format(
+                ' and '.join(salt_type)))
+
+    salt = ''.join(random.choice(char_set) for _ in range(salt_length))
+    placement = random.choice(("front", "back"))
+    return salt, placement
 
 
 def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-", kind="cracked", all_types=False):

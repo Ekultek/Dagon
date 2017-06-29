@@ -1,8 +1,10 @@
 import re
-from lib.settings import shutdown
-from lib.settings import LOGGER
-from lib.settings import DAGON_ISSUE_LINK
 
+from lib.settings import (
+    DAGON_ISSUE_LINK,
+    LOGGER,
+    shutdown
+)
 
 # Has to be the first function so I can use it in the regex
 def build_re(hex_len, prefix=r"", suffix=r"(:.+)?"):

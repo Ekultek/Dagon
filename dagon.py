@@ -1,29 +1,31 @@
 #! usr/bin/env python
 
+import optparse
 import os
+import random
+import subprocess
 import sys
 import time
-import random
-import optparse
-import subprocess
 
-from lib.settings import CLONE
-from lib.settings import prompt
-from lib.settings import LOGGER
-from lib.settings import match_found
-from lib.settings import show_banner
-from lib.settings import update_system
-from lib.settings import VERSION_STRING
-from lib.settings import integrity_check
-from lib.settings import start_up, shutdown
-from lib.settings import algorithm_pointers
-from lib.settings import show_hidden_banner
-from lib.settings import show_available_algs
-from lib.settings import random_salt_generator
-from lib.settings import verify_python_version
-from lib.settings import download_rand_wordlist
-from bin.verify_hashes.verify import verify_hash_type
 from bin.attacks.bruteforce.bf_attack import bruteforce_main
+from bin.verify_hashes.verify import verify_hash_type
+from lib.settings import (
+    CLONE,
+    LOGGER,
+    VERSION_STRING,
+    algorithm_pointers,
+    download_rand_wordlist,
+    integrity_check,
+    match_found,
+    prompt,
+    random_salt_generator,
+    show_available_algs,
+    show_banner,
+    show_hidden_banner,
+    start_up, shutdown,
+    update_system,
+    verify_python_version
+)
 
 if __name__ == '__main__':
 

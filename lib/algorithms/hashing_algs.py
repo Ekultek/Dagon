@@ -1,16 +1,18 @@
-import os
+import base64
+import binascii
 import hashlib
+import os
 import random
 import zlib
-import lib
-import binascii
-import base64
+
 import sha3
 from passlib.hash import bcrypt
 from thirdparty.blake import blake
+from thirdparty.des import pydes
 from thirdparty.md2 import md2_hash
 from thirdparty.tiger import tiger
-from thirdparty.des import pydes
+
+import lib
 
 
 def mysql_hash(string, salt=None, front=False, back=False, **placeholder):

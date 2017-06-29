@@ -1,15 +1,17 @@
-import os
 import itertools
+import os
 
 from bin.verify_hashes.verify import verify_hash_type
-from lib.settings import FUNC_DICT
-from lib.settings import LOGGER
-from lib.settings import DAGON_ISSUE_LINK
-from lib.settings import WORDLIST_RE
-from lib.settings import match_found
-from lib.settings import prompt
-from lib.settings import shutdown
-from lib.settings import random_salt_generator
+from lib.settings import (
+    DAGON_ISSUE_LINK,
+    FUNC_DICT,
+    LOGGER,
+    WORDLIST_RE,
+    match_found,
+    prompt,
+    random_salt_generator,
+    shutdown
+)
 
 # The name of the wordlist
 WORDLIST_NAME = "Dagon-bfdict-" + random_salt_generator(use_string=True, length=7)[0] + ".txt"

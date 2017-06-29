@@ -1,14 +1,12 @@
-import re
-import sys
 import logging
-import time
+import re
 import string
-try:
-    import urllib2
-except ImportError:  # Compatible with Python 3.x
-    import urllib as urllib2
+import sys
+import time
+
 import requests
 from colorlog import ColoredFormatter
+
 from lib.algorithms.hashing_algs import *
 
 # Create logging
@@ -345,7 +343,7 @@ def integrity_check(url="https://raw.githubusercontent.com/Ekultek/Dagon/master/
                     path="{}/md5sum/checksum.md5"):
     """ Check the integrity of the program """
     LOGGER.info("Checking program integrity...")
-    if open(path.format(os.getcwd())).read() == urllib2.urlopen(url).read():
+    if open(path.format(os.getcwd())).read() == requests.get(url).text:
         pass
     else:
         checksum_fail = "MD5 sums did not match from origin master, "

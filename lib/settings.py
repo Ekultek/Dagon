@@ -332,18 +332,13 @@ def show_available_algs(show_all=False, supp="+", not_yet="-", spacer1=" "*5, sp
 
 def algorithm_pointers(pointer_identity):
     """ Point to the correct algorithm given by an identification number """
-    if pointer_identity is None:
-        pass
-    else:
-        try:
-            if int(pointer_identity) in IDENTIFICATION.keys():
-                return IDENTIFICATION[int(pointer_identity)]
-            else:
-                LOGGER.fatal("The algorithm identification number you have specified is invalid.")
-                LOGGER.debug("Valid identification numbers are: {}".format(IDENTIFICATION))
-        except ValueError:
-            LOGGER.fatal("The algorithm identification number you have specified is invalid.")
-            LOGGER.debug("Valid identification numbers are: {}".format(IDENTIFICATION))
+    try:
+        return IDENTIFICATION[int(pointer_identity)]
+    except TypeError:
+        return None
+    except (KeyError, ValueError):
+        LOGGER.fatal("The algorithm identification number you have specified is invalid.")
+        LOGGER.debug("Valid identification numbers are: {}".format(IDENTIFICATION))
 
 
 def integrity_check(url="https://raw.githubusercontent.com/Ekultek/Dagon/master/md5sum/checksum.md5",

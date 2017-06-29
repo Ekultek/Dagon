@@ -8,7 +8,7 @@ def round_helper(a, b, c, x, mul, new_a,new_b,new_c):
     assert ret_values["a"] == new_a, \
        "a failed: " + str(ret_values["a"]) + " != " + str(new_a) + "\n"
     assert ret_values["c"] == new_c, \
-        "c failed: " + str(ret_values["c"]) + " != " + str(new_c) + "\n"
+        "c failed: " + str(ret_values["c"]) + " != " + str(new_c) + "\n" 
     assert ret_values["b"] == new_b, \
         "b failed: " + str(ret_values["b"]) + " != " + str(new_b) + "\n"
 
@@ -101,5 +101,5 @@ def test_tiger_hash():
     assert tiger.hash("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01" \
         "23456789+-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345" \
         "6789+-") == '00B83EB4E53440C576AC6AAEE0A7485825FD15E70A59FFE4'
-
-
+      
+ 

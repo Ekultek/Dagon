@@ -5,8 +5,8 @@ from sboxes import t1, t2, t3, t4
 def tiger_round(a,b,c,x,mul):
     c ^= x
     c &= 0xffffffffffffffff
-    a -= t1[((c) >> (0*8))&0xFF] ^ t2[((c) >> ( 2*8)) & 0xFF] ^ t3[((c) >> (4*8))&0xFF] ^ t4[((c) >> ( 6*8)) & 0xFF]
-    b += t4[((c) >> (1*8))&0xFF] ^ t3[((c) >> ( 3*8)) & 0xFF] ^ t2[((c) >> (5*8))&0xFF] ^ t1[((c) >> ( 7*8)) & 0xFF]
+    a -= t1[(c >> (0 * 8)) & 0xFF] ^ t2[(c >> (2 * 8)) & 0xFF] ^ t3[(c >> (4 * 8)) & 0xFF] ^ t4[(c >> (6 * 8)) & 0xFF]
+    b += t4[(c >> (1 * 8)) & 0xFF] ^ t3[(c >> (3 * 8)) & 0xFF] ^ t2[(c >> (5 * 8)) & 0xFF] ^ t1[(c >> (7 * 8)) & 0xFF]
     b *= mul
     a &= 0xffffffffffffffff
     b &= 0xffffffffffffffff

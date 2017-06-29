@@ -86,7 +86,7 @@ class MD2(object):
         self.buf = []
         self.c = [0] * digest_size
         self.d = [0] * (3 * digest_size)
-        if (m != None):
+        if m != None:
             self.update(m)
 
     def update(self, m):
@@ -94,7 +94,7 @@ class MD2(object):
         # but also handle values of m which do not respond to len or indexing, eg byte iterators
         for ch in m:
             self.buf.append(ord(ch))
-            if (len(self.buf) == digest_size):
+            if len(self.buf) == digest_size:
                 self.updateblock(self.buf)
                 del self.buf[:]
 
@@ -142,7 +142,8 @@ def readchars(f):
     "Returns an iteration over the characters in a file."
     while True:
         b = f.read(1)
-        if (b == ""): return
+        if b == "":
+            return
         yield b
 
 

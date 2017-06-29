@@ -247,8 +247,6 @@ if __name__ == '__main__':
                             if q.lower().startswith("y"):
                                 match_found(verify_hash_type(h.strip(), least_likely=opt.displayLeastLikely), kind="else",
                                             all_types=opt.displayLeastLikely)
-                            else:
-                                pass
 
                 # Finish the benchmark test
                 if opt.runBenchMarkTest is True:

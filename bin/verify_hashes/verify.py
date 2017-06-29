@@ -105,8 +105,6 @@ def verify_hash_type(hash_to_verify, least_likely=False):
             return HASH_TYPE_REGEX[regex]
         elif regex.match(hash_to_verify) and not least_likely:
             return HASH_TYPE_REGEX[regex][0]
-        else:
-            pass
     error_msg = "Unable to find any algorithms to match the given hash. "
     error_msg += "If you feel this algorithm should be implemented make "
     error_msg += "an issue here: {}"

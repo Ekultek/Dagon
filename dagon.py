@@ -237,7 +237,7 @@ if __name__ == '__main__':
                         total_hahes = hashes.readlines()
                         LOGGER.info("Found a total of {} hashes to verify..".format(len(total_hahes)))
                         for h in total_hahes:
-                            print
+                            print("")
                             LOGGER.info("Analyzing hash: '{}'".format(h.strip()))
                             if opt.runInBatchMode is True:
                                 q = "y"

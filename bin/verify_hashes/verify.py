@@ -49,7 +49,7 @@ HASH_TYPE_REGEX = {
         ("shein256(224)", "skein512(224)", "haval224")
     ],
     build_re(40): [
-        ("sha1", "ripemd160", "sha1(sha1(pass))"),
+        ("sha1", "ripemd160", "sha1(sha1(pass))", "sha1(sha1(sha1(pass)))"),
         ("haval160", "tiger160", "has160",
          "skein256(160)", "skein512(160)", "dsa")
     ],
@@ -63,7 +63,7 @@ HASH_TYPE_REGEX = {
         ("tiger192", None),
         ("haval192", "sha1(oracle)", "xsha v10.4-v10.6")
     ],
-    re.compile(r"^\$[\w.]{1}\$\w+\$\S{22}$", re.IGNORECASE): [
+    re.compile(r"^\$\w+\$\w+(\$)?\w+(.)?$", re.IGNORECASE): [
         ("wordpress", None), ("Joomla", None)
     ],
     re.compile(r"^\$\d\w\$\d+\$\S{53}$", re.IGNORECASE): [

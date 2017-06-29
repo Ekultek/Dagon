@@ -236,9 +236,9 @@ if __name__ == '__main__':
                 elif opt.verifyHashList is not None:
                     with open(opt.verifyHashList) as hashes:
                         hashes.seek(0, 0)
-                        total_hahes = hashes.readlines()
-                        LOGGER.info("Found a total of {} hashes to verify..".format(len(total_hahes)))
-                        for h in total_hahes:
+                        total_hashes = hashes.readlines()
+                        LOGGER.info("Found a total of {} hashes to verify..".format(len(total_hashes)))
+                        for h in total_hashes:
                             print("")
                             LOGGER.info("Analyzing hash: '{}'".format(h.strip()))
                             if opt.runInBatchMode is True:

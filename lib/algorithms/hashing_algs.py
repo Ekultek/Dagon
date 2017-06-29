@@ -47,7 +47,7 @@ def oracle_10g(string, salt=None, iv="\0"*8, padding="\0", key="0123456789ABCDEF
 
       > :param string: string to hash
       > :param iv: IV for the encryption
-      > :param padding: padding for the ecnryption
+      > :param padding: padding for the encryption
       > :param key: cipher key
       > :return: a hashed password
 

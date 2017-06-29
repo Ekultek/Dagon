@@ -49,7 +49,7 @@ HASH_TYPE_REGEX = {
     ],
     build_re(56, suffix=""): [
         ("sha224", "sha3_224"),
-        ("shein256(224)", "skein512(224)", "haval224")
+        ("skein256(224)", "skein512(224)", "haval224")
     ],
     build_re(40): [
         ("sha1", "ripemd160", "sha1(sha1(pass))", "sha1(sha1(sha1(pass)))"),

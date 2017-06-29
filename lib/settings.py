@@ -224,7 +224,7 @@ def random_salt_generator(use_string=False, use_number=False, length=None, warni
         length = int(length)
 
     if length > 12:
-        LOGGER.warning("It is recommenced to keep salt length under 12 {} for faster hashing..".format(salt_type))
+        LOGGER.warning("It is recommended to keep salt length under 12 {} for faster hashing..".format(salt_type))
     salt = []
     placement = ["front", "back"]
     if not use_string and use_number is True:

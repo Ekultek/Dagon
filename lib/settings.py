@@ -143,8 +143,6 @@ def verify_python_version():  # and we're back :|
     if "2.7" not in current_py_version:
         LOGGER.debug("This application requires python 2.7.x to run.. "
                      "You currently have python version {} installed..".format(current_py_version))
-    else:
-        pass
 
 
 def show_banner():
@@ -343,9 +341,7 @@ def integrity_check(url="https://raw.githubusercontent.com/Ekultek/Dagon/master/
                     path="{}/md5sum/checksum.md5"):
     """ Check the integrity of the program """
     LOGGER.info("Checking program integrity...")
-    if open(path.format(os.getcwd())).read() == requests.get(url).text:
-        pass
-    else:
+    if open(path.format(os.getcwd())).read() != requests.get(url).text:
         checksum_fail = "MD5 sums did not match from origin master, "
         checksum_fail += "integrity check has failed, this could be because "
         checksum_fail += "there is a new version available. Please check "

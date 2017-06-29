@@ -72,9 +72,7 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
             err_msg += "the program will add +2 to the max length and try to create the wordlist again.."
             LOGGER.error(err_msg)
             q = prompt("Would you like to continue", "y/N")
-            if q .lower().startswith("y"):
-                pass
-            else:
+            if not q.lower().startswith("y"):
                 lib.truncate(0)
                 create_wordlist(max_word_length=max_length + 2, warning=False)
     LOGGER.info("Wordlist generated, words saved to: {}. Please re-run the application, exiting..".format(WORDLIST_NAME))
@@ -120,9 +118,7 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
             if WORDLIST_RE.match(item):
                 wordlist_created = True
                 wordlist = item
-        if wordlist_created is True:
-            pass
-        else:
+        if wordlist_created is False:
             LOGGER.info("Creating wordlist..")
             create_wordlist(perms=perms)
     else:

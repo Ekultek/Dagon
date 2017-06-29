@@ -20,7 +20,7 @@ from lib.settings import algorithm_pointers
 from lib.settings import show_hidden_banner
 from lib.settings import show_available_algs
 from lib.settings import random_salt_generator
-# from lib.settings import verify_python_version
+from lib.settings import verify_python_version
 from lib.settings import download_rand_wordlist
 from bin.verify_hashes.verify import verify_hash_type
 from bin.attacks.bruteforce.bf_attack import bruteforce_main
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     # Pay no attention to the _ it's required..
     opt, _ = parser.parse_args()
 
-    # verify_python_version() for now this is gonna be commented out
+    verify_python_version()  # need this again :|
 
     required_args = ["-c", "--crack",
                      "-l", "--hash-list",

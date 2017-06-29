@@ -501,27 +501,26 @@ class BLAKE(object):
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     # utility functions
 
-    def _fourByte2int(self, bytestr):  # see also long2byt() below
+    @staticmethod
+    def _fourByte2int(bytestr):  # see also long2byt() below
         """ convert a 4-byte string to an int (long) """
         return struct.unpack('!L', bytestr)[0]
 
-    def _eightByte2int(self, bytestr):
+    @staticmethod
+    def _eightByte2int(bytestr):
         """ convert a 8-byte string to an int (long long) """
         return struct.unpack('!Q', bytestr)[0]
 
-    def _int2fourByte(self, x):  # see also long2byt() below
+    @staticmethod
+    def _int2fourByte(x):  # see also long2byt() below
         """ convert a number to a 4-byte string, high order
             truncation possible (in Python x could be a BIGNUM)
         """
         return struct.pack('!L', x)
 
-    def _int2eightByte(self, x):
+    @staticmethod
+    def _int2eightByte(x):
         """ convert a number to a 8-byte string, high order
             truncation possible (in Python x could be a BIGNUM)
         """
         return struct.pack('!Q', x)
-
-
-        # ---------------------------------------------------------------
-        # ---------------------------------------------------------------
-        # ---------------------------------------------------------------

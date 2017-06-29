@@ -504,6 +504,33 @@ def sha1_sha1_pass(string, salt=None, front=False, back=False, **placeholder):
     return obj2.hexdigest()
 
 
+def sha1_sha1_sha1_pass(string, salt=None, **placeholder):
+    """
+      Create a SHA1 hash in a specific format sha1(sha1(sha1(pass))
+
+      > :param string: string to be hashed into the SHA1 format
+      > :return: a SHA1 hash in the above format
+
+      Example:
+        >>> sha1_sha1_sha1_pass("test")
+        b2c2a9ca41e220a80237ea3f484b92af0b7c7223
+        >>> sha1_sha1_sha1_pass("test", salt="4e33r5t5")
+        b2c2a9ca41e220a80237ea3f484b92af0b7c7223:4e33r5t5
+    """
+    obj1 = hashlib.sha1()
+    obj2 = hashlib.sha1()
+    obj3 = hashlib.sha1()
+    obj1.update(string)
+    first_hash = obj1.hexdigest()
+    obj2.update(first_hash)
+    second_hash = obj2.hexdigest()
+    obj3.update(second_hash)
+    if salt is None:
+        return obj3.hexdigest()
+    else:
+        return "{}:{}".format(obj3.hexdigest(), salt)
+
+
 def sha3_224(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a SHA3 224 hash from a given string

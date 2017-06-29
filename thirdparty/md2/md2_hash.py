@@ -124,22 +124,22 @@ class MD2(object):
 
 
 def new(m=None):
-    "Creates a new MD2 object, with an optional initial argument."
+    """Creates a new MD2 object, with an optional initial argument."""
     return MD2(m)
 
 
 def md2(m):
-    "Computes the MD2 digest of a message."
+    """Computes the MD2 digest of a message."""
     return MD2(m).digest()
 
 
 def md2h(m):
-    "Computes the MD2 digest of a message, and returns as a hex string."
+    """Computes the MD2 digest of a message, and returns as a hex string."""
     return MD2(m).hexdigest()
 
 
 def readchars(f):
-    "Returns an iteration over the characters in a file."
+    """Returns an iteration over the characters in a file."""
     while True:
         b = f.read(1)
         if (b == ""): return

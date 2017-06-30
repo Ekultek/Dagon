@@ -104,6 +104,8 @@ if __name__ == '__main__':
                     help="Display the version information and exit.")
     misc.add_option("--batch", action="store_true", dest="runInBatchMode",
                     help="Run in batch and skip the questions")
+    misc.add_option("--verbose", action="store_true", dest="runInVerbose",
+                    help="Run the application verbosely")
 
     parser.add_option_group(mandatory)
     parser.add_option_group(manipulation)
@@ -114,7 +116,7 @@ if __name__ == '__main__':
     # Pay no attention to the _ it's required..
     opt, _ = parser.parse_args()
 
-    verify_python_version()  # need this again :|
+    verify_python_version(verbose=opt.runInVerbose)  # need this again :|
 
     required_args = ["-c", "--crack",
                      "-l", "--hash-list",
@@ -134,7 +136,7 @@ if __name__ == '__main__':
         try:
             # Download a random wordlist
             if opt.downloadWordList is True:
-                download_rand_wordlist()
+                download_rand_wordlist(verbose=opt.runInVerbose)
                 exit(0)
 
             # Output all supported algorithms
@@ -167,7 +169,7 @@ if __name__ == '__main__':
             # If you provided an argument continue..
             if args_in_params > 0:
 
-                start_up()
+                start_up(verbose=opt.runInVerbose)
 
                 # Benchmark testing
                 if opt.runBenchMarkTest is True:
@@ -199,7 +201,7 @@ if __name__ == '__main__':
                     try:
                         bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse), wordlist=opt.wordListToUse,
                                         salt=salt, placement=placement, posx=opt.returnThisPartOfHash,
-                                        use_hex=opt.useHexCodeNotHash)
+                                        use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
                     except Exception as e:
                         LOGGER.fatal("{} failed with error code: '{}'".format(os.path.basename(__file__), e.message))
 
@@ -218,7 +220,7 @@ if __name__ == '__main__':
                                     bruteforce_main(hash_to_crack.strip(), algorithm=algorithm_pointers(opt.algToUse),
                                                     wordlist=opt.wordListToUse, salt=salt,
                                                     placement=placement, posx=opt.returnThisPartOfHash,
-                                                    use_hex=opt.useHexCodeNotHash)
+                                                    use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
 
                                     print("\n")
                     except Exception as e:
@@ -255,7 +257,7 @@ if __name__ == '__main__':
                     stop_time = time.time()
                     LOGGER.info("Time elapsed during benchmark test: {} seconds".format(stop_time - start_time))
 
-                shutdown()
+                shutdown(verbose=opt.runInVerbose)
 
             # You never provided a mandatory argument
             else:

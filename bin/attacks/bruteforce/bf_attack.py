@@ -41,7 +41,7 @@ def word_generator(length_min=7, length_max=15, perms=""):
         raise NotImplementedError("Permutations are not implemented yet.")
 
 
-def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms=""):
+def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms="", verbose=False):
     """
       Create a bruteforcing wordlist
 
@@ -58,6 +58,9 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
     warn_msg += "(IE: --bruteforce --wordlist ~/dicts/dict.txt)"
     if warning is True:
         LOGGER.warning(warn_msg)
+
+    if verbose is True:
+        LOGGER.debug("Creating {} words with a max length of {} characters".format(max_length, max_word_length))
 
     with open(WORDLIST_NAME, "a+") as lib:
         word = word_generator(length_max=max_word_length, perms=perms)
@@ -81,7 +84,7 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
     shutdown()
 
 
-def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx="", use_hex=False):
+def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx="", use_hex=False, verbose=False):
     """
       Hash the words and verify if they match or not
 
@@ -106,11 +109,13 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx
             tries += 1
 
             if verify_hash == hashed:
+                if verbose is True:
+                    LOGGER.debug("Testing against: {}".format(hashed))
                 return word.strip(), hashed, tries, algorithm
 
 
 def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, perms="", posx="",
-                    use_hex=False):
+                    use_hex=False, verbose=False):
     """
       Main function to be used for bruteforcing a hash
     """
@@ -122,7 +127,7 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                 wordlist = item
         if wordlist_created is False:
             LOGGER.info("Creating wordlist..")
-            create_wordlist(perms=perms)
+            create_wordlist(perms=perms, verbose=verbose)
     else:
         LOGGER.info("Reading from, {}..".format(wordlist))
 
@@ -150,7 +155,8 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                                  "again..".format(alg.upper()))
                     shutdown(1)
                 LOGGER.info("Starting bruteforce with {}..".format(alg.upper()))
-                bruteforcing = hash_words(verf_hash, wordlist, alg, salt=salt, placement=placement, posx=posx, use_hex=use_hex)
+                bruteforcing = hash_words(verf_hash, wordlist, alg, salt=salt, placement=placement, posx=posx,
+                                          use_hex=use_hex, verbose=verbose)
                 if bruteforcing is None:
                     LOGGER.warning("Unable to find a match for '{}', using {}..".format(verf_hash, alg.upper()))
                 else:
@@ -158,12 +164,13 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                     break
     else:
         LOGGER.info("Using algorithm, {}..".format(algorithm.upper()))
-        results = hash_words(verf_hash, wordlist, algorithm, salt=salt, placement=placement, posx=posx)
+        results = hash_words(verf_hash, wordlist, algorithm, salt=salt, placement=placement, posx=posx, verbose=verbose)
         if results is None:
             LOGGER.warning("Unable to find a match using {}..".format(algorithm.upper()))
             verify = prompt("Would you like to attempt to verify the hash type automatically and crack it", "y/N")
             if verify.lower().startswith("y"):
-                bruteforce_main(verf_hash, wordlist=wordlist, salt=salt, placement=placement, posx=posx, use_hex=use_hex)
+                bruteforce_main(verf_hash, wordlist=wordlist, salt=salt, placement=placement, posx=posx, use_hex=use_hex,
+                                verbose=verbose)
             else:
                 LOGGER.warning("Unable to produce a result for given hash '{}' using {}.. Exiting..".format(
                     verf_hash, algorithm.upper()))

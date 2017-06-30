@@ -29,7 +29,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.8.17.27"
+VERSION = "1.9.17.28"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -125,21 +125,30 @@ WORDLIST_LINKS = [
 ]
 
 
-def start_up():
+def start_up(verbose=False):
     """ Start the application """
-    print("\n[*] Starting up at {}..\n".format(time.strftime("%H:%M:%S")))
+    if verbose is False:
+        print("\n[*] Starting up at {}..\n".format(time.strftime("%H:%M:%S")))
+    else:
+        print("[*] Starting up at: {}..\n".format(str(time.time())))
 
 
-def shutdown(exit_key=0):
+def shutdown(exit_key=0, verbose=False):
     """ Shut down the application """
-    print('\n[*] Shutting down at {}..\n'.format(time.strftime("%H:%M:%S")))
-    exit(exit_key)
+    if verbose is False:
+        print('\n[*] Shutting down at {}..\n'.format(time.strftime("%H:%M:%S")))
+        exit(exit_key)
+    else:
+        print("\n[*] Shutting down at {}..\n".format(str(time.time())))
+        exit(exit_key)
 
 
-def verify_python_version():  # and we're back :|
+def verify_python_version(verbose=False):  # and we're back :|
     """
       Verify python version
     """
+    if verbose is True:
+        LOGGER.debug("Verifying what version of Python you have..")
     current_py_version = sys.version.split(" ")[0]
     if "2.7" not in current_py_version:
         LOGGER.debug("This application requires python 2.7.x to run.. "
@@ -178,7 +187,7 @@ def prompt(question, choices):
         return input("[{} PROMPT] {}[{}]: ".format(time.strftime("%H:%M:%S"), question, choices))
 
 
-def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS)):
+def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS), verbose=False):
     """
       Download a random wordlist from some wordlists I have laying around
 
@@ -189,10 +198,14 @@ def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS)):
     with open("{}.txt".format(filename), "a+") as wordlist:
         response = requests.get(base64.b64decode(b64link), stream=True)
         total_length = response.headers.get('content-length')
+        if verbose is True:
+            LOGGER.debug("Content length to be downloaded: {}..".format(total_length))
         if total_length is None:
             wordlist.write(response.content)
         else:
             start = time.time()
+            if verbose is True:
+                LOGGER.debug("Starting download at {}..".format(start))
             downloaded = 0
             total_length = int(total_length)
             for data in response.iter_content(chunk_size=1024):

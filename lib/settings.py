@@ -29,7 +29,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.9.17.28"
+VERSION = "1.9.17.29"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -323,15 +323,14 @@ def show_available_algs(show_all=False, supp="+", not_yet="-", spacer1=" "*5, sp
     """ Show all algorithms available in the program """
     being_worked_on = [
         "wordpress", "scrypt", "sha2",
-        "dsa", "mssql 2000", "crc64",
-        "haval160", "tiger160"
+        "dsa", "crc64", "haval160",
+        "tiger160"
     ]
     misc_info_msg = "There are currently {} supported algorithms in Dagon. "
     misc_info_msg += "To suggest the creation of a new algorithm please go "
     misc_info_msg += "make an issue here {}"
     LOGGER.info(misc_info_msg.format(len(IDENTIFICATION), DAGON_ISSUE_LINK))
-    print("\n{}ID#{}Alg:".format(spacer1, spacer2))
-    print("{}---{}----".format(spacer1, spacer2))
+    print("\n{space1}ID#{space2}Alg:\n{space1}---{space2}----".format(space1=spacer1, space2=spacer2))
     for item in sorted(IDENTIFICATION.keys()):
         print("\033[94m[{}]\033[0m  {}   {}".format(supp, item, IDENTIFICATION[item].upper()))
     if show_all is True:

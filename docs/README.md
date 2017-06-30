@@ -81,45 +81,55 @@ You can also change the salt size, because hey, who uses 12 character salts anym
 
 ### Algorithms available and ID numbers
 
-#### Algorithms currently available
+#### Currently supported hash types
 
- - MD5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 100
- - MD2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 110
- - MD4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 120
- - Blake224&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 200
- - Blake256&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 210
- - Blake384&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 220 
- - Blake512&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 230
- - SHA1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 300
- - SHA224&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 310
- - SHA256&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 320
- - SHA384&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 330
- - SHA512&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 340
- - SHA3 224&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 400
- - SHA3 256&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 410
- - SHA3 384&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 420
- - SHA3 512&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 430
- - Blowfish&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 500
- - MySQL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 510
- - Oracle 11g&nbsp;&nbsp;&nbsp;> 520
- - Oracle 10g&nbsp;&nbsp;&nbsp;> 530
- - Ripemd-160&nbsp;> 600
- - Tiger192&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 700
- - Whirlpool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 800
- - CRC32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 900
- - NTLM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 1000
+
+|Algorithm  |ID  |
+|-----------|----|
+|MD5        |100 |
+|MD2        |110 |
+|MD4        |120 |
+|Blake-224  |200 |
+|Blake-256  |210 |
+|Blake-384  |220 |
+|Blake-512  |230 |
+|SHA-1      |300 |
+|SHA-224    |310 |
+|SHA-256    |320 |
+|SHA-384    |330 |
+|SHA-512    |340 |
+|SHA3-224   |400 |
+|SHA3-256   |410 |
+|SHA3-384   |420 |
+|SHA3-512   |430 |
+|Blowfish   |500 |
+|MySQL      |510 |
+|Oracle 11g |520 |
+|Oracle 10g |530 |
+|MsSQL 2005 |540 |
+|PostgreSQL |550 |
+|MsSQL 2000 |560 |
+|Ripemd-160 |600 |
+|Tiger-192  |700 |
+|Whirlpool  |800 |
+|CRC-32     |900 |
+|NTLM       |1000|
+
  
 #### Special algorithms currently available
 
- - MD5(MD5(pass)+MD5(salt))&nbsp;> 130
- - MD5(MD5(pass))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 131
- - MD5(MD5(MD5(pass)))<:SALT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 134
- - Half MD5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 132
- - MD5(salt+pass+salt)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 133
- - HALF SHA1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 351
- - SHA1(SHA1(pass))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 352
- - SHA1(SHA1(SHA1(pass)))<:SALT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 354
- - SSHA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> 353
+|Algorithm                            |ID |
+|-------------------------------------|---|
+|MD5(MD5(**pass**)+MD5(_salt_))       |130|
+|MD5(MD5(**pass**))                   |131|
+|Half MD5                             |132|
+|MD5(_salt_+**pass**+_salt_)          |133|
+|MD5(MD5(MD5(pass)))_:salt_           |134|
+|Half SHA-1                           |351|
+|SHA-1(SHA-1(**pass**))               |352|
+|SSHA                                 |353|
+|SHA-1(SHA-1(SHA-1(pass)))_:salt_     |354|
+
 
 #### Algorithms in the process of being created
 
@@ -131,6 +141,6 @@ You can also change the salt size, because hey, who uses 12 character salts anym
 ## Shout out to contributors
 
  - 4w4k3 (Alisson Moretto)
-     The creator of Insanity Framework. Thank you for being an all around badass. When you get a chance go check out the repo's: https://github.com/4w4k3
+     - The creator of Insanity Framework. Thank you for being an all around badass. When you get a chance go check out the repo's: https://github.com/4w4k3
  - delirious-lettuce
-     Multiple pull requests in a one day span, straight badass and deserves everything good in the world
+     - Multiple pull requests in a one day span, straight badass and deserves everything good in the world

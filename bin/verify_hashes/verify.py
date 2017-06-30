@@ -6,6 +6,7 @@ from lib.settings import (
     shutdown
 )
 
+
 # Has to be the first function so I can use it in the regex
 def build_re(hex_len, prefix=r"", suffix=r"(:.+)?"):
     regex_string = r"^{}[a-f0-9]{{{}}}{}$".format(prefix, hex_len, suffix)
@@ -56,8 +57,8 @@ HASH_TYPE_REGEX = {
         ("haval160", "tiger160", "has160",
          "skein256(160)", "skein512(160)", "dsa")
     ],
-    build_re(96, suffix=""): [
-        ("sha384", "sha3_384"), ("skein512(384)", "skein1024(384")
+    build_re(96, suffix="", prefix="(0x0100)?"): [
+        ("sha384", "sha3_384", "mssql 2000"), ("skein512(384)", "skein1024(384")
     ],
     build_re(40, prefix=r"\*", suffix=""):  [
         ("mysql 5.x", "mysql 4.1"), (None, None)

@@ -123,6 +123,29 @@ def postgres(string, salt=None, **placeholder):
     return "md5{}".format(data)
 
 
+def mssql_2000(string, salt=None, **placeholder):
+    """
+      Create a MsSQL 2000 hash from a given string, if no salt is given, random salt will be generated
+
+      > :param string: the string to hash
+      > :return: a MsSQL 2000 hash
+
+      Example
+        >>> mssql_2000("testpass", salt="testsalt")
+        0x01007465737473616C74C74B43A2862ECC89C7F94E02583583377F03977A11E46AC5D5F599D31D0D6078958AF1D73C64FEA9
+    """
+    obj1 = hashlib.sha1()
+    obj2 = hashlib.sha1()
+    if salt is None:
+        salt = lib.settings.random_salt_generator(use_string=True)[0]
+    crypt_salt = salt.encode("hex")
+    data_string = "".join(map(lambda s: ("%s\0" if ord(s) < 256 else "%s") % s.encode("utf8"), string))
+    obj1.update(data_string + crypt_salt)
+    obj2.update(data_string.upper() + salt)
+    hash_val = "0100{}{}{}".format(crypt_salt, obj1.hexdigest(), obj2.hexdigest())
+    return "0x{}".format(hash_val.upper())
+
+
 def mssql_2005(string, salt=None, **placeholder):
     """
       Create an MsSQL 2005 hash, if not salt is given, salt will be created
@@ -827,10 +850,6 @@ def dsa(string, salt=None, front=False, back=False, **placeholder):
 
 def wordpress(string, salt=None, itoa64="./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", **placeholder):
     raise NotImplementedError("Wordpress hashes are not implemented yet.")
-
-
-def mssql_2000(string, salt=None, **placeholder):
-    raise NotImplementedError("MsSQL 2000 hashes are not implemented yet.")
 
 
 def crc64(string, salt=None, front=False, back=False, use_hex=False, **placeholder):

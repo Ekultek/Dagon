@@ -178,12 +178,13 @@ def prompt(question, choices):
         return input("[{} PROMPT] {}[{}]: ".format(time.strftime("%H:%M:%S"), question, choices))
 
 
-def download_rand_wordlist(b64link=random.choice(WORDLIST_LINKS)):
+def download_rand_wordlist():
     """
       Download a random wordlist from some wordlists I have laying around
 
       > :param b64link: a base64 encoded wordlist link
     """
+    b64link = random.choice(WORDLIST_LINKS)
     filename = "Download-" + random_salt_generator(use_string=True)[0]
     LOGGER.info("Beginning download..")
     with open("{}.txt".format(filename), "a+") as wordlist:

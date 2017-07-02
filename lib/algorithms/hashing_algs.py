@@ -85,7 +85,7 @@ def oracle_11g(string, salt=None, **placeholder):
     return "s:{}{}".format(obj.hexdigest(), salt.encode("hex")).upper()
 
 
-def blowfish_hash(string, salt=None, front=False, back=False):
+def blowfish_hash(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a Blowfish hash using passlib
 

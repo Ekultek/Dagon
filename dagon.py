@@ -266,4 +266,5 @@ if __name__ == '__main__':
 
         # Why you gotta interrupt my awesome?
         except KeyboardInterrupt:
-            LOGGER.fatal("User aborted sequence..")
+            LOGGER.fatal("User exited process...")
+            # TODO:/ Pause/resume function

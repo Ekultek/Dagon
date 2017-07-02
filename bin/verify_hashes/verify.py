@@ -103,17 +103,11 @@ def verify_hash_type(hash_to_verify, least_likely=False, verbose=False):
         >>> verify_hash_type("098f6bcd4621d373cade4e832627b4f6", least_likely=True)
         [('md5', 'md4', 'md2'), ('double md5', 'lm', ... )]
     """
-    for regex in HASH_TYPE_REGEX:
-        if verbose is True:
-            LOGGER.debug("Testing: {}".format(HASH_TYPE_REGEX[regex]))
-        if regex.match(hash_to_verify) and least_likely:
-            if verbose is True:
-                LOGGER.debug("Testing: {}".format(HASH_TYPE_REGEX[regex]))
-            return HASH_TYPE_REGEX[regex]
-        elif regex.match(hash_to_verify) and not least_likely:
-            if verbose is True:
-                LOGGER.debug("Testing: {}".format(HASH_TYPE_REGEX[regex]))
-            return HASH_TYPE_REGEX[regex][0]
+    for regex, hash_types in HASH_TYPE_REGEX.iteritems():
+        if verbose:
+            LOGGER.debug("Testing: {}".format(hash_types))
+        if regex.match(hash_to_verify):
+            return hash_types if least_likely else hash_types[0]
     error_msg = "Unable to find any algorithms to match the given hash. "
     error_msg += "If you feel this algorithm should be implemented make "
     error_msg += "an issue here: {}"

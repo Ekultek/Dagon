@@ -32,7 +32,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.10.19.33"
+VERSION = "1.10.19.34"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -107,28 +107,6 @@ IDENTIFICATION = {
 }
 # Regular expression to see if you already have a bruteforce wordlist created
 WORDLIST_RE = re.compile("Dagon-bfdict-[a-zA-Z]{7}.txt")
-# Wordlist links
-WORDLIST_LINKS = [
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2FhODgyMDk5ZWQxYzNlZjAwNWYzYWY2ZjhmYmFhZTExL3Jhdy84ODQ4NjBhNjAzZWQ0MjE3MTgyN2E1MmE3M2VjNzAzMjNhOGExZWY5L2dpc3RmaWxlMS50eHQ=',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzAwNWU3OWQ2NmU2MzA2YWI0MzZjOGJmYTc1ZTRiODMwL3Jhdy8xNjY5YjNjMDFmMjRhM2Q2OTMwZDNmNDE1Mjk3ZTg5OGQ1YjY2NGUzL29wZW53YWxsXzMudHh0',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzE4NTBmM2EwZGNjNDE0YWZlOGM3NjYyMjBlOTYxYjE4L3Jhdy9iYWQ0NTA0NjcwY2FmM2UxNDY1NWI2ZjJlZGQ0MjJmOTJjMzI2MWI5L215c3BhY2UudHh0',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzBkYWU2YTI5MjgzMjcyNmE2Y2MyN2VlNmVjOTdmMTFjL3Jhdy84MWFkOWFkOWUwZjQxMmY2YjIwMTM3MDI2NDcxZGRmNDJlN2JjMjkyL2pvaG4udHh0',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2Q4ZjZiYjE2MGEzYzY2YzgyNWEwYWY0NDdhMDM1MDVhL3Jhdy83MWI4NmM5MGU3NDRkZjM0YzY3ODFjM2U0MmFjMThkOGM4ZjdkYjNlL2NhaW4udHh0',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2JmM2MwYjQwMTVlYzlkMzY4YzBlNTczNzQ0MTAzYmU1L3Jhdy9lNzBhMThmOTUwNGYwZmMyYjRhMWRmN2M0Mjg2YjcyOWUyMzQ5ODljL29wZW53YWxsXzIudHh0',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzQ1ZTExZDBhMzNjZGE1YjM3NDM5OGYyMDgxYjEwZWZiL3Jhdy8wNzQ1ZGMzNjFlZDU5NjJiMjNkYjUxM2FkOWQyOTNlODk0YjI0YTY0L2RjLnR4dA==',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzNmMzcxMWUzMDdlOGM0ZTM0MDkzYzI1OGFkN2UzZWZkL3Jhdy9hMjNiYmM3YTgxNTZhOGU5NTU3NmViYTA3MmIwZDg4ZTJmYjk1MzZiL2dtYWlsXzIudHh0',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2U3MzE4MGM3MGZmMzY3NDFhM2M4NzIzMDZiNTFhOTU1L3Jhdy9jODE0YjFjOTZiNGJkYzZlYTRlZDE3MmMzNDIwOTg2NTBjOTcyYWZjL2J0NC50eHQ=',
-    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2JlcnplcmswL1Byb2JhYmxlLVdvcmRsaXN0cy9tYXN0ZXIvRGljdGlvbmFyeS1TdHlsZS9NYWluRW5nbGlzaERpY3Rpb25hcnkudHh0',
-    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvdHdpdHRlci1iYW5uZWQudHh0',
-    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvdHVzY2wudHh0',
-    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvMTBfbWlsbGlvbl9wYXNzd29yZF9saXN0X3RvcF8xMDAwMDAwLnR4dA==',
-    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvTGl6YXJkX1NxdWFkLnR4dA==',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrLzZjNTEzNzdhMzM5YzM4YTdiMDIwMjc3NGYyOWQ5MWUyL3Jhdy82MWM1Y2I2NWNkMTljMmI4YjNkYmY4N2EzOTFkN2NkNzcxYjZjZTljL2V4YW1wbGUuZGljdA==',
-    'aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9Fa3VsdGVrL2Q0ODc4NWNhODAxMjcwZjc3MzI3NzY1ZDI0Y2Y2MWM4L3Jhdy9iOTg3N2ZjYmVhZGEyMjNjM2I1ZmRhMGJmNWI4YmFiMzBmNmNhNGE0L2dkaWN0LnR4dA==',
-    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvMTBfbWlsbGlvbl9wYXNzd29yZF9saXN0X3RvcF8xMDAwMDAwLnR4dA==',
-    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvTW9zdFBvcHVsYXJMZXR0ZXJQYXNzZXMudHh0',
-    'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RhbmllbG1pZXNzbGVyL1NlY0xpc3RzL21hc3Rlci9QYXNzd29yZHMvS2V5Ym9hcmRDb21iaW5hdGlvbnMudHh0'
-]
 
 
 def start_up(verbose=False):
@@ -212,47 +190,50 @@ def prompt(question, choices):
 
 def download_rand_wordlist(verbose=False, multi=1):
     """
-      Download a random wordlist from some wordlists I have laying around
+      Download a random wordlist from some wordlist_links I have laying around
 
       > :param b64link: a base64 encoded wordlist link
     """
-    if multi == 1:
-        b64link = random.choice(WORDLIST_LINKS)
-        filename = "Download-" + random_salt_generator(use_string=True)[0]
-        LOGGER.info("Beginning download..")
-        with open("{}.txt".format(filename), "a+") as wordlist:
-            response = requests.get(base64.b64decode(b64link), stream=True)
-            total_length = response.headers.get('content-length')
-            if verbose:
-                LOGGER.debug("Content length to be downloaded: {}..".format(convert_file_size(int(total_length))))
-                LOGGER.debug("Wordlist link downloading from: '{}'..".format(b64link))
-            if total_length is None:
-                wordlist.write(response.content)
-            else:
-                start = time.time()
+    with open("{}/lib/data_files/wordlist_links".format(os.getcwd())) as wordlist_links:
+        if multi == 1:
+            b64link = random.choice(wordlist_links.readlines())
+            filename = "Download-" + random_salt_generator(use_string=True)[0]
+            LOGGER.info("Beginning download..")
+            with open("{}.txt".format(filename), "a+") as wordlist:
+                response = requests.get(base64.b64decode(b64link.strip()), stream=True)
+                total_length = response.headers.get('content-length')
                 if verbose:
-                    LOGGER.debug("Starting download at {}..".format(start))
-                downloaded = 0
-                total_length = int(total_length)
-                for data in response.iter_content(chunk_size=1024):
-                    downloaded += len(data)
-                    wordlist.write(data)
-                    done = int(50 * downloaded / total_length)
-                    sys.stdout.write("\r[\033[93m{}\033[0m{}]".format("#" * done, " " * (50-done)))
-                    sys.stdout.flush()
-        print("")
-        LOGGER.info("Download complete, saved under: {}.txt. Time elapsed: {}s".format(filename, time.time() - start))
-    else:
-        if multi <= len(WORDLIST_LINKS):
-            for _ in range(int(multi)):
-                LOGGER.info("Downloading wordlist #{}..".format(_ + 1))
-                download_rand_wordlist(verbose=verbose)
+                    LOGGER.debug("Content length to be downloaded: {}..".format(convert_file_size(int(total_length))))
+                    LOGGER.debug("Wordlist link downloading from: '{}'..".format(b64link.strip()))
+                if total_length is None:
+                    wordlist.write(response.content)
+                else:
+                    start = time.time()
+                    if verbose:
+                        LOGGER.debug("Starting download at {}..".format(start))
+                    downloaded = 0
+                    total_length = int(total_length)
+                    for data in response.iter_content(chunk_size=1024):
+                        downloaded += len(data)
+                        wordlist.write(data)
+                        done = int(50 * downloaded / total_length)
+                        sys.stdout.write("\r[\033[93m{}\033[0m{}]".format("#" * done, " " * (50-done)))
+                        sys.stdout.flush()
+            print("")
+            LOGGER.info("Download complete, saved under: {}.txt. Time elapsed: {}s".format(filename, time.time() - start))
         else:
-            LOGGER.fatal(
-                "There are currently {} wordlists available for download, and you "
-                "have chose to download {}. Seeing as there aren't that many right now "
-                "this download will fail, try again with a smaller number..".format(len(WORDLIST_LINKS), multi)
-            )
+            if multi <= len(wordlist_links.readlines()):
+                for _ in range(int(multi)):
+                    LOGGER.info("Downloading wordlist #{}..".format(_ + 1))
+                    download_rand_wordlist(verbose=verbose)
+            else:
+                wordlist_links.seek(0)
+                LOGGER.fatal(
+                    "There are currently {} wordlist_links available for download, and you "
+                    "have chose to download {}. Seeing as there aren't that many right now "
+                    "this download will fail, try again with a smaller number..".format(len(wordlist_links.readlines()),
+                                                                                        multi)
+                )
 
 
 def random_salt_generator(use_string=False, use_number=False, length=None, warning=True):

@@ -31,7 +31,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.9.19.31"
+VERSION = "1.10.19.32"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -71,7 +71,7 @@ FUNC_DICT = {
     "half sha1": half_sha1, "sha1(sha1(pass))": sha1_sha1_pass, "ssha": ssha,
     "sha1(sha1(sha1(pass)))": sha1_sha1_sha1_pass,
     "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
-    "whirlpool": whirlpool, "crc32": crc32, "ntlm": ntlm, "windows local (ntlm)": ntlm,
+    "whirlpool": whirlpool, "crc32": crc32, "ntlm": ntlm, "windows local (ntlm)": ntlm, "crc64": crc64,
     "tiger192": tiger192
 }
 # Identity numbers
@@ -102,7 +102,7 @@ IDENTIFICATION = {
     700: "tiger192",
 
     # Other
-    800: "whirlpool", 900: "crc32", 1000: "ntlm"
+    800: "whirlpool", 900: "crc32", 1000: "ntlm", 1100: "crc64"
 }
 # Regular expression to see if you already have a bruteforce wordlist created
 WORDLIST_RE = re.compile("Dagon-bfdict-[a-zA-Z]{7}.txt")
@@ -344,8 +344,7 @@ def show_available_algs(show_all=False, supp="+", not_yet="-", spacer1=" "*5, sp
     """ Show all algorithms available in the program """
     being_worked_on = [
         "wordpress", "scrypt", "sha2",
-        "dsa", "crc64", "haval160",
-        "tiger160"
+        "dsa", "haval160", "tiger160"
     ]
     misc_info_msg = (
         "There are currently {} supported algorithms in Dagon. To "

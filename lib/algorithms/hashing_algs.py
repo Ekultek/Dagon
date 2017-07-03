@@ -13,6 +13,7 @@ from thirdparty.md2 import md2_hash
 from thirdparty.tiger import tiger
 
 import lib
+from custom import _crc64 as _crc64
 
 
 def mysql_hash(string, salt=None, front=False, back=False, **placeholder):
@@ -819,6 +820,32 @@ def crc32(string, salt=None, front=False, back=False, use_hex=False, **placehold
         return long_int
 
 
+def crc64(string, salt=None, front=False, back=False, use_hex=False, **placeholder):
+    """
+      Create a CRC64 hash from a given string
+
+      > :param string: string to be hashed
+      > :return: a CRC64 hash
+
+      Example:
+        >>> crc64("test")
+        bf3d60cae58eeb8e
+        >>> crc64("test", use_hex=True)
+        0xbf3d60cae58eeb8eL
+    """
+    if salt is not None and front and not back:
+        long_int = _crc64.crc64(salt + string)
+    elif salt is not None and back and not front:
+        long_int = _crc64.crc64(string + salt)
+    else:
+        long_int = _crc64.crc64(string)
+
+    if not use_hex:
+        return str(hex(long_int))[2:-1]
+    else:
+        return long_int
+
+
 def ntlm(string, **placeholder):
     """
       Create an NTLM hash, identical to the one used in Windows protocol
@@ -850,10 +877,6 @@ def dsa(string, salt=None, front=False, back=False, **placeholder):
 
 def wordpress(string, salt=None, itoa64="./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", **placeholder):
     raise NotImplementedError("Wordpress hashes are not implemented yet.")
-
-
-def crc64(string, salt=None, front=False, back=False, use_hex=False, **placeholder):
-    raise NotImplementedError("CRC64 hashes are not implemented yet.")
 
 
 def haval160(string, salt=None, front=False, back=False, **placeholder):

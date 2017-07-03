@@ -5,6 +5,7 @@ import re
 import string
 import sys
 import time
+import math
 
 import requests
 from colorlog import ColoredFormatter
@@ -31,7 +32,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.10.19.32"
+VERSION = "1.10.19.33"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -148,6 +149,23 @@ def shutdown(exit_key=0, verbose=False):
         exit(exit_key)
 
 
+def convert_file_size(byte_size, magic_num=1024):
+    """
+      Convert a integer to a file size (B, KB, MB, etc..)
+      > :param byte_size: integer that is the amount of data in bytes
+      > :param magic_num: the magic number that makes everything work, 1024
+      > :return: the amount of data in bytes, kilobytes, megabytes, etc..
+    """
+    if byte_size == 0:
+        return "0B"
+    # Probably won't need more then GB, but still it's good to have
+    size_data_names = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    floored = int(math.floor(math.log(byte_size, magic_num)))
+    pow_data = math.pow(magic_num, floored)
+    rounded_data = round(byte_size / pow_data, 2)
+    return "{}{}".format(rounded_data, size_data_names[floored])
+
+
 def verify_python_version(verbose=False):  # and we're back :|
     """
       Verify python version
@@ -206,7 +224,7 @@ def download_rand_wordlist(verbose=False, multi=1):
             response = requests.get(base64.b64decode(b64link), stream=True)
             total_length = response.headers.get('content-length')
             if verbose:
-                LOGGER.debug("Content length to be downloaded: {}(bytes)..".format(total_length))
+                LOGGER.debug("Content length to be downloaded: {}..".format(convert_file_size(int(total_length))))
                 LOGGER.debug("Wordlist link downloading from: '{}'..".format(b64link))
             if total_length is None:
                 wordlist.write(response.content)

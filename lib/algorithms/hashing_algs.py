@@ -583,6 +583,90 @@ def sha1_sha1_sha1_pass(string, salt=None, **placeholder):
         return "{}:{}".format(obj3.hexdigest(), salt)
 
 
+def sha224(string, salt=None, front=False, back=False, **placeholder):
+    """
+       Create a SHA224 hash from a given string
+
+      > :param string: string to be hashed
+      > :return: an SHA224 hash
+
+      Example:
+        >>> sha224("test")
+        90a3ed9e32b2aaf4c61c410eb925426119e1a9dc53d4286ade99a809
+    """
+    obj = hashlib.sha224()
+    if salt is not None and front and not back:
+        obj.update(salt + string)
+    elif salt is not None and back and not front:
+        obj.update(string + salt)
+    else:
+        obj.update(string)
+    return obj.hexdigest()
+
+
+def sha256(string, salt=None, front=False, back=False, **placeholder):
+    """
+      Create an SHA256 hash from a given string
+
+      > :param string: string to be hashed
+      > :return: a SHA256 hash
+
+      Example:
+        >>> sha256("test")
+        9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+    """
+    obj = hashlib.sha256()
+    if salt is not None and front and not back:
+        obj.update(salt + string)
+    elif salt is not None and back and not front:
+        obj.update(string + salt)
+    else:
+        obj.update(string)
+    return obj.hexdigest()
+
+
+def sha384(string, salt=None, front=False, back=False, **placeholder):
+    """
+      Create an SHA384 hash from a given string
+
+      > :param string:
+      > :return:
+
+      Example:
+        >>> sha384("test")
+        768412320f7b0aa5812fce428dc4706b3cae50e02a64caa16a782249bfe8efc4b7ef1ccb126255d196047dfedf17a0a9
+    """
+    obj = hashlib.sha384()
+    if salt is not None and front and not back:
+        obj.update(salt + string)
+    elif salt is not None and back and not front:
+        obj.update(string + salt)
+    else:
+        obj.update(string)
+    return obj.hexdigest()
+
+
+def sha512(string, salt=None, front=False, back=False, **placeholder):
+    """
+      Create an SHA512 hash from a given string
+
+      > :param string: string to be hashed
+      > :return: an SHA512 hash
+
+      Example:
+        >>> sha512("test")
+        ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff
+    """
+    obj = hashlib.sha512()
+    if salt is not None and front and not back:
+        obj.update(salt + string)
+    elif salt is not None and back and not front:
+        obj.update(string + salt)
+    else:
+        obj.update(string)
+    return obj.hexdigest()
+
+
 def sha3_224(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a SHA3 224 hash from a given string
@@ -659,90 +743,6 @@ def sha3_512(string, salt=None, front=False, back=False, **placeholder):
         9ece086e9bac491fac5c1d1046ca11d737b92a2b2ebd93f005d7b710110c0a678288166e7fbe796883a4f2e9b3ca9f484f521d0ce464345cc1aec96779149c14
     """
     obj = sha3.sha3_512()
-    if salt is not None and front and not back:
-        obj.update(salt + string)
-    elif salt is not None and back and not front:
-        obj.update(string + salt)
-    else:
-        obj.update(string)
-    return obj.hexdigest()
-
-
-def sha224(string, salt=None, front=False, back=False, **placeholder):
-    """
-       Create a SHA224 hash from a given string
-
-      > :param string: string to be hashed
-      > :return: an SHA224 hash
-
-      Example:
-        >>> sha224("test")
-        90a3ed9e32b2aaf4c61c410eb925426119e1a9dc53d4286ade99a809
-    """
-    obj = hashlib.sha224()
-    if salt is not None and front and not back:
-        obj.update(salt + string)
-    elif salt is not None and back and not front:
-        obj.update(string + salt)
-    else:
-        obj.update(string)
-    return obj.hexdigest()
-
-
-def sha256(string, salt=None, front=False, back=False, **placeholder):
-    """
-      Create an SHA256 hash from a given string
-
-      > :param string: string to be hashed
-      > :return: a SHA256 hash
-
-      Example:
-        >>> sha256("test")
-        9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
-    """
-    obj = hashlib.sha256()
-    if salt is not None and front and not back:
-        obj.update(salt + string)
-    elif salt is not None and back and not front:
-        obj.update(string + salt)
-    else:
-        obj.update(string)
-    return obj.hexdigest()
-
-
-def sha384(string, salt=None, front=False, back=False, **placeholder):
-    """
-      Create an SHA384 hash from a given string
-
-      > :param string:
-      > :return:
-
-      Example:
-        >>> sha384("test")
-        768412320f7b0aa5812fce428dc4706b3cae50e02a64caa16a782249bfe8efc4b7ef1ccb126255d196047dfedf17a0a9
-    """
-    obj = hashlib.sha384()
-    if salt is not None and front and not back:
-        obj.update(salt + string)
-    elif salt is not None and back and not front:
-        obj.update(string + salt)
-    else:
-        obj.update(string)
-    return obj.hexdigest()
-
-
-def sha512(string, salt=None, front=False, back=False, **placeholder):
-    """
-      Create an SHA512 hash from a given string
-
-      > :param string: string to be hashed
-      > :return: an SHA512 hash
-
-      Example:
-        >>> sha512("test")
-        ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff
-    """
-    obj = hashlib.sha512()
     if salt is not None and front and not back:
         obj.update(salt + string)
     elif salt is not None and back and not front:

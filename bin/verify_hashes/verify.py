@@ -108,8 +108,8 @@ def verify_hash_type(hash_to_verify, least_likely=False, verbose=False):
             LOGGER.debug("Testing: {}".format(hash_types))
         if regex.match(hash_to_verify):
             return hash_types if least_likely else hash_types[0]
-    error_msg = "Unable to find any algorithms to match the given hash. "
-    error_msg += "If you feel this algorithm should be implemented make "
-    error_msg += "an issue here: {}"
+    error_msg = (
+        "Unable to find any algorithms to match the given hash. If you "
+        "feel this algorithm should be implemented make an issue here: {}")
     LOGGER.fatal(error_msg.format(DAGON_ISSUE_LINK))
     shutdown(1)

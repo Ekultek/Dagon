@@ -1,5 +1,7 @@
 #! usr/bin/env python
 
+from __future__ import print_function
+
 import optparse
 import os
 import random
@@ -84,6 +86,8 @@ if __name__ == '__main__':
                                       help=optparse.SUPPRESS_HELP)
     dictionary_attack_opts.add_option("--download", dest="downloadWordList", action="store_true",
                                       help="Download a random wordlist")
+    dictionary_attack_opts.add_option("--download-x", dest="downloadMultiple", metavar="AMOUNT", type=int,
+                                      help="Download multiple wordlists at a time")
 
     # Misc arguments that you can give to the program
     misc = optparse.OptionGroup(parser, "Miscellaneous arguments",
@@ -135,8 +139,9 @@ if __name__ == '__main__':
     else:
         try:
             # Download a random wordlist
-            if opt.downloadWordList:
-                download_rand_wordlist(verbose=opt.runInVerbose)
+            if opt.downloadWordList or opt.downloadMultiple:
+                download_rand_wordlist(verbose=opt.runInVerbose,
+                                       multi=opt.downloadMultiple if opt.downloadMultiple is not None else 1)
                 exit(0)
 
             # Output all supported algorithms

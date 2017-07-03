@@ -50,12 +50,13 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
       > :param warning: output the warning message to say that BF'ing sucks
       > :return: a wordlist
     """
-    warn_msg = "It is highly advised to use a dictionary attack over bruteforce. "
-    warn_msg += "Bruteforce requires extreme amounts of memory to accomplish and "
-    warn_msg += "it is possible that it could take a lifetime to successfully crack "
-    warn_msg += "your hash. To run a dictionary attack all you need to do is pass "
-    warn_msg += "the wordlist switch ('--wordlist PATH') with the path to your wordlist. "
-    warn_msg += "(IE: --bruteforce --wordlist ~/dicts/dict.txt)"
+    warn_msg = (
+        "It is highly advised to use a dictionary attack over bruteforce. "
+        "Bruteforce requires extreme amounts of memory to accomplish and "
+        "it is possible that it could take a lifetime to successfully "
+        "crack your hash. To run a dictionary attack all you need to do is"
+        " pass the wordlist switch ('--wordlist PATH') with the path to "
+        "your wordlist. (IE: --bruteforce --wordlist ~/dicts/dict.txt)")
     if warning:
         LOGGER.warning(warn_msg)
 
@@ -72,9 +73,12 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
         except StopIteration:
             # if we run out of mutations we'll retry with a different word length
             lib.seek(0, 0)
-            err_msg = "Ran out of mutations at {} mutations. You can try upping the max length ".format(len(lib.readlines()))
-            err_msg += "or just use what was processed. If you make the choice not to continue "
-            err_msg += "the program will add +2 to the max length and try to create the wordlist again.."
+            err_msg = (
+                "Ran out of mutations at {} mutations. You can try upping "
+                "the max length or just use what was processed. If you "
+                "make the choice not to continue the program will add +2 "
+                "to the max length and try to create the wordlist again.."
+            ).format(len(lib.readlines()))
             LOGGER.error(err_msg)
             q = prompt("Would you like to continue", "y/N")
             if not q.lower().startswith("y"):
@@ -139,11 +143,13 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                                                                               hash_type))
         for alg in hash_type:
             if alg is None:
-                err_msg = "Ran out of algorithms to try. There are no more algorithms "
-                err_msg += "currently available that match this hashes length, and complexity. "
-                err_msg += "Please attempt to use your own wordlist (switch '--wordlist'), "
-                err_msg += "download one (switch '--download'), use salt (switch '-S SALT'), "
-                err_msg += "or find the algorithm type and create a issue here {}.. "
+                err_msg = (
+                    "Ran out of algorithms to try. There are no more "
+                    "algorithms currently available that match this hashes"
+                    " length, and complexity. Please attempt to use your "
+                    "own wordlist (switch '--wordlist'), download one "
+                    "(switch '--download'), use salt (switch '-S SALT'), or"
+                    " find the algorithm type and create a issue here {}.. ")
                 LOGGER.fatal(err_msg.format(DAGON_ISSUE_LINK))
                 break
             else:

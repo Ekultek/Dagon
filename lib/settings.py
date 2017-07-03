@@ -269,9 +269,11 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
       > :param least_likely: makes more pretty formatting for least likely hashes
     """
     if data_tuple is None:
-        no_alg_err = "It appears that no algorithm that can match this hash has been implemented yet. "
-        no_alg_err += "If you feel that this is wrong, please make a issue regarding this, and we'll "
-        no_alg_err += "see if we can get it implemented."
+        no_alg_err = (
+            "It appears that no algorithm that can match this hash has "
+            "been implemented yet. If you feel that this is wrong, "
+            "please make a issue regarding this, and we'll see if we "
+            "can get it implemented.")
         LOGGER.fatal(no_alg_err)
         shutdown(1)
     if data_tuple[0][1] is None and all_types:
@@ -327,9 +329,10 @@ def show_available_algs(show_all=False, supp="+", not_yet="-", spacer1=" "*5, sp
         "dsa", "crc64", "haval160",
         "tiger160"
     ]
-    misc_info_msg = "There are currently {} supported algorithms in Dagon. "
-    misc_info_msg += "To suggest the creation of a new algorithm please go "
-    misc_info_msg += "make an issue here {}"
+    misc_info_msg = (
+        "There are currently {} supported algorithms in Dagon. To "
+        "suggest the creation of a new algorithm please go make an "
+        "issue here {}")
     LOGGER.info(misc_info_msg.format(len(IDENTIFICATION), DAGON_ISSUE_LINK))
     print("\n{space1}ID#{space2}Alg:\n{space1}---{space2}----".format(space1=spacer1, space2=spacer2))
     for item in sorted(IDENTIFICATION.keys()):
@@ -356,11 +359,11 @@ def integrity_check(url="https://raw.githubusercontent.com/Ekultek/Dagon/master/
     """ Check the integrity of the program """
     LOGGER.info("Checking program integrity...")
     if open(path.format(os.getcwd())).read() != requests.get(url).text:
-        checksum_fail = "MD5 sums did not match from origin master, "
-        checksum_fail += "integrity check has failed, this could be because "
-        checksum_fail += "there is a new version available. Please check "
-        checksum_fail += "for a new version and download that ({}), or be sure "
-        checksum_fail += "that you have not changed any of the applications "
-        checksum_fail += "code."
+        checksum_fail = (
+            "MD5 sums did not match from origin master, integrity check"
+            " has failed, this could be because there is a new version "
+            "available. Please check for a new version and download "
+            "that ({}), or be sure that you have not changed any of the"
+            " applications code.")
         LOGGER.fatal(checksum_fail.format("https://github.com/ekultek/dagon.git"))
         shutdown(-1)

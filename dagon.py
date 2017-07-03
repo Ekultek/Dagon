@@ -124,7 +124,7 @@ if __name__ == '__main__':
                      "-V", "--verify-list"]
     args_in_params = 0
 
-    show_banner() if opt.hideBanner is True else show_hidden_banner()
+    show_banner() if opt.hideBanner else show_hidden_banner()
 
     integrity_check()
 
@@ -135,22 +135,22 @@ if __name__ == '__main__':
     else:
         try:
             # Download a random wordlist
-            if opt.downloadWordList is True:
+            if opt.downloadWordList:
                 download_rand_wordlist(verbose=opt.runInVerbose)
                 exit(0)
 
             # Output all supported algorithms
-            if opt.showAvailableAlgorithms is True:
+            if opt.showAvailableAlgorithms:
                 show_available_algs(show_all=opt.showAllAlgorithms)
                 exit(0)
 
             # Display the version and exit
-            if opt.displayVersionInfo is True:
+            if opt.displayVersionInfo:
                 LOGGER.info(VERSION_STRING)
                 exit(0)
 
             # Update Dagon
-            if opt.updateDagon is True:
+            if opt.updateDagon:
                 LOGGER.info("Update in progress..")
                 update_status = update_system()
                 if update_status == 1:
@@ -172,11 +172,11 @@ if __name__ == '__main__':
                 start_up(verbose=opt.runInVerbose)
 
                 # Benchmark testing
-                if opt.runBenchMarkTest is True:
+                if opt.runBenchMarkTest:
                     start_time = time.time()
 
                 # Creating random salts and random placements
-                if opt.randomSaltAndPlacement is True:
+                if opt.randomSaltAndPlacement:
                     salt, placement = random_salt_generator(opt.useCharsAsSalt, opt.useIntAsSalt,
                                                             opt.saltSizeToUse)
                     LOGGER.info("Using random salt: '{}' and random placement: '{}'...".format(salt, placement))
@@ -197,7 +197,7 @@ if __name__ == '__main__':
                     salt, placement = None, None
 
                 # Bruteforce this shit
-                if opt.bruteforceCrack is True and opt.hashToCrack is not None and opt.hashListToCrack is None:
+                if opt.bruteforceCrack and opt.hashToCrack is not None and opt.hashListToCrack is None:
                     try:
                         bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse), wordlist=opt.wordListToUse,
                                         salt=salt, placement=placement, posx=opt.returnThisPartOfHash,
@@ -206,11 +206,11 @@ if __name__ == '__main__':
                         LOGGER.fatal("{} failed with error code: '{}'".format(os.path.basename(__file__), e.message))
 
                 # Bruteforce a list of hashes
-                elif opt.bruteforceCrack is True and opt.hashListToCrack is not None and opt.hashToCrack is None:
+                elif opt.bruteforceCrack and opt.hashListToCrack is not None and opt.hashToCrack is None:
                     try:
                         with open(opt.hashListToCrack) as hashes:
                             for i, hash_to_crack in enumerate(hashes.readlines(), start=1):
-                                if opt.runInBatchMode is True:
+                                if opt.runInBatchMode:
                                     crack_or_not = "y"
                                 else:
                                     crack_or_not = prompt("Attempt to crack: '{}'".format(hash_to_crack.strip()), "y/N")
@@ -243,7 +243,7 @@ if __name__ == '__main__':
                         for h in total_hashes:
                             print("")
                             LOGGER.info("Analyzing hash: '{}'".format(h.strip()))
-                            if opt.runInBatchMode is True:
+                            if opt.runInBatchMode:
                                 q = "y"
                             else:
                                 q = prompt("Attempt to verify hash '{}'".format(h.strip()), "y/N")
@@ -253,7 +253,7 @@ if __name__ == '__main__':
                                             all_types=opt.displayLeastLikely)
 
                 # Finish the benchmark test
-                if opt.runBenchMarkTest is True:
+                if opt.runBenchMarkTest:
                     stop_time = time.time()
                     LOGGER.info("Time elapsed during benchmark test: {} seconds".format(stop_time - start_time))
 

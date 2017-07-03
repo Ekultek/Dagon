@@ -57,10 +57,10 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
         "crack your hash. To run a dictionary attack all you need to do is"
         " pass the wordlist switch ('--wordlist PATH') with the path to "
         "your wordlist. (IE: --bruteforce --wordlist ~/dicts/dict.txt)")
-    if warning is True:
+    if warning:
         LOGGER.warning(warn_msg)
 
-    if verbose is True:
+    if verbose:
         LOGGER.debug("Creating {} words with a max length of {} characters".format(max_length, max_word_length))
 
     with open(WORDLIST_NAME, "a+") as lib:
@@ -113,7 +113,7 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx
             tries += 1
 
             if verify_hash == hashed:
-                if verbose is True:
+                if verbose:
                     LOGGER.debug("Testing against: {}".format(hashed))
                 return word.strip(), hashed, tries, algorithm
 
@@ -129,7 +129,7 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
             if WORDLIST_RE.match(item):
                 wordlist_created = True
                 wordlist = item
-        if wordlist_created is False:
+        if not wordlist_created:
             LOGGER.info("Creating wordlist..")
             create_wordlist(perms=perms, verbose=verbose)
     else:

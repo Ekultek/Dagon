@@ -29,10 +29,10 @@ def mysql_hash(string, salt=None, front=False, back=False, **placeholder):
         >>> mysql_hash("test")
         *94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29
     """
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj1 = hashlib.sha1(salt + string).digest()
         obj2 = hashlib.sha1(obj1).hexdigest()
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj1 = hashlib.sha1(string + salt).digest()
         obj2 = hashlib.sha1(obj1).hexdigest()
     else:
@@ -96,9 +96,9 @@ def blowfish_hash(string, salt=None, front=False, back=False, **placeholder):
         >>> blowfish_hash("test")
         $2b$12$9.uNMtjZD./9xGMD3QLHpen6WBSs8TmjmYSl5EGs4OS/zsUwmJivq
     """
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         return bcrypt.hash(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         return bcrypt.hash(string + salt)
     else:
         return bcrypt.hash(string)
@@ -178,9 +178,9 @@ def ripemd160(string, salt=None, front=False, back=False, **placeholder):
         5e52fee47e6b070565f74372468cdc699de89107
     """
     obj = hashlib.new("ripemd160")
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -199,9 +199,9 @@ def blake224(string, salt=None, front=False, back=False, **placeholder):
         e9543bfe985642bc30d41903161b2252a014deca64a9af27fc0c111f
     """
     obj = blake.BLAKE(224)
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         digest = obj.hexdigest(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         digest = obj.hexdigest(string + salt)
     else:
         digest = obj.hexdigest(string)
@@ -220,9 +220,9 @@ def blake256(string, salt=None, front=False, back=False, **placeholder):
         dc1ef7d25c8658590f3498d15baa87834f39a6208ddcb28fdfb7cc3179b8bf8f
     """
     obj = blake.BLAKE(256)
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         digest = obj.hexdigest(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         digest = obj.hexdigest(string + salt)
     else:
         digest = obj.hexdigest(string)
@@ -241,9 +241,9 @@ def blake384(string, salt=None, front=False, back=False, **placeholder):
         97c456fb92567f27324497d1d41a8427eed77a1f3a1161faf49e40ebae44a7d1e2f9e8bdf7bc193ae9e37bebf50ece76
     """
     obj = blake.BLAKE(384)
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         digest = obj.hexdigest(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         digest = obj.hexdigest(string + salt)
     else:
         digest = obj.hexdigest(string)
@@ -262,9 +262,9 @@ def blake512(string, salt=None, front=False, back=False, **placeholder):
         042d11c84ee88718f4451b05beb21c0751e243ed15491a927fef891ba0ba17bbe0d2f5286639cebabe86d876e4064821cd9d5764faba5bbd3d63d02275c0593e
     """
     obj = blake.BLAKE(512)
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         digest = obj.hexdigest(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         digest = obj.hexdigest(string + salt)
     else:
         digest = obj.hexdigest(string)
@@ -282,9 +282,9 @@ def md2(string, salt=None, front=False, back=False, **placeholder):
         >>> md2("test")
         dd34716876364a02d0195e2fb9ae2d1b
     """
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj = md2_hash.md2h(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj = md2_hash.md2h(string + salt)
     else:
         obj = md2_hash.md2h(string)
@@ -303,9 +303,9 @@ def md4(string, salt=None, front=False, back=False, **placeholder):
         db346d691d7acc4dc2625db19f9e3f52
     """
     obj = hashlib.new("md4")
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -324,9 +324,9 @@ def md5(string, salt=None, front=False, back=False, **placeholder):
         098f6bcd4621d373cade4e832627b4f6
     """
     obj = hashlib.md5()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -346,9 +346,9 @@ def half_md5(string, salt=None, front=False, back=False, posx="", **placeholder)
         098f6bcd4621d373
     """
     obj = hashlib.md5()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -402,9 +402,9 @@ def md5_md5_pass(string, salt=None, front=False, back=False, **placeholder):
     """
     obj1 = hashlib.md5()
     obj2 = hashlib.md5()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj1.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj1.update(string + salt)
     else:
         obj1.update(string)
@@ -474,9 +474,9 @@ def ssha(string, salt=None, front=False, back=False, **placeholder):
         salt = os.urandom(4)
     obj = hashlib.sha1(string)
     obj.update(salt)
-    if front is True and not back:
+    if front and not back:
         return "{SSHA}" + base64.urlsafe_b64encode(salt + obj.digest())
-    elif back is True and not front:
+    elif back and not front:
         return "{SSHA}" + base64.urlsafe_b64encode(obj.digest() + salt)
     else:
         return "{SSHA}" + base64.urlsafe_b64encode(obj.digest())
@@ -494,9 +494,9 @@ def sha1(string, salt=None, front=False, back=False, **placeholder):
         a94a8fe5ccb19ba61c4c0873d391e987982fbbd3
     """
     obj = hashlib.sha1()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -515,9 +515,9 @@ def half_sha1(string, salt=None, front=False, back=False, posx="", **placeholder
         a94a8fe5ccb19ba61c4c
     """
     obj = hashlib.sha1()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -546,9 +546,9 @@ def sha1_sha1_pass(string, salt=None, front=False, back=False, **placeholder):
     """
     obj1 = hashlib.sha1()
     obj2 = hashlib.sha1()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj1.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj1.update(string + salt)
     else:
         obj1.update(string)
@@ -596,9 +596,9 @@ def sha3_224(string, salt=None, front=False, back=False, **placeholder):
         3797bf0afbbfca4a7bbba7602a2b552746876517a7f9b7ce2db0ae7b
     """
     obj = sha3.sha3_224()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -617,9 +617,9 @@ def sha3_256(string, salt=None, front=False, back=False, **placeholder):
         36f028580bb02cc8272a9a020f4200e346e276ae664e45ee80745574e2f5ab80
     """
     obj = sha3.sha3_256()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -638,9 +638,9 @@ def sha3_384(string, salt=None, front=False, back=False, **placeholder):
         e516dabb23b6e30026863543282780a3ae0dccf05551cf0295178d7ff0f1b41eecb9db3ff219007c4e097260d58621bd
     """
     obj = sha3.sha3_384()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -659,9 +659,9 @@ def sha3_512(string, salt=None, front=False, back=False, **placeholder):
         9ece086e9bac491fac5c1d1046ca11d737b92a2b2ebd93f005d7b710110c0a678288166e7fbe796883a4f2e9b3ca9f484f521d0ce464345cc1aec96779149c14
     """
     obj = sha3.sha3_512()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -680,9 +680,9 @@ def sha224(string, salt=None, front=False, back=False, **placeholder):
         90a3ed9e32b2aaf4c61c410eb925426119e1a9dc53d4286ade99a809
     """
     obj = hashlib.sha224()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -701,9 +701,9 @@ def sha256(string, salt=None, front=False, back=False, **placeholder):
         9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
     """
     obj = hashlib.sha256()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -722,9 +722,9 @@ def sha384(string, salt=None, front=False, back=False, **placeholder):
         768412320f7b0aa5812fce428dc4706b3cae50e02a64caa16a782249bfe8efc4b7ef1ccb126255d196047dfedf17a0a9
     """
     obj = hashlib.sha384()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -743,9 +743,9 @@ def sha512(string, salt=None, front=False, back=False, **placeholder):
         ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff
     """
     obj = hashlib.sha512()
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -764,9 +764,9 @@ def whirlpool(string, salt=None, front=False, back=False, **placeholder):
         b913d5bbb8e461c2c5961cbe0edcdadfd29f068225ceb37da6defcf89849368f8c6c2eb6a4c4ac75775d032a0ecfdfe8550573062b653fe92fc7b8fb3b7be8d6
     """
     obj = hashlib.new("whirlpool")
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj.update(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj.update(string + salt)
     else:
         obj.update(string)
@@ -784,9 +784,9 @@ def tiger192(string, salt=None, front=False, back=False, **placeholder):
         >>> tiger192("test")
         8d1fd829fc83b37af1e5ba697ce8680d1d8bc430d76682f1
     """
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         obj = tiger.hash(salt + string)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         obj = tiger.hash(string + salt)
     else:
         obj = tiger.hash(string)
@@ -806,9 +806,9 @@ def crc32(string, salt=None, front=False, back=False, use_hex=False, **placehold
         >>> crc32("test", use_hex=True)
         0xd87f7e0cL
     """
-    if salt is not None and front is True and not back:
+    if salt is not None and front and not back:
         long_int = hex(zlib.crc32(salt + string) % 2**32)
-    elif salt is not None and back is True and not front:
+    elif salt is not None and back and not front:
         long_int = hex(zlib.crc32(string + salt) % 2**32)
     else:
         long_int = hex(zlib.crc32(string) % 2**32)

@@ -127,7 +127,7 @@ WORDLIST_LINKS = [
 
 def start_up(verbose=False):
     """ Start the application """
-    if verbose is False:
+    if not verbose:
         print("\n[*] Starting up at {}..\n".format(time.strftime("%H:%M:%S")))
     else:
         print("[*] Starting up at: {}..\n".format(str(time.time())))
@@ -135,7 +135,7 @@ def start_up(verbose=False):
 
 def shutdown(exit_key=0, verbose=False):
     """ Shut down the application """
-    if verbose is False:
+    if not verbose:
         print('\n[*] Shutting down at {}..\n'.format(time.strftime("%H:%M:%S")))
         exit(exit_key)
     else:
@@ -147,7 +147,7 @@ def verify_python_version(verbose=False):  # and we're back :|
     """
       Verify python version
     """
-    if verbose is True:
+    if verbose:
         LOGGER.debug("Verifying what version of Python you have..")
     current_py_version = sys.version.split(" ")[0]
     if "2.7" not in current_py_version:
@@ -199,13 +199,13 @@ def download_rand_wordlist(verbose=False):
     with open("{}.txt".format(filename), "a+") as wordlist:
         response = requests.get(base64.b64decode(b64link), stream=True)
         total_length = response.headers.get('content-length')
-        if verbose is True:
+        if verbose:
             LOGGER.debug("Content length to be downloaded: {}..".format(total_length))
         if total_length is None:
             wordlist.write(response.content)
         else:
             start = time.time()
-            if verbose is True:
+            if verbose:
                 LOGGER.debug("Starting download at {}..".format(start))
             downloaded = 0
             total_length = int(total_length)
@@ -236,15 +236,15 @@ def random_salt_generator(use_string=False, use_number=False, length=None, warni
 
     char_set = ''
     salt_type = []
-    if use_string is True:
+    if use_string:
         char_set += string.ascii_letters
         salt_type.append('characters')
-    if use_number is True:
+    if use_number:
         char_set += string.digits
         salt_type.append('integers')
     if not salt_type:
         # if both `use_string` & `use_number` are False, default to digits
-        if warning is True:
+        if warning:
             LOGGER.warning("No choice given as salt, defaulting to numbers..")
         char_set = string.digits
         salt_type.append('integers')
@@ -274,7 +274,7 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
         no_alg_err += "see if we can get it implemented."
         LOGGER.fatal(no_alg_err)
         shutdown(1)
-    if data_tuple[0][1] is None and all_types is True:
+    if data_tuple[0][1] is None and all_types:
         LOGGER.warning("Only one possible type found for given hash..")
     sort_cracked = ["Clear Text: ", "Hash: ", "Tries attempted: ", "Algorithm Used: "]
     if kind == "cracked":
@@ -283,7 +283,7 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
             print("[{}] {}{}".format(item_found, item, data_tuple[i].upper() if i == 3 else data_tuple[i]))
         print(data_sep)
     else:
-        if all_types is True:
+        if all_types:
             data_tuple = data_tuple[0] + data_tuple[1]
             print(data_sep + "\n" + "[{}] Most Likely Hash Type(s):\n".format(item_found) + data_sep)
             for i, _ in enumerate(data_tuple):
@@ -334,7 +334,7 @@ def show_available_algs(show_all=False, supp="+", not_yet="-", spacer1=" "*5, sp
     print("\n{space1}ID#{space2}Alg:\n{space1}---{space2}----".format(space1=spacer1, space2=spacer2))
     for item in sorted(IDENTIFICATION.keys()):
         print("\033[94m[{}]\033[0m  {}   {}".format(supp, item, IDENTIFICATION[item].upper()))
-    if show_all is True:
+    if show_all:
         print("\nNot implemented yet:")
         for item in sorted(being_worked_on):
             print("\033[91m[{}]\033[0m {}".format(not_yet, item.upper()))

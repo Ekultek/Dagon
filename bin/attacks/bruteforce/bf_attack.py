@@ -81,7 +81,7 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
             ).format(len(lib.readlines()))
             LOGGER.error(err_msg)
             q = prompt("Would you like to continue", "y/N")
-            if not q.lower().startswith("y"):
+            if not q.startswith(("y", "Y")):
                 lib.truncate(0)
                 create_wordlist(max_word_length=max_length + 2, warning=False)
     LOGGER.info("Wordlist generated, words saved to: {}. Please re-run the application, exiting..".format(WORDLIST_NAME))
@@ -174,7 +174,7 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
         if results is None:
             LOGGER.warning("Unable to find a match using {}..".format(algorithm.upper()))
             verify = prompt("Would you like to attempt to verify the hash type automatically and crack it", "y/N")
-            if verify.lower().startswith("y"):
+            if verify.startswith(("y", "Y")):
                 bruteforce_main(verf_hash, wordlist=wordlist, salt=salt, placement=placement, posx=posx, use_hex=use_hex,
                                 verbose=verbose)
             else:

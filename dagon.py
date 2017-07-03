@@ -215,7 +215,7 @@ if __name__ == '__main__':
                                 else:
                                     crack_or_not = prompt("Attempt to crack: '{}'".format(hash_to_crack.strip()), "y/N")
 
-                                if crack_or_not.lower().startswith("y"):
+                                if crack_or_not.startswith(("y", "Y")):
                                     LOGGER.info("Cracking hash number {}..".format(i))
                                     bruteforce_main(hash_to_crack.strip(), algorithm=algorithm_pointers(opt.algToUse),
                                                     wordlist=opt.wordListToUse, salt=salt,
@@ -248,7 +248,7 @@ if __name__ == '__main__':
                             else:
                                 q = prompt("Attempt to verify hash '{}'".format(h.strip()), "y/N")
 
-                            if q.lower().startswith("y"):
+                            if q.startswith(("y", "Y")):
                                 match_found(verify_hash_type(h.strip(), least_likely=opt.displayLeastLikely), kind="else",
                                             all_types=opt.displayLeastLikely)
 

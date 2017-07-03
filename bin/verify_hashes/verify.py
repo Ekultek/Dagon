@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import re
 
 from lib.settings import (
@@ -103,7 +105,7 @@ def verify_hash_type(hash_to_verify, least_likely=False, verbose=False):
         >>> verify_hash_type("098f6bcd4621d373cade4e832627b4f6", least_likely=True)
         [('md5', 'md4', 'md2'), ('double md5', 'lm', ... )]
     """
-    for regex, hash_types in HASH_TYPE_REGEX.iteritems():
+    for regex, hash_types in HASH_TYPE_REGEX.keys():  # iter is not available in Python 3.x
         if verbose:
             LOGGER.debug("Testing: {}".format(hash_types))
         if regex.match(hash_to_verify):

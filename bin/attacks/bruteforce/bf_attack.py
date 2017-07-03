@@ -19,7 +19,7 @@ from lib.settings import (
 WORDLIST_NAME = "Dagon-bfdict-" + random_salt_generator(use_string=True, length=7)[0] + ".txt"
 
 
-def word_generator(length_min=7, length_max=15, perms=""):
+def word_generator(length_min=7, length_max=15, perms=False):
     """
       Generate the words to be used for bruteforcing
       > :param length_min: minimum length for the word
@@ -34,7 +34,7 @@ def word_generator(length_min=7, length_max=15, perms=""):
       aaaaac
       ...
     """
-    if perms == "":
+    if not perms:
         chrs = 'abc'
         for n in range(length_min, length_max + 1):
             for xs in itertools.product(chrs, repeat=n):
@@ -43,7 +43,7 @@ def word_generator(length_min=7, length_max=15, perms=""):
         raise NotImplementedError("Permutations are not implemented yet.")
 
 
-def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms="", verbose=False):
+def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms=False, verbose=False):
     """
       Create a bruteforcing wordlist
 
@@ -120,7 +120,7 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx
                 return word.strip(), hashed, tries, algorithm
 
 
-def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, perms="", posx="",
+def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, perms=False, posx="",
                     use_hex=False, verbose=False):
     """
       Main function to be used for bruteforcing a hash

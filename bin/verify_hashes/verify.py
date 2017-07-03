@@ -32,8 +32,8 @@ HASH_TYPE_REGEX = {
          "skein256(128)", "skein512(128)", "skype",
          "zipmonster", "prestashop")
     ],
-    build_re(16): [
-        ("half md5", "oracle 10g"), (None, None)
+    build_re(16, prefix="(0x)?", suffix="(L)?"): [
+        ("half md5", "oracle 10g", "crc64"), (None, None)
     ],
     build_re(64): [
         ("sha256", "sha3_256"),

@@ -5,6 +5,7 @@ import re
 import string
 import sys
 import time
+import math
 
 import requests
 from colorlog import ColoredFormatter
@@ -31,7 +32,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.9.19.31"
+VERSION = "1.10.19.33"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -71,7 +72,7 @@ FUNC_DICT = {
     "half sha1": half_sha1, "sha1(sha1(pass))": sha1_sha1_pass, "ssha": ssha,
     "sha1(sha1(sha1(pass)))": sha1_sha1_sha1_pass,
     "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
-    "whirlpool": whirlpool, "crc32": crc32, "ntlm": ntlm, "windows local (ntlm)": ntlm,
+    "whirlpool": whirlpool, "crc32": crc32, "ntlm": ntlm, "windows local (ntlm)": ntlm, "crc64": crc64,
     "tiger192": tiger192
 }
 # Identity numbers
@@ -102,7 +103,7 @@ IDENTIFICATION = {
     700: "tiger192",
 
     # Other
-    800: "whirlpool", 900: "crc32", 1000: "ntlm"
+    800: "whirlpool", 900: "crc32", 1000: "ntlm", 1100: "crc64"
 }
 # Regular expression to see if you already have a bruteforce wordlist created
 WORDLIST_RE = re.compile("Dagon-bfdict-[a-zA-Z]{7}.txt")
@@ -146,6 +147,23 @@ def shutdown(exit_key=0, verbose=False):
     else:
         print("\n[*] Shutting down at {}..\n".format(str(time.time())))
         exit(exit_key)
+
+
+def convert_file_size(byte_size, magic_num=1024):
+    """
+      Convert a integer to a file size (B, KB, MB, etc..)
+      > :param byte_size: integer that is the amount of data in bytes
+      > :param magic_num: the magic number that makes everything work, 1024
+      > :return: the amount of data in bytes, kilobytes, megabytes, etc..
+    """
+    if byte_size == 0:
+        return "0B"
+    # Probably won't need more then GB, but still it's good to have
+    size_data_names = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    floored = int(math.floor(math.log(byte_size, magic_num)))
+    pow_data = math.pow(magic_num, floored)
+    rounded_data = round(byte_size / pow_data, 2)
+    return "{}{}".format(rounded_data, size_data_names[floored])
 
 
 def verify_python_version(verbose=False):  # and we're back :|
@@ -206,7 +224,7 @@ def download_rand_wordlist(verbose=False, multi=1):
             response = requests.get(base64.b64decode(b64link), stream=True)
             total_length = response.headers.get('content-length')
             if verbose:
-                LOGGER.debug("Content length to be downloaded: {}(bytes)..".format(total_length))
+                LOGGER.debug("Content length to be downloaded: {}..".format(convert_file_size(int(total_length))))
                 LOGGER.debug("Wordlist link downloading from: '{}'..".format(b64link))
             if total_length is None:
                 wordlist.write(response.content)
@@ -344,8 +362,7 @@ def show_available_algs(show_all=False, supp="+", not_yet="-", spacer1=" "*5, sp
     """ Show all algorithms available in the program """
     being_worked_on = [
         "wordpress", "scrypt", "sha2",
-        "dsa", "crc64", "haval160",
-        "tiger160"
+        "dsa", "haval160", "tiger160"
     ]
     misc_info_msg = (
         "There are currently {} supported algorithms in Dagon. To "

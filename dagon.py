@@ -74,7 +74,7 @@ if __name__ == '__main__':
                             help="Choose which part of the hashes you want to return, "
                                  "only valid for half algorithms functions")
     manipulation.add_option("--use-hex", action="store_true", dest="useHexCodeNotHash",
-                            help="Use the CRC32 hexcode instead of the hash")
+                            help="Use the CRC32/CRC64 hexcode instead of the hash")
 
     # Manipulate your dictionary attacks with these options
     dictionary_attack_opts = optparse.OptionGroup(parser, "Dictionary attack arguments",
@@ -175,6 +175,14 @@ if __name__ == '__main__':
             if args_in_params > 0:
 
                 start_up(verbose=opt.runInVerbose)
+
+                # Show the options being used at the time of the run if verbose is True
+                if opt.runInVerbose:
+                    opts_being_used = []
+                    for o, v in opt.__dict__.items():
+                        if v is not None:
+                            opts_being_used.append((o, v))
+                    LOGGER.debug("Options being used: {}..".format(dict(opts_being_used)))
 
                 # Benchmark testing
                 if opt.runBenchMarkTest:

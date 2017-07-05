@@ -32,7 +32,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.10.19.34"
+VERSION = "1.11.19.35"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -133,6 +133,10 @@ def convert_file_size(byte_size, magic_num=1024):
       > :param byte_size: integer that is the amount of data in bytes
       > :param magic_num: the magic number that makes everything work, 1024
       > :return: the amount of data in bytes, kilobytes, megabytes, etc..
+
+      Example:
+        >>> convert_file_size(123456789)
+        117.74MB
     """
     if byte_size == 0:
         return "0B"
@@ -383,3 +387,18 @@ def integrity_check(url="https://raw.githubusercontent.com/Ekultek/Dagon/master/
             " applications code.")
         LOGGER.fatal(checksum_fail.format("https://github.com/ekultek/dagon.git"))
         shutdown(-1)
+
+
+def create_dir(dirname, verbose=False):
+    """
+      Create a directory if it does not already exist
+      > :param dirname: the name of the directory to be created
+    """
+    if not os.path.exists("{}/{}".format(os.getcwd(), dirname)):
+        if verbose:
+            LOGGER.debug("Directory does not exist, creating under {}/{}/*".format(os.getcwd(), dirname))
+        os.makedirs("{}/{}".format(os.getcwd(), dirname))
+    else:
+        if verbose:
+            LOGGER.debug("Directory exists, skipping..")
+        pass

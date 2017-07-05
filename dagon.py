@@ -11,6 +11,10 @@ import time
 
 from bin.attacks.bruteforce.bf_attack import bruteforce_main
 from bin.verify_hashes.verify import verify_hash_type
+from bin.generators import (
+    generate_combos,
+    # generate_rainbow_tables
+)
 from lib.settings import (
     CLONE,
     LOGGER,
@@ -88,6 +92,8 @@ if __name__ == '__main__':
                                       help="Download a random wordlist")
     dictionary_attack_opts.add_option("--download-x", dest="downloadMultiple", metavar="AMOUNT", type=int,
                                       help="Download multiple wordlists at a time")
+    dictionary_attack_opts.add_option("-C", "--combinator", dest="createCombinations", metavar="WORDLIST-PATH",
+                                      help="Create combinations of each word in a wordlist")
 
     # Misc arguments that you can give to the program
     misc = optparse.OptionGroup(parser, "Miscellaneous arguments",
@@ -164,6 +170,13 @@ if __name__ == '__main__':
                     LOGGER.error("Dagon experienced an error while updating, please download manually from: {}".format(CLONE))
                 else:
                     LOGGER.info("Dagon has successfully updated to the latest version.")
+                exit(0)
+
+            # Create combinations of words in a given wordlist
+            if opt.createCombinations is not None:
+                LOGGER.info("Generating combo dict..")
+                with open(opt.createCombinations) as data:
+                    generate_combos(data.readlines(), verbose=opt.runInVerbose)
                 exit(0)
 
             # Check that you provided a mandatory argument

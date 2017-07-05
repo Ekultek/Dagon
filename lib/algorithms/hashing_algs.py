@@ -6,7 +6,7 @@ import random
 import zlib
 
 import sha3
-from passlib.hash import bcrypt
+import bcrypt
 from thirdparty.blake import blake
 from thirdparty.des import pydes
 from thirdparty.md2 import md2_hash
@@ -86,7 +86,7 @@ def oracle_11g(string, salt=None, **placeholder):
     return "s:{}{}".format(obj.hexdigest(), salt.encode("hex")).upper()
 
 
-def blowfish_hash(string, salt=None, front=False, back=False, **placeholder):
+def blowfish(string, salt=None, **placeholder):
     """
       Create a Blowfish hash using passlib
 
@@ -97,12 +97,9 @@ def blowfish_hash(string, salt=None, front=False, back=False, **placeholder):
         >>> blowfish_hash("test")
         $2b$12$9.uNMtjZD./9xGMD3QLHpen6WBSs8TmjmYSl5EGs4OS/zsUwmJivq
     """
-    if salt is not None and front and not back:
-        return bcrypt.hash(salt + string)
-    elif salt is not None and back and not front:
-        return bcrypt.hash(string + salt)
-    else:
-        return bcrypt.hash(string)
+    if salt is None:
+        salt = bcrypt.gensalt()
+    return bcrypt.hashpw(string, salt)
 
 
 def postgres(string, salt=None, **placeholder):

@@ -1,9 +1,9 @@
 from __future__ import print_function
 
-import itertools
 import os
 
 from bin.verify_hashes.verify import verify_hash_type
+from bin.generators import word_generator
 from lib.settings import (
     DAGON_ISSUE_LINK,
     FUNC_DICT,
@@ -17,30 +17,6 @@ from lib.settings import (
 
 # The name of the wordlist
 WORDLIST_NAME = "Dagon-bfdict-" + random_salt_generator(use_string=True, length=7)[0] + ".txt"
-
-
-def word_generator(length_min=7, length_max=15, perms=False):
-    """
-      Generate the words to be used for bruteforcing
-      > :param length_min: minimum length for the word
-      > :param length_max: max length for the word
-      > :param perms: permutations, True or False
-      > :return: a word
-
-      Example:
-      >>> word_generator()
-      aaaaaa
-      aaaaab
-      aaaaac
-      ...
-    """
-    if not perms:
-        chrs = 'abc'
-        for n in range(length_min, length_max + 1):
-            for xs in itertools.product(chrs, repeat=n):
-                yield ''.join(xs)
-    else:
-        raise NotImplementedError("Permutations are not implemented yet.")
 
 
 def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms=False, verbose=False):
@@ -156,11 +132,13 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                 break
             else:
                 if ":::" in verf_hash:
-                    LOGGER.debug("It appears that you are trying to crack an '{}' hash, "
-                                 "these hashes have a certain sequence to them that looks "
-                                 "like this 'USERNAME:SID:LM_HASH:NTLM_HASH:::'. What you're "
-                                 "wanting is the NTLM part, of the hash, fix your hash and try "
-                                 "again..".format(alg.upper()))
+                    LOGGER.debug(
+                        "It appears that you are trying to crack an '{}' hash, "
+                        "these hashes have a certain sequence to them that looks "
+                        "like this 'USERNAME:SID:LM_HASH:NTLM_HASH:::'. What you're "
+                        "wanting is the NTLM part, of the hash, fix your hash and try "
+                        "again..".format(alg.upper())
+                    )
                     shutdown(1)
                 LOGGER.info("Starting bruteforce with {}..".format(alg.upper()))
                 bruteforcing = hash_words(verf_hash, wordlist, alg, salt=salt, placement=placement, posx=posx,

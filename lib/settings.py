@@ -32,7 +32,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.10.20.35"
+VERSION = "1.11.20.36"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -383,3 +383,16 @@ def integrity_check(url="https://raw.githubusercontent.com/Ekultek/Dagon/master/
             " applications code.")
         LOGGER.fatal(checksum_fail.format("https://github.com/ekultek/dagon.git"))
         shutdown(-1)
+
+
+def create_dir(dirname, verbose=False):
+    """
+      Create a directory if it does not exist
+      :param dirname: name of the directory
+    """
+    if not os.path.exists(dirname):
+        if verbose:
+            LOGGER.debug("Directory '{}/*' not found, creating it..".format(dirname))
+        os.mkdir(dirname)
+    else:
+        LOGGER.debug("Directory found, skipping..")

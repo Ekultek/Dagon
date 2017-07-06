@@ -1,9 +1,9 @@
 from __future__ import print_function
 
-import itertools
 import os
 
 from bin.verify_hashes.verify import verify_hash_type
+from bin.generators import Generators
 from lib.settings import (
     DAGON_ISSUE_LINK,
     FUNC_DICT,
@@ -12,38 +12,15 @@ from lib.settings import (
     match_found,
     prompt,
     random_salt_generator,
-    shutdown
+    shutdown,
+    create_dir
 )
 
 # The name of the wordlist
 WORDLIST_NAME = "Dagon-bfdict-" + random_salt_generator(use_string=True, length=7)[0] + ".txt"
 
 
-def word_generator(length_min=7, length_max=15, perms=False):
-    """
-      Generate the words to be used for bruteforcing
-      > :param length_min: minimum length for the word
-      > :param length_max: max length for the word
-      > :param perms: permutations, True or False
-      > :return: a word
-
-      Example:
-      >>> word_generator()
-      aaaaaa
-      aaaaab
-      aaaaac
-      ...
-    """
-    if not perms:
-        chrs = 'abc'
-        for n in range(length_min, length_max + 1):
-            for xs in itertools.product(chrs, repeat=n):
-                yield ''.join(xs)
-    else:
-        raise NotImplementedError("Permutations are not implemented yet.")
-
-
-def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms=False, verbose=False):
+def create_wordlist(warning=True, verbose=False, add=False):
     """
       Create a bruteforcing wordlist
 
@@ -52,27 +29,34 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
       > :param warning: output the warning message to say that BF'ing sucks
       > :return: a wordlist
     """
+    max_length, max_word_length, dirname = 10000000, 10, "bf-dicts"
+    if add:
+        max_word_length += 2
+
     warn_msg = (
         "It is highly advised to use a dictionary attack over bruteforce. "
         "Bruteforce requires extreme amounts of memory to accomplish and "
         "it is possible that it could take a lifetime to successfully "
         "crack your hash. To run a dictionary attack all you need to do is"
         " pass the wordlist switch ('--wordlist PATH') with the path to "
-        "your wordlist. (IE: --bruteforce --wordlist ~/dicts/dict.txt)")
+        "your wordlist. (IE: --bruteforce --wordlist ~/dicts/dict.txt)"
+    )
+
     if warning:
         LOGGER.warning(warn_msg)
 
     if verbose:
         LOGGER.debug("Creating {} words with a max length of {} characters".format(max_length, max_word_length))
 
-    with open(WORDLIST_NAME, "a+") as lib:
-        word = word_generator(length_max=max_word_length, perms=perms)
+    create_dir(dirname, verbose=verbose)
+    with open(dirname + "/" + WORDLIST_NAME, "a+") as lib:
+        word = Generators().word_generator(length_max=max_word_length)
         lib.seek(0, 0)
         line_count = len(lib.readlines())
         try:
             for _ in range(line_count, max_length):
                 lib.write(next(word) + "\n")
-        except StopIteration:
+        except StopIteration:  # SHOULD NEVER GET HERE
             # if we run out of mutations we'll retry with a different word length
             lib.seek(0, 0)
             err_msg = (
@@ -85,7 +69,7 @@ def create_wordlist(max_length=10000000, max_word_length=10, warning=True, perms
             q = prompt("Would you like to continue", "y/N")
             if not q.startswith(("y", "Y")):
                 lib.truncate(0)
-                create_wordlist(max_word_length=max_length + 2, warning=False)
+                create_wordlist(warning=False, add=True)
     LOGGER.info("Wordlist generated, words saved to: {}. Please re-run the application, exiting..".format(WORDLIST_NAME))
     shutdown()
 
@@ -120,20 +104,20 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx
                 return word.strip(), hashed, tries, algorithm
 
 
-def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, perms=False, posx="",
+def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, posx="",
                     use_hex=False, verbose=False):
     """
       Main function to be used for bruteforcing a hash
     """
     wordlist_created = False
     if wordlist is None:
-        for item in os.listdir(os.getcwd()):
+        for item in os.listdir(os.getcwd() + "/bf-dicts"):
             if WORDLIST_RE.match(item):
                 wordlist_created = True
-                wordlist = item
+                wordlist = "{}/bf-dicts/{}".format(os.getcwd(), item)
         if not wordlist_created:
             LOGGER.info("Creating wordlist..")
-            create_wordlist(perms=perms, verbose=verbose)
+            create_wordlist(verbose=verbose)
     else:
         LOGGER.info("Reading from, {}..".format(wordlist))
 

@@ -1,11 +1,10 @@
-from __future__ import print_function
-
 import logging
 import re
 import string
 import sys
 import time
 import math
+import platform
 
 import requests
 from colorlog import ColoredFormatter
@@ -32,7 +31,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.11.20.36"
+VERSION = "1.11.21.37"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -134,6 +133,7 @@ def convert_file_size(byte_size, magic_num=1024):
       > :param magic_num: the magic number that makes everything work, 1024
       > :return: the amount of data in bytes, kilobytes, megabytes, etc..
     """
+    byte_size = float(byte_size)
     if byte_size == 0:
         return "0B"
     # Probably won't need more then GB, but still it's good to have
@@ -144,16 +144,35 @@ def convert_file_size(byte_size, magic_num=1024):
     return "{}{}".format(rounded_data, size_data_names[floored])
 
 
-def verify_python_version(verbose=False):  # and we're back :|
+def _get_install_link(system_data):
+    links = {
+        "windows": "https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi",
+        "linux": "sudo apt-get install python",
+        "other": "https://www.python.org/downloads/release/python-2713/"
+    }
+    for item in links.keys():
+        if item in system_data:
+            return links[item]
+
+
+def verify_python_version(verbose=False, ver_re="2.[0-9]{1,2}.[0-9]{1,3}"):  # and we're back :|
     """
       Verify python version
     """
     if verbose:
         LOGGER.debug("Verifying what version of Python you have..")
     current_py_version = sys.version.split(" ")[0]
-    if "2.7" not in current_py_version:
-        LOGGER.debug("This application requires python 2.7.x to run.. "
-                     "You currently have python version {} installed..".format(current_py_version))
+    if not re.match(ver_re, current_py_version):
+        LOGGER.fatal(
+            "{filename} currently requires a Python version that is <= 2.7.x, "
+            "you currently have Python version {version} installed. If you "
+            "want to run {filename} please install a Python version that matches "
+            "the above outlined requirements and re-run {filename}. You can download "
+            "the required Python version here: {link}".format(
+                version=current_py_version, filename=str(os.path.basename(__file__).split(".")[0].title()),
+                link=_get_install_link(platform.platform().lower())
+            )
+        )
 
 
 def show_banner():

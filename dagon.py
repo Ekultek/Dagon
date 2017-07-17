@@ -1,13 +1,12 @@
 #! usr/bin/env python
 
-from __future__ import print_function
-
 import optparse
 import os
 import random
 import subprocess
 import sys
 import time
+import platform
 
 from bin.attacks.bruteforce.bf_attack import bruteforce_main
 from bin.verify_hashes.verify import verify_hash_type
@@ -26,7 +25,8 @@ from lib.settings import (
     show_hidden_banner,
     start_up, shutdown,
     update_system,
-    verify_python_version
+    verify_python_version,
+    _get_install_link
 )
 
 if __name__ == '__main__':

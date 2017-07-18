@@ -32,7 +32,7 @@ class Generators(object):
             for xs in itertools.product(self.CHARS, repeat=n):
                 yield ''.join(xs)
 
-    def hash_file_generator(self, magic=1024):
+    def hash_file_generator(self):
         """
           Parse a given file for anything that matches the hashes in the
           hash type regex dict. Possible that this will pull random bytes
@@ -41,9 +41,9 @@ class Generators(object):
         matched_hashes = set()
         keys = [k for k in bin.verify_hashes.verify.HASH_TYPE_REGEX.iterkeys()]
         with open(self.words) as wordlist:
-            for item in wordlist.readlines(magic):
+            for item in wordlist.readlines():
                 for s in item.split(" "):
                     for k in keys:
                         if k.match(s):
                             matched_hashes.add(s)
-        return list(matched_hashes)
+            return list(matched_hashes)

@@ -172,7 +172,8 @@ if __name__ == '__main__':
                 if update_status == 1:
                     LOGGER.info("Dagon is already equal with origin master.")
                 elif update_status == -1:
-                    LOGGER.error("Dagon experienced an error while updating, please download manually from: {}".format(CLONE))
+                    LOGGER.error(
+                        "Dagon experienced an error while updating, please download manually from: {}".format(CLONE))
                 else:
                     LOGGER.info("Dagon has successfully updated to the latest version.")
                 exit(0)
@@ -188,15 +189,24 @@ if __name__ == '__main__':
                 create_dir("{}/hash_files".format(os.getcwd()), verbose=opt.runInVerbose)
                 full_hash_path = "{}/{}/{}".format(os.getcwd(), "hash_files", hash_file_name)
                 with open(full_hash_path, "a+") as filename:
-                    if len(files_to_process) > 1:
+                    if len(files_to_process.split(",")) > 1:
                         LOGGER.info("Found multiple files to process: '{}'..".format(files_to_process))
                         for f in files_to_process.split(","):
-                            for item in Generators(f.strip()).hash_file_generator():
-                                filename.write(item.strip() + "\n")
+                            try:
+                                for item in Generators(f.strip()).hash_file_generator():
+                                    filename.write(item.strip() + "\n")
+                            except IOError:
+                                LOGGER.warning("Provided file '{}' does not exist, skipping..".format(f.strip()))
+                                continue
                     else:
+                        LOGGER.info("Reading from singular file '{}'...".format(files_to_process))
                         for item in Generators(opt.createHashFile).hash_file_generator():
                             filename.write(item.strip() + "\n")
-                LOGGER.info("Created file '{}' under '{}'..".format(hash_file_name, full_hash_path))
+
+                if not open(full_hash_path).readlines():
+                    LOGGER.warning("No processable hashes found in '{}'..".format(files_to_process))
+                else:
+                    LOGGER.info("Created file '{}' under '{}'..".format(hash_file_name, full_hash_path))
                 exit(0)
 
             # Check that you provided a mandatory argument
@@ -234,8 +244,8 @@ if __name__ == '__main__':
 
                 # Unicode random salt and placement
                 elif opt.useURandomSaltAndRandomPlacement is not None:
-                    salt, placement = str(os.urandom(int(opt.useURandomSaltAndRandomPlacement))), random.choice(["front",
-                                                                                                                 "back"])
+                    salt, placement = str(os.urandom(int(opt.useURandomSaltAndRandomPlacement))), random.choice(
+                        ["front", "back"])
                     LOGGER.info("Using urandom salt: '{}' on the '{}' of the hash...".format(salt, placement))
 
                 # No salt or placement
@@ -245,7 +255,8 @@ if __name__ == '__main__':
                 # Bruteforce this shit
                 if opt.bruteforceCrack and opt.hashToCrack is not None and opt.hashListToCrack is None:
                     try:
-                        bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse), wordlist=opt.wordListToUse,
+                        bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse),
+                                        wordlist=opt.wordListToUse,
                                         salt=salt, placement=placement, posx=opt.returnThisPartOfHash,
                                         use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
                     except Exception as e:
@@ -295,7 +306,8 @@ if __name__ == '__main__':
                                 q = prompt("Attempt to verify hash '{}'".format(h.strip()), "y/N")
 
                             if q.startswith(("y", "Y")):
-                                match_found(verify_hash_type(h.strip(), least_likely=opt.displayLeastLikely), kind="else",
+                                match_found(verify_hash_type(h.strip(), least_likely=opt.displayLeastLikely),
+                                            kind="else",
                                             all_types=opt.displayLeastLikely)
 
                 # Finish the benchmark test
@@ -314,4 +326,3 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             LOGGER.fatal("User exited process...")
             # TODO:/ Pause/resume function'''
-

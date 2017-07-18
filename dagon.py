@@ -6,10 +6,10 @@ import random
 import subprocess
 import sys
 import time
-import platform
 
 from bin.attacks.bruteforce.bf_attack import bruteforce_main
 from bin.verify_hashes.verify import verify_hash_type
+from bin.generators import Generators
 from lib.settings import (
     CLONE,
     LOGGER,
@@ -26,7 +26,7 @@ from lib.settings import (
     start_up, shutdown,
     update_system,
     verify_python_version,
-    _get_install_link
+    create_dir
 )
 
 if __name__ == '__main__':
@@ -80,10 +80,8 @@ if __name__ == '__main__':
     dictionary_attack_opts = optparse.OptionGroup(parser, "Dictionary attack arguments",
                                                   description="These are the options available to manipulate your "
                                                               "dict attacks")
-    dictionary_attack_opts.add_option("-W", "--wordlist", dest="wordListToUse", metavar="FILE-PATH",
+    dictionary_attack_opts.add_option("-w", "--wordlist", dest="wordListToUse", metavar="FILE-PATH",
                                       help="Specify a wordlist to do the cracking with")
-    dictionary_attack_opts.add_option("--perms", dest="useMutationsForWordList", metavar="WORD-TO-MUTATE",
-                                      help=optparse.SUPPRESS_HELP)
     dictionary_attack_opts.add_option("--download", dest="downloadWordList", action="store_true",
                                       help="Download a random wordlist")
     dictionary_attack_opts.add_option("--download-x", dest="downloadMultiple", metavar="AMOUNT", type=int,
@@ -96,6 +94,12 @@ if __name__ == '__main__':
                     help="Display the least likely hash types during verification")
     misc.add_option("-B", "--benchmark", dest="runBenchMarkTest", action="store_true",
                     help="Find out how long it took to finish the process by timing the application")
+    misc.add_option("-H", "--hash-file", dest="createHashFile", metavar="FILENAME",
+                    help='Parse a singular file or a series of files separated by commas for hashes. '
+                         'IE -F "test.txt, testing.txt" or -F test.txt')
+    misc.add_option("-I", "--integrity-check", action="store_true", dest="testProgramIntegrity",
+                    help="Run an integrity check on the program, this can be used to check for updates,"
+                         "check if the program md5sums match, or just to check your internet connection")
     misc.add_option("--banner", action="store_true", dest="hideBanner",
                     help="Display the full Dagon banner")
     misc.add_option("--update", dest="updateDagon", action="store_true",
@@ -130,14 +134,21 @@ if __name__ == '__main__':
 
     show_banner() if opt.hideBanner else show_hidden_banner()
 
-    integrity_check()
-
     if len(sys.argv) <= 1:
         LOGGER.fatal("You have failed to provide a flag to the application and have been redirected to the help menu.")
         time.sleep(1.7)
         subprocess.call("python dagon.py --help", shell=True)
     else:
         try:
+            if opt.testProgramIntegrity:
+                status = integrity_check()
+                if status:
+                    LOGGER.info(
+                        "Integrity check has passed successfully, there are no updates "
+                        "available at the moment and you are running the latest version."
+                    )
+                    exit(0)
+
             # Download a random wordlist
             if opt.downloadWordList or opt.downloadMultiple:
                 download_rand_wordlist(verbose=opt.runInVerbose,
@@ -164,6 +175,28 @@ if __name__ == '__main__':
                     LOGGER.error("Dagon experienced an error while updating, please download manually from: {}".format(CLONE))
                 else:
                     LOGGER.info("Dagon has successfully updated to the latest version.")
+                exit(0)
+
+            # create a hash list from a given file or a series of given files
+            # for this to work effectively when passing multiple files you must
+            # enclose them in quotes and separate them by commas, IE -H "test.txt, testing.txt".
+            # This will parse the given file for anything pertaining to a hash and save it
+            # under a new file. You can then pass that file to the program
+            if opt.createHashFile:
+                files_to_process = opt.createHashFile
+                hash_file_name = "hash-file-{}.hash".format(random_salt_generator(use_string=True)[0])
+                create_dir("{}/hash_files".format(os.getcwd()), verbose=opt.runInVerbose)
+                full_hash_path = "{}/{}/{}".format(os.getcwd(), "hash_files", hash_file_name)
+                with open(full_hash_path, "a+") as filename:
+                    if len(files_to_process) > 1:
+                        LOGGER.info("Found multiple files to process: '{}'..".format(files_to_process))
+                        for f in files_to_process.split(","):
+                            for item in Generators(f.strip()).hash_file_generator():
+                                filename.write(item.strip() + "\n")
+                    else:
+                        for item in Generators(opt.createHashFile).hash_file_generator():
+                            filename.write(item.strip() + "\n")
+                LOGGER.info("Created file '{}' under '{}'..".format(hash_file_name, full_hash_path))
                 exit(0)
 
             # Check that you provided a mandatory argument
@@ -280,4 +313,4 @@ if __name__ == '__main__':
         # Why you gotta interrupt my awesome?
         except KeyboardInterrupt:
             LOGGER.fatal("User exited process...")
-            # TODO:/ Pause/resume function
+            # TODO:/ Pause/resume function'''

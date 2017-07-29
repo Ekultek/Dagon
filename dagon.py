@@ -7,9 +7,12 @@ import subprocess
 import sys
 import time
 
-from bin.attacks.bruteforce.bf_attack import bruteforce_main
 from bin.verify_hashes.verify import verify_hash_type
 from bin.generators import Generators
+from bin.attacks.bruteforce.bf_attack import (
+    bruteforce_main,
+    create_wordlist
+)
 from lib.settings import (
     CLONE,
     LOGGER,
@@ -260,7 +263,8 @@ if __name__ == '__main__':
                                         salt=salt, placement=placement, posx=opt.returnThisPartOfHash,
                                         use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
                     except Exception as e:
-                        LOGGER.fatal("{} failed with error code: '{}'".format(os.path.basename(__file__), e.message))
+                        LOGGER.fatal("{} failed with error code: '{}'. Creating a wordlist..".format(os.path.basename(__file__), e))
+                        create_wordlist(verbose=opt.runInVerbose)
 
                 # Bruteforce a list of hashes
                 elif opt.bruteforceCrack and opt.hashListToCrack is not None and opt.hashToCrack is None:
@@ -281,7 +285,7 @@ if __name__ == '__main__':
 
                                     print("\n")
                     except Exception as e:
-                        LOGGER.fatal("Failed with error code: '{}'. Check the file and try again..".format(e.message))
+                        LOGGER.fatal("Failed with error code: '{}'. Check the file and try again..".format(e))
 
                 # TODO:/ create rainbow attacks
 

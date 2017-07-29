@@ -6,3 +6,4 @@ Dagon-bfdict-*.txt
 Download-*.txt
 # ignore the checksums that I create
 checksum.txt
+hash_files/

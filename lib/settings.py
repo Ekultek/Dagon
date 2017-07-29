@@ -31,7 +31,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.11.22.39"
+VERSION = "1.11.23.40"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -371,7 +371,9 @@ def show_available_algs(show_all=False, supp="+", not_yet="-", spacer1=" "*5, sp
     LOGGER.info(misc_info_msg.format(len(IDENTIFICATION), DAGON_ISSUE_LINK))
     print("\n{space1}ID#{space2}Alg:\n{space1}---{space2}----".format(space1=spacer1, space2=spacer2))
     for item in sorted(IDENTIFICATION.keys()):
-        print("\033[94m[{}]\033[0m  {}   {}".format(supp, item, IDENTIFICATION[item].upper()))
+        print("\033[94m[{}]\033[0m  {}{}{}".format(
+            supp, item, " " * 3 if len(str(item)) == 3 else " " * 2, IDENTIFICATION[item].upper())
+        )
     if show_all:
         print("\nNot implemented yet:")
         for item in sorted(being_worked_on):

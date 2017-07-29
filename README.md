@@ -1,5 +1,6 @@
 # Dagon - Advanced Hash Manipulation
 #### Named after the prince of Hell, Dagon *(day-gone)* is an advanced hash cracking and manipulation system, capable of bruteforcing multiple hash types, creating bruteforce dictionaries, automatic hashing algorithm verification, random salt generation from Unicode to ASCII, and much more. 
+_Note: I personally guarantee Dagon will crack your hash, if for any reason Dagon is incapable or fails, create an issue with your hash and I will create a patch for the hash and attempt to crack your hash for you._
 
 # Screenshots
 

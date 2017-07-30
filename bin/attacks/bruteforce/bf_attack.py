@@ -105,7 +105,7 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx
 
 
 def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, posx="",
-                    use_hex=False, verbose=False):
+                    use_hex=False, verbose=False, batch=False):
     """
       Main function to be used for bruteforcing a hash
     """
@@ -159,12 +159,15 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
         results = hash_words(verf_hash, wordlist, algorithm, salt=salt, placement=placement, posx=posx, verbose=verbose)
         if results is None:
             LOGGER.warning("Unable to find a match using {}..".format(algorithm.upper()))
-            verify = prompt("Would you like to attempt to verify the hash type automatically and crack it", "y/N")
+            if not batch:
+                verify = prompt("Would you like to attempt to verify the hash type automatically and crack it", "y/N")
+            else:
+                verify = "n"
             if verify.startswith(("y", "Y")):
                 bruteforce_main(verf_hash, wordlist=wordlist, salt=salt, placement=placement, posx=posx, use_hex=use_hex,
                                 verbose=verbose)
             else:
-                LOGGER.warning("Unable to produce a result for given hash '{}' using {}.. Exiting..".format(
+                LOGGER.warning("Unable to produce a result for given hash '{}' using {}..".format(
                     verf_hash, algorithm.upper()))
         else:
             match_found(results)

@@ -31,7 +31,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.12.24.42"
+VERSION = "1.12.24.43"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -113,7 +113,7 @@ def start_up(verbose=False):
     if not verbose:
         print("\n[*] Starting up at {}..\n".format(time.strftime("%H:%M:%S")))
     else:
-        print("[*] Starting up at: {}..\n".format(str(time.time())))
+        print("[*] Starting up at: {}({})..\n".format(str(time.time()), time.strftime("%H:%M:%S")))
 
 
 def shutdown(exit_key=0, verbose=False):
@@ -122,7 +122,7 @@ def shutdown(exit_key=0, verbose=False):
         print('\n[*] Shutting down at {}..\n'.format(time.strftime("%H:%M:%S")))
         exit(exit_key)
     else:
-        print("\n[*] Shutting down at {}..\n".format(str(time.time())))
+        print("\n[*] Shutting down at {}({})..\n".format(str(time.time()), time.strftime("%H:%M:%S")))
         exit(exit_key)
 
 
@@ -422,3 +422,26 @@ def create_dir(dirname, verbose=False):
     else:
         if verbose:
             LOGGER.debug("Directory found, skipping..")
+
+
+def create_file_list(directory=None, cmd_line=None, verbose=False):
+    """
+      Create a list of files to use either from the terminal line or from a directory
+
+      > :param directory: full path to a directory
+      > :param cmd_line: the string given from the command line
+      > :param verbose: verbosity run
+      > :return: a list
+
+      Example:
+        >>> create_file_list(directory=True)
+        ['test.txt', 'testing.txt', 'tests.txt']
+    """
+    if directory is not None:
+        if verbose: LOGGER.debug("Searching '{}'..".format(directory))
+        file_list = os.listdir(directory)
+        if verbose: LOGGER.debug("Found '{}', with a total of {} files..".format(file_list, len(file_list)))
+    else:
+        file_list = cmd_line.split(",")
+        if verbose: LOGGER.debug("Found a total of {} files to use..".format(len(file_list)))
+    return file_list

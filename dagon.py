@@ -85,13 +85,16 @@ if __name__ == '__main__':
                                                               "dict attacks")
     dictionary_attack_opts.add_option("-w", "--wordlist", dest="wordListToUse", metavar="FILE-PATH",
                                       help="Specify a wordlist to do the cracking with")
+    dictionary_attack_opts.add_option("-W", "--multi-wordlist", dest="multiWordLists", metavar="WORDLISTS",
+                                      help="Use multiple wordlists at a time to do the cracking seperated by"
+                                           " a comma, IE 'test.txt, testing.txt'")
+    dictionary_attack_opts.add_option("-D", "--use-dir", dest="useDirForWordlists", metavar="DIRECTORY-PATH",
+                                      help="Pass a directory to use every file in the specified "
+                                           "directory as a wordlist")
     dictionary_attack_opts.add_option("--download", dest="downloadWordList", action="store_true",
                                       help="Download a random wordlist")
     dictionary_attack_opts.add_option("--download-x", dest="downloadMultiple", metavar="AMOUNT", type=int,
                                       help="Download multiple wordlists at a time")
-    dictionary_attack_opts.add_option("-W", "--multi-wordlist", dest="multiWordLists", metavar="WORDLISTS",
-                                      help="Use multiple wordlists at a time to do the cracking seperated by"
-                                           " a comma, IE 'test.txt, testing.txt'")
 
     # Misc arguments that you can give to the program
     misc = optparse.OptionGroup(parser, "Miscellaneous arguments",
@@ -265,6 +268,13 @@ if __name__ == '__main__':
                             for item in opt.multiWordLists.split(","):
                                 bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse),
                                                 wordlist=item.strip(), salt=salt, placement=placement,
+                                                posx=opt.returnThisPartOfHash,
+                                                use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
+                        elif opt.useDirForWordlists is not None:
+                            for item in os.listdir(opt.useDirForWordlists):
+                                bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse),
+                                                wordlist="{}/{}".format(opt.useDirForWordlists, item.strip()),
+                                                salt=salt, placement=placement,
                                                 posx=opt.returnThisPartOfHash,
                                                 use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
                         else:

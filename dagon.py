@@ -29,7 +29,7 @@ from lib.settings import (
     start_up, shutdown,
     update_system,
     verify_python_version,
-    create_dir
+    create_dir, create_file_list
 )
 
 if __name__ == '__main__':
@@ -265,23 +265,28 @@ if __name__ == '__main__':
                 if opt.bruteforceCrack and opt.hashToCrack is not None and opt.hashListToCrack is None:
                     try:
                         if opt.multiWordLists is not None:
-                            for item in opt.multiWordLists.split(","):
+                            file_list = create_file_list(cmd_line=opt.multiWordLists, verbose=opt.runInVerbose)
+                            for item in file_list:
                                 bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse),
                                                 wordlist=item.strip(), salt=salt, placement=placement,
                                                 posx=opt.returnThisPartOfHash,
-                                                use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
+                                                use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose,
+                                                batch=opt.runInBatchMode)
                         elif opt.useDirForWordlists is not None:
-                            for item in os.listdir(opt.useDirForWordlists):
+                            file_list = create_file_list(directory=opt.useDirForWordlists, verbose=opt.runInVerbose)
+                            for item in file_list:
                                 bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse),
                                                 wordlist="{}/{}".format(opt.useDirForWordlists, item.strip()),
                                                 salt=salt, placement=placement,
                                                 posx=opt.returnThisPartOfHash,
-                                                use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
+                                                use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose,
+                                                batch=opt.runInBatchMode)
                         else:
                             bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse),
                                             wordlist=opt.wordListToUse,
                                             salt=salt, placement=placement, posx=opt.returnThisPartOfHash,
-                                            use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
+                                            use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose,
+                                            batch=opt.runInBatchMode)
                     except Exception as e:
                         LOGGER.fatal("{} failed with error code: '{}'. Creating a wordlist..".format(os.path.basename(__file__), e))
                         create_wordlist(verbose=opt.runInVerbose)

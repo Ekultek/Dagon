@@ -89,6 +89,9 @@ if __name__ == '__main__':
                                       help="Download a random wordlist")
     dictionary_attack_opts.add_option("--download-x", dest="downloadMultiple", metavar="AMOUNT", type=int,
                                       help="Download multiple wordlists at a time")
+    dictionary_attack_opts.add_option("-W", "--multi-wordlist", dest="multiWordLists", metavar="WORDLISTS",
+                                      help="Use multiple wordlists at a time to do the cracking seperated by"
+                                           " a comma, IE 'test.txt, testing.txt'")
 
     # Misc arguments that you can give to the program
     misc = optparse.OptionGroup(parser, "Miscellaneous arguments",
@@ -258,10 +261,17 @@ if __name__ == '__main__':
                 # Bruteforce this shit
                 if opt.bruteforceCrack and opt.hashToCrack is not None and opt.hashListToCrack is None:
                     try:
-                        bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse),
-                                        wordlist=opt.wordListToUse,
-                                        salt=salt, placement=placement, posx=opt.returnThisPartOfHash,
-                                        use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
+                        if opt.multiWordLists is not None:
+                            for item in opt.multiWordLists.split(","):
+                                bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse),
+                                                wordlist=item.strip(), salt=salt, placement=placement,
+                                                posx=opt.returnThisPartOfHash,
+                                                use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
+                        else:
+                            bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse),
+                                            wordlist=opt.wordListToUse,
+                                            salt=salt, placement=placement, posx=opt.returnThisPartOfHash,
+                                            use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
                     except Exception as e:
                         LOGGER.fatal("{} failed with error code: '{}'. Creating a wordlist..".format(os.path.basename(__file__), e))
                         create_wordlist(verbose=opt.runInVerbose)

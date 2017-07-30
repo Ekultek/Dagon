@@ -31,7 +31,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.12.23.41"
+VERSION = "1.12.24.42"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -207,18 +207,19 @@ def prompt(question, choices):
         return input("[{} PROMPT] {}[{}]: ".format(time.strftime("%H:%M:%S"), question, choices))
 
 
-def download_rand_wordlist(verbose=False, multi=1):
+def download_rand_wordlist(verbose=False, multi=1, filepath="{}/lib/data_files/wordlist_links", dirname="downloads"):
     """
       Download a random wordlist from some wordlist_links I have laying around
 
       > :param b64link: a base64 encoded wordlist link
     """
-    with open("{}/lib/data_files/wordlist_links".format(os.getcwd())) as wordlist_links:
+    with open(filepath.format(os.getcwd())) as wordlist_links:
         if multi == 1:
             b64link = random.choice(wordlist_links.readlines())
             filename = "Download-" + random_salt_generator(use_string=True)[0]
             LOGGER.info("Beginning download..")
-            with open("{}.txt".format(filename), "a+") as wordlist:
+            create_dir(dirname, verbose=verbose)
+            with open("{}/{}/{}.txt".format(os.getcwd(), dirname, filename), "a+") as wordlist:
                 response = requests.get(base64.b64decode(b64link.strip()), stream=True)
                 total_length = response.headers.get('content-length')
                 if verbose:
@@ -239,7 +240,9 @@ def download_rand_wordlist(verbose=False, multi=1):
                         sys.stdout.write("\r[\033[93m{}\033[0m{}]".format("#" * done, " " * (50-done)))
                         sys.stdout.flush()
             print("")
-            LOGGER.info("Download complete, saved under: {}.txt. Time elapsed: {}s".format(filename, time.time() - start))
+            LOGGER.info("Download complete, saved under: {}/{}/{}.txt. Time elapsed: {}s".format(
+                os.getcwd(), dirname, filename, time.time() - start
+            ))
         else:
             if multi <= len(wordlist_links.readlines()):
                 for _ in range(int(multi)):

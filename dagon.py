@@ -178,13 +178,10 @@ if __name__ == '__main__':
             if opt.updateDagon:
                 LOGGER.info("Update in progress..")
                 update_status = update_system()
-                if update_status == 1:
-                    LOGGER.info("Dagon is already equal with origin master.")
-                elif update_status == -1:
-                    LOGGER.error(
-                        "Dagon experienced an error while updating, please download manually from: {}".format(CLONE))
+                if update_status == 0:
+                    pass
                 else:
-                    LOGGER.info("Dagon has successfully updated to the latest version.")
+                    LOGGER.fatal("No git repository found in path..")
                 exit(0)
 
             # create a hash list from a given file or a series of given files

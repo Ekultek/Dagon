@@ -31,7 +31,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.12.24.43"
+VERSION = "1.12.25.44"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -351,14 +351,17 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
 
 def update_system():
     """ Update Dagon to the newest development version """
-    import subprocess
-    updater = subprocess.check_output("git pull origin master")
-    if "Already up-to-date." in updater:
-        return 1
-    elif "error" or "Error" in updater:
-        return -1
+    if ".git" in os.listdir(os.getcwd()):
+        can_update = True
     else:
+        can_update = False
+    if can_update:
+        os.system("git pull origin master")
         return 0
+    else:
+        return -1
+
+
 
 
 def show_available_algs(show_all=False, supp="+", not_yet="-", spacer1=" "*5, spacer2=" "*3):

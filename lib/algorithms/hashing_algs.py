@@ -521,7 +521,7 @@ def half_sha1(string, salt=None, front=False, back=False, posx="", **placeholder
     if posx == "left":
         return obj.hexdigest()[:20]
     elif posx == "right":
-        return obj.hexdigest()[:20]
+        return obj.hexdigest()[20:]
     elif posx == "mid":
         return obj.hexdigest()[10:-10]
     else:

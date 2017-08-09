@@ -14,7 +14,6 @@ from bin.attacks.bruteforce.bf_attack import (
     create_wordlist
 )
 from lib.settings import (
-    CLONE,
     LOGGER,
     VERSION_STRING,
     algorithm_pointers,
@@ -33,6 +32,17 @@ from lib.settings import (
 )
 
 if __name__ == '__main__':
+
+    # # # # # # # # #
+    # DO NOT REMOVE THIS
+    # I don't know how, I don't know why, but this fixes pretty much
+    # all of the `ascii can't decode byte` errors. This has to be the
+    # very first thing done in order for some of the hashes to work
+    # successfully. Once again, I don't know how or why it works,
+    # but it works.
+    reload(sys)
+    sys.setdefaultencoding("utf8")
+    # # # # # # # # # #
 
     parser = optparse.OptionParser(usage="dagon [c|v|V|l] HASH|HASH-LIST --bruteforce [OPTS]")
 

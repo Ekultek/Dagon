@@ -1,6 +1,16 @@
 # Dagon - Advanced Hash Manipulation
+
 #### Named after the prince of Hell, Dagon *(day-gone)* is an advanced hash cracking and manipulation system, capable of bruteforcing multiple hash types, creating bruteforce dictionaries, automatic hashing algorithm verification, random salt generation from Unicode to ASCII, and much more. 
-_Note: I personally guarantee Dagon will crack your hash, if for any reason Dagon is incapable or fails, create an issue with your hash and I will create a patch for the hash and attempt to crack your hash for you._
+
+_Note:_ Dagon comes complete with a <u><b>Hash Guarantee</b></u>:
+
+_I personally guarantee that Dagon will crack your hash successfully. If for any reason, you feel that Dagon has fallen short, is incapable of cracking your hash, or did not crack the hash to your specifications:_
+  
+  - Please make an issue with your hash (if you do not want to publicly post your hash we can communicate through Slack)
+  - Run Dagon with the `--verbose` flag and try to crack the hash, post all the output.
+  - Tell me what you think the problem is
+  
+_I will personally try to crack your hash (no guarantees but I'll do my best) for you, and if there is a problem, I will create a patch for your hash._
 
 # Screenshots
 

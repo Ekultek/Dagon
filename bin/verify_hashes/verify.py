@@ -2,10 +2,12 @@ from __future__ import print_function
 
 import re
 
+from lib.github.create_issue import request_connection
 from lib.settings import (
     DAGON_ISSUE_LINK,
     LOGGER,
-    shutdown
+    shutdown,
+    hash_guarantee
 )
 
 
@@ -114,4 +116,5 @@ def verify_hash_type(hash_to_verify, least_likely=False, verbose=False):
         "Unable to find any algorithms to match the given hash. If you "
         "feel this algorithm should be implemented make an issue here: {}")
     LOGGER.fatal(error_msg.format(DAGON_ISSUE_LINK))
+    hash_guarantee(hash_to_verify)
     shutdown(1)

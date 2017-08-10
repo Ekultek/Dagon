@@ -13,7 +13,8 @@ from lib.settings import (
     prompt,
     random_salt_generator,
     shutdown,
-    create_dir
+    create_dir,
+    hash_guarantee
 )
 
 # The name of the wordlist
@@ -131,12 +132,10 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
             if alg is None:
                 err_msg = (
                     "Ran out of algorithms to try. There are no more "
-                    "algorithms currently available that match this hashes"
-                    " length, and complexity. Please attempt to use your "
-                    "own wordlist (switch '--wordlist'), download one "
-                    "(switch '--download'), use salt (switch '-S SALT'), or"
-                    " find the algorithm type and create a issue here {}.. ")
+                    "algorithms currently available that match this hashes "
+                    "length, and complexity.")
                 LOGGER.fatal(err_msg.format(DAGON_ISSUE_LINK))
+                hash_guarantee(verf_hash)
                 break
             else:
                 if ":::" in verf_hash:

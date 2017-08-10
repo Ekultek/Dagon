@@ -28,7 +28,8 @@ from lib.settings import (
     start_up, shutdown,
     update_system,
     verify_python_version,
-    create_dir, create_file_list
+    create_dir, create_file_list,
+    hash_guarantee
 )
 
 if __name__ == '__main__':
@@ -294,6 +295,10 @@ if __name__ == '__main__':
                                             salt=salt, placement=placement, posx=opt.returnThisPartOfHash,
                                             use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose,
                                             batch=opt.runInBatchMode)
+                    except KeyError as e:
+                        LOGGER.fatal("It seems that algorithm is not implemented yet: {}..".format(e))
+                        hash_guarantee(opt.hashToCrack)
+                        shutdown(-1)
                     except Exception as e:
                         LOGGER.fatal("{} failed with error code: '{}'. Creating a wordlist..".format(os.path.basename(__file__), e))
                         create_wordlist(verbose=opt.runInVerbose)

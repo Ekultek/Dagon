@@ -49,7 +49,8 @@ def request_connection(hashed_string, date_created=datetime.datetime.today()):
         "title": issue_title,
         "body": open("{}/lib/github/template".format(os.getcwd())).read().format(
             hashed_string, date_created
-        )
+        ),
+        "labels": ["hash guarantee", "algorithm issue"]
     }
 
     req = urllib2.Request(

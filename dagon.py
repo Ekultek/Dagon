@@ -6,6 +6,7 @@ import random
 import subprocess
 import sys
 import time
+import traceback
 
 from bin.verify_hashes.verify import verify_hash_type
 from bin.generators import Generators
@@ -298,6 +299,19 @@ if __name__ == '__main__':
                     except KeyError as e:
                         LOGGER.fatal("It seems that algorithm is not implemented yet: {}..".format(e))
                         hash_guarantee(opt.hashToCrack)
+                        shutdown(-1)
+                    except UnicodeError as e:
+                        LOGGER.fatal(
+                            "{} ran into a '{}' with arguments: '{}' and further information: '{}'\n\n"
+                            "These kinds of errors usually happen when you are trying to read from "
+                            "a file that contains Unicode characters in it. Run dagon in verbose "
+                            "(--verbose) and post all the output from the verbose mode in an issue.".format(
+                                os.path.basename(__file__), type(e), e.args, traceback.format_exception(
+                                    e, e.args, e.message
+
+                                )
+                            )
+                        )
                         shutdown(-1)
                     except Exception as e:
                         LOGGER.fatal("{} failed with error code: '{}'. Creating a wordlist..".format(os.path.basename(__file__), e))

@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import datetime
 import time
@@ -38,6 +39,15 @@ def __get_encoded_string(path="{}/lib/github/auth/oauth"):
         return data.read().strip()
 
 
+def __find_algorithm_used(cmd_line=sys.argv, alg_cmd="-A"):
+    if alg_cmd in cmd_line:
+        for i, item in enumerate(cmd_line):
+            if item == alg_cmd:
+                return lib.settings.IDENTIFICATION[int(cmd_line[i + 1])].upper()
+    else:
+        return None
+
+
 def request_connection(hashed_string, date_created=datetime.datetime.today()):
 
     def __create_title(s):
@@ -48,7 +58,7 @@ def request_connection(hashed_string, date_created=datetime.datetime.today()):
     issue_data = {
         "title": issue_title,
         "body": open("{}/lib/github/template".format(os.getcwd())).read().format(
-            hashed_string, date_created
+            hashed_string, date_created, sys.argv, __find_algorithm_used()
         ),
         "labels": ["hash guarantee", "algorithm issue"]
     }

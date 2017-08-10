@@ -1,3 +1,8 @@
-Dagon has failed to crack given hash: '{}'.
+Dagon has failed to crack given hash: `{}`.
 
-This was attempted on {}..
+This was attempted on `{}`..
+
+Commands that were used during failure:
+`{}`
+
+Algorithm attempted: `{}`

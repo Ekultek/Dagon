@@ -9,6 +9,7 @@ import platform
 import requests
 from colorlog import ColoredFormatter
 
+from lib.github.create_issue import request_connection
 from lib.algorithms.hashing_algs import *
 
 # Create logging
@@ -31,7 +32,7 @@ LOGGER.setLevel(log_level)
 LOGGER.addHandler(stream)
 
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.12.27.46"
+VERSION = "1.13.27.47"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -448,3 +449,15 @@ def create_file_list(directory=None, cmd_line=None, verbose=False):
         file_list = cmd_line.split(",")
         if verbose: LOGGER.debug("Found a total of {} files to use..".format(len(file_list)))
     return file_list
+
+
+def hash_guarantee(hashed_string):
+    """ This will be asked if Dagon fails to find a hash to match yours. """
+    question = prompt(
+        "Dagon comes with a hash guarantee, if Dagon is unable to crack "
+        "your hash successfully, Ekultek will personally attempt to crack "
+        "your hash for you. Would you like to automatically create a Github "
+        "issue containing your hash", "y/N"
+    )
+    if question.lower().startswith("y"):
+        request_connection(hashed_string)

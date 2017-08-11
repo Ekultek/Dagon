@@ -4,6 +4,7 @@ import hashlib
 import os
 import random
 import zlib
+import string as _string
 
 import sha3
 import bcrypt
@@ -42,7 +43,7 @@ def mysql_hash(string, salt=None, front=False, back=False, **placeholder):
     return "*{}".format(obj2.upper())
 
 
-def oracle_10g(string, salt=None, iv="\0"*8, padding="\0", key="0123456789ABCDEF", **placeholder):
+def oracle_10g(string, salt=None, iv="\0" * 8, padding="\0", key="0123456789ABCDEF", **placeholder):
     """
       Create a Oracle 10g hash, if no salt is given (username) a random salt will be generated
 
@@ -64,7 +65,7 @@ def oracle_10g(string, salt=None, iv="\0"*8, padding="\0", key="0123456789ABCDEF
     cipher = pydes.des(encrypt, mode=1, IV=iv, pad=padding)
     encrypt = cipher.encrypt(constr)
     return encrypt[-8:].encode("hex").upper()
-    
+
 
 def oracle_11g(string, salt=None, **placeholder):
     """
@@ -97,7 +98,7 @@ def blowfish(string, **placeholder):
         >>> blowfish("test")
         $2b$12$fSX/dvlx3dJGkGYKSbBbLOTOhzqj8xQ2krOtu2QkHNeJiYTC0B/ji
     """
-    return bcrypt.hashpw(string, bcrypt.gensalt())
+    return bcrypt.hashpw(str(string), bcrypt.gensalt())
 
 
 def postgres(string, salt=None, **placeholder):
@@ -308,6 +309,91 @@ def md4(string, salt=None, front=False, back=False, **placeholder):
     return obj.hexdigest()
 
 
+def md5_crypt(string, salt=None, magic="$1$", **placeholder):
+    if salt is None:
+        salt = lib.settings.random_salt_generator(use_string=True)[0]
+    seedchars = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    unix_format = "{}{}${}"
+    obj = hashlib.md5()
+    obj1 = hashlib.md5()
+    obj2 = hashlib.md5()
+
+    string = str(string)  # take care of any unicode errors that come up
+
+    def __to64(v, n):
+        retval = ''
+        while n - 1 >= 0:
+            n -= 1
+            retval += seedchars[v & 0x3f]
+            v = v >> 6
+        return retval
+
+    if salt[:len(magic)] == magic:
+        salt = salt[len(magic):]
+    salt = _string.split(salt, '$', 1)[0]
+    salt = salt[:8]
+    ctx = string + magic + salt
+    obj.update(string + salt + string)
+    final = obj.digest()
+    for pl in range(len(string), 0, -16):
+        if pl > 16:
+            ctx = ctx + final[:16]
+        else:
+            ctx = ctx + final[:pl]
+    i = len(string)
+    while i:
+        if i & 1:
+            ctx = ctx + chr(0)
+        else:
+            ctx = ctx + string[0]
+        i = i >> 1
+    obj1.update(ctx)
+    final = obj1.digest()
+    for i in range(1000):
+        ctx1 = ''
+        if i & 1:
+            ctx1 = ctx1 + string
+        else:
+            ctx1 = ctx1 + final[:16]
+
+        if i % 3:
+            ctx1 = ctx1 + salt
+
+        if i % 7:
+            ctx1 = ctx1 + string
+
+        if i & 1:
+            ctx1 = ctx1 + final[:16]
+        else:
+            ctx1 = ctx1 + string
+        obj2.update(ctx1)
+        final = obj2.digest()
+    passwd = ''
+    passwd = passwd + __to64((int(ord(final[0])) << 16)
+                             | (int(ord(final[6])) << 8)
+                             | (int(ord(final[12]))), 4)
+
+    passwd = passwd + __to64((int(ord(final[1])) << 16)
+                             | (int(ord(final[7])) << 8)
+                             | (int(ord(final[13]))), 4)
+
+    passwd = passwd + __to64((int(ord(final[2])) << 16)
+                             | (int(ord(final[8])) << 8)
+                             | (int(ord(final[14]))), 4)
+
+    passwd = passwd + __to64((int(ord(final[3])) << 16)
+                             | (int(ord(final[9])) << 8)
+                             | (int(ord(final[15]))), 4)
+
+    passwd = passwd + __to64((int(ord(final[4])) << 16)
+                             | (int(ord(final[10])) << 8)
+                             | (int(ord(final[5]))), 4)
+
+    passwd = passwd + __to64((int(ord(final[11]))), 2)
+
+    return unix_format.format(magic, salt, passwd)
+
+
 def md5(string, salt=None, front=False, back=False, **placeholder):
     """
       Create an MD5 hash from a given string
@@ -449,7 +535,7 @@ def md5_salt_pass_salt(string, salt=None, **placeholder):
     """
     if salt is None:
         salt = lib.settings.random_salt_generator(warning=False)[0]
-    split_by = int(round(len(salt)/2))
+    split_by = int(round(len(salt) / 2))
     obj1 = hashlib.md5()
     obj1.update(salt[0:split_by] + string + salt[-split_by:])
     return obj1.hexdigest()
@@ -783,11 +869,11 @@ def crc32(string, salt=None, front=False, back=False, use_hex=False, **placehold
         0xd87f7e0cL
     """
     if salt is not None and front and not back:
-        long_int = hex(zlib.crc32(salt + string) % 2**32)
+        long_int = hex(zlib.crc32(salt + string) % 2 ** 32)
     elif salt is not None and back and not front:
-        long_int = hex(zlib.crc32(string + salt) % 2**32)
+        long_int = hex(zlib.crc32(string + salt) % 2 ** 32)
     else:
-        long_int = hex(zlib.crc32(string) % 2**32)
+        long_int = hex(zlib.crc32(string) % 2 ** 32)
 
     if not use_hex:
         return str(long_int)[2:-1]
@@ -850,7 +936,8 @@ def dsa(string, salt=None, front=False, back=False, **placeholder):
     raise NotImplementedError("DSA hashes are not implemented yet.")
 
 
-def wordpress(string, salt=None, itoa64="./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", **placeholder):
+def wordpress(string, salt=None, itoa64="./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+              **placeholder):
     raise NotImplementedError("Wordpress hashes are not implemented yet.")
 
 

@@ -12,7 +12,6 @@ from bin.verify_hashes.verify import verify_hash_type
 from bin.generators import Generators
 from bin.attacks.bruteforce.bf_attack import (
     bruteforce_main,
-    create_wordlist
 )
 from lib.settings import (
     LOGGER,
@@ -319,8 +318,8 @@ if __name__ == '__main__':
                         )
                         shutdown(-1)
                     except Exception as e:
-                        LOGGER.fatal("{} failed with error code: '{}'. Creating a wordlist..".format(os.path.basename(__file__), e))
-                        create_wordlist(verbose=opt.runInVerbose)
+                        LOGGER.fatal("{} failed with error code: '{}'.".format(os.path.basename(__file__), e))
+                        hash_guarantee(opt.hashToCrack)
 
                 # Bruteforce a list of hashes
                 elif opt.bruteforceCrack and opt.hashListToCrack is not None and opt.hashToCrack is None:

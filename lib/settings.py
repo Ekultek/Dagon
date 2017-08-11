@@ -64,6 +64,7 @@ Home: {}
 FUNC_DICT = {
     "md2": md2, "md4": md4, "md5": md5, "half md5": half_md5, "md5(md5(pass)+md5(salt))": md5_pass_salt,
     "md5(md5(pass))": md5_md5_pass, "md5(salt+pass+salt)": md5_salt_pass_salt, "md5(md5(md5(pass)))": md5_md5_md5_pass,
+    "md5 crypt": md5_crypt,
     "mysql": mysql_hash, "blowfish": blowfish, "oracle 11g": oracle_11g, "oracle 10g": oracle_10g,
     "mssql 2005": mssql_2005, "postgresql": postgres, "mssql 2000": mssql_2000,
     "ripemd160": ripemd160,
@@ -80,7 +81,7 @@ IDENTIFICATION = {
     100: "md5", 110: "md2", 120: "md4",
     # MD special indicators
     130: "md5(md5(pass)+md5(salt))", 131: "md5(md5(pass))", 132: "half md5",
-    133: "md5(salt+pass+salt)", 134: "md5(md5(md5(pass)))",
+    133: "md5(salt+pass+salt)", 134: "md5(md5(md5(pass)))", 135: "md5 crypt",
 
     # Blake indicators
     200: "blake224", 210: "blake256", 220: "blake384", 230: "blake512",

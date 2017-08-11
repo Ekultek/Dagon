@@ -71,6 +71,9 @@ HASH_TYPE_REGEX = {
         ("tiger192", None),
         ("haval192", "sha1(oracle)", "xsha v10.4-v10.6")
     ],
+    re.compile("^\$1\$\w+\$\w+(.)?\w+..$", re.IGNORECASE): [
+        ("md5 crypt", None), (None, None)
+    ],
     #re.compile(r"^\$\w+\$\w+(\$)?\w+(.)?$", re.IGNORECASE): [
     #    ("wordpress", None), ("Joomla", None)
     #],

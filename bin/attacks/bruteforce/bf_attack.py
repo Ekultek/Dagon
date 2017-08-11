@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os
+import codecs
 
 from bin.verify_hashes.verify import verify_hash_type
 from bin.generators import Generators
@@ -89,7 +90,7 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None,
 
     """
     tries = 0
-    with open(wordlist) as words:
+    with codecs.open(wordlist, encoding="utf-8", mode="r") as words:
         for i, word in enumerate(words.readlines(), start=1):
             if salt is not None:
                 if placement == "front":

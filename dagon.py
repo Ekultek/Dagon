@@ -17,6 +17,7 @@ from bin.attacks.bruteforce.bf_attack import (
 from lib.settings import (
     LOGGER,
     VERSION_STRING,
+    DEFAULT_ROUNDS,
     algorithm_pointers,
     download_rand_wordlist,
     integrity_check,
@@ -89,7 +90,9 @@ if __name__ == '__main__':
                             help="Choose which part of the hashes you want to return, "
                                  "only valid for half algorithms functions")
     manipulation.add_option("--use-hex", action="store_true", dest="useHexCodeNotHash",
-                            help="Use the CRC32/CRC64 hexcode instead of the hash")
+                            help="Use the CRC32/CRC64 hexcode instead of the hash"),
+    manipulation.add_option("--rounds", dest="useRounds", metavar="# OF ROUNDS (default 10)", type=int,
+                            help="Specify a number of rounds to use for the hashing")
 
     # Manipulate your dictionary attacks with these options
     dictionary_attack_opts = optparse.OptionGroup(parser, "Dictionary attack arguments",
@@ -272,6 +275,8 @@ if __name__ == '__main__':
 
                 # Bruteforce this shit
                 if opt.bruteforceCrack and opt.hashToCrack is not None and opt.hashListToCrack is None:
+                    if opt.useRounds is not None and opt.useRounds > DEFAULT_ROUNDS:
+                        LOGGER.warning("Keep in mind, the more rounds, the slower the algorithm..")
                     try:
                         if opt.multiWordLists is not None:
                             file_list = create_file_list(cmd_line=opt.multiWordLists, verbose=opt.runInVerbose)
@@ -280,7 +285,7 @@ if __name__ == '__main__':
                                                 wordlist=item.strip(), salt=salt, placement=placement,
                                                 posx=opt.returnThisPartOfHash,
                                                 use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose,
-                                                batch=opt.runInBatchMode)
+                                                batch=opt.runInBatchMode, rounds=opt.useRounds or DEFAULT_ROUNDS)
                         elif opt.useDirForWordlists is not None:
                             file_list = create_file_list(directory=opt.useDirForWordlists, verbose=opt.runInVerbose)
                             for item in file_list:
@@ -289,13 +294,13 @@ if __name__ == '__main__':
                                                 salt=salt, placement=placement,
                                                 posx=opt.returnThisPartOfHash,
                                                 use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose,
-                                                batch=opt.runInBatchMode)
+                                                batch=opt.runInBatchMode, rounds=opt.useRounds or DEFAULT_ROUNDS)
                         else:
                             bruteforce_main(opt.hashToCrack, algorithm=algorithm_pointers(opt.algToUse),
                                             wordlist=opt.wordListToUse,
                                             salt=salt, placement=placement, posx=opt.returnThisPartOfHash,
                                             use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose,
-                                            batch=opt.runInBatchMode)
+                                            batch=opt.runInBatchMode, rounds=opt.useRounds or DEFAULT_ROUNDS)
                     except KeyError as e:
                         LOGGER.fatal("It seems that algorithm is not implemented yet: {}..".format(e))
                         hash_guarantee(opt.hashToCrack)
@@ -332,7 +337,8 @@ if __name__ == '__main__':
                                     bruteforce_main(hash_to_crack.strip(), algorithm=algorithm_pointers(opt.algToUse),
                                                     wordlist=opt.wordListToUse, salt=salt,
                                                     placement=placement, posx=opt.returnThisPartOfHash,
-                                                    use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose)
+                                                    use_hex=opt.useHexCodeNotHash, verbose=opt.runInVerbose,
+                                                    rounds=opt.useRounds)
 
                                     print("\n")
                     except Exception as e:

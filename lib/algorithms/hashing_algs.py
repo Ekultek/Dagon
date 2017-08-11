@@ -529,54 +529,34 @@ def half_sha1(string, salt=None, front=False, back=False, posx="", **placeholder
         return half_sha1(string, salt=salt, front=front, back=back, posx=random.choice(placement_opts))
 
 
-def sha1_sha1_pass(string, salt=None, front=False, back=False, **placeholder):
+def sha1_rounds(string, rounds=10, salt=None, front=False, back=False, **placeholder):
     """
-      Create an SHA1 hash in SHA1(SHA1($pass)) format
+      Create a SHA1 hash in given rounds, meaning re-hexdigest the hash with a already created
+      hash value
 
       > :param string: string to be hashed
-      > :return: hashed string in SHA1(SHA1($pass)) format
+      > :param rounds: how many rounds the digest should go
+      > :return: a hashed string
 
       Example:
-        >>> sha1_sha1_pass("test")
-        c4033bff94b567a190e33faa551f411caef444f2
+        >>> sha1_rounds("test", rounds=3)
+        84cb15079fe0d9e19e01a8526f9602be9fa10e3c
+        >>> sha1_rounds("test", rounds=1000)
+        2d69bdd6464a76fa735656b77e1869c626e9af8c
     """
-    obj1 = hashlib.sha1()
-    obj2 = hashlib.sha1()
+    obj = hashlib.sha1()
     if salt is not None and front and not back:
-        obj1.update(salt + string)
+        obj.update(salt + string)
     elif salt is not None and back and not front:
-        obj1.update(string + salt)
+        obj.update(string + salt)
     else:
-        obj1.update(string)
-    obj2.update(obj1.hexdigest())
-    return obj2.hexdigest()
-
-
-def sha1_sha1_sha1_pass(string, salt=None, **placeholder):
-    """
-      Create a SHA1 hash in a specific format sha1(sha1(sha1(pass))
-
-      > :param string: string to be hashed into the SHA1 format
-      > :return: a SHA1 hash in the above format
-
-      Example:
-        >>> sha1_sha1_sha1_pass("test")
-        b2c2a9ca41e220a80237ea3f484b92af0b7c7223
-        >>> sha1_sha1_sha1_pass("test", salt="4e33r5t5")
-        b2c2a9ca41e220a80237ea3f484b92af0b7c7223:4e33r5t5
-    """
-    obj1 = hashlib.sha1()
-    obj2 = hashlib.sha1()
-    obj3 = hashlib.sha1()
-    obj1.update(string)
-    first_hash = obj1.hexdigest()
-    obj2.update(first_hash)
-    second_hash = obj2.hexdigest()
-    obj3.update(second_hash)
-    if salt is None:
-        return obj3.hexdigest()
-    else:
-        return "{}:{}".format(obj3.hexdigest(), salt)
+        obj.update(string)
+        hashed = obj.hexdigest()
+    for _ in range(int(rounds) + 1):
+        obj1 = hashlib.sha1()
+        obj1.update(hashed)
+        hashed = obj1.hexdigest()
+    return hashed
 
 
 def sha224(string, salt=None, front=False, back=False, **placeholder):

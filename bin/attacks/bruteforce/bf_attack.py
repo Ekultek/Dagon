@@ -75,7 +75,8 @@ def create_wordlist(warning=True, verbose=False, add=False):
     shutdown()
 
 
-def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx="", use_hex=False, verbose=False):
+def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None,
+               posx="", use_hex=False, verbose=False, rounds=10):
     """
       Hash the words and verify if they match or not
 
@@ -92,11 +93,13 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx
         for i, word in enumerate(words.readlines(), start=1):
             if salt is not None:
                 if placement == "front":
-                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, front=True, posx=posx, use_hex=use_hex)
+                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, front=True,
+                                                          posx=posx, use_hex=use_hex, rounds=rounds)
                 else:
-                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, back=True, posx=posx, use_hex=use_hex)
+                    hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, back=True,
+                                                          posx=posx, use_hex=use_hex, rounds=rounds)
             else:
-                hashed = FUNC_DICT[algorithm.lower()](word.strip(), posx=posx, use_hex=use_hex)
+                hashed = FUNC_DICT[algorithm.lower()](word.strip(), posx=posx, use_hex=use_hex, rounds=rounds)
             tries += 1
 
             if verbose and tries % 10000 == 0: LOGGER.debug("Testing against: '{}', attempt #{}..".format(hashed, tries))
@@ -106,7 +109,7 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None, posx
 
 
 def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placement=None, all_algs=False, posx="",
-                    use_hex=False, verbose=False, batch=False):
+                    use_hex=False, verbose=False, batch=False, rounds=10):
     """
       Main function to be used for bruteforcing a hash
     """
@@ -147,7 +150,7 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                     shutdown(1)
                 LOGGER.info("Starting bruteforce with {}..".format(alg.upper()))
                 bruteforcing = hash_words(verf_hash, wordlist, alg, salt=salt, placement=placement, posx=posx,
-                                          use_hex=use_hex, verbose=verbose)
+                                          use_hex=use_hex, verbose=verbose, rounds=rounds)
                 if bruteforcing is None:
                     LOGGER.warning("Unable to find a match for '{}', using {}..".format(verf_hash, alg.upper()))
                 else:

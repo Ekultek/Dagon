@@ -69,8 +69,7 @@ FUNC_DICT = {
     "ripemd160": ripemd160,
     "blake224": blake224, "blake256": blake256, "blake384": blake384, "blake512": blake512,
     "sha1": sha1, "sha224": sha224, "sha256": sha256, "sha384": sha384, "sha512": sha512,
-    "half sha1": half_sha1, "sha1(sha1(pass))": sha1_sha1_pass, "ssha": ssha,
-    "sha1(sha1(sha1(pass)))": sha1_sha1_sha1_pass,
+    "half sha1": half_sha1, "ssha": ssha, "sha1(rounds(pass))": sha1_rounds,
     "sha3_224": sha3_224, "sha3_256": sha3_256, "sha3_384": sha3_384, "sha3_512": sha3_512,
     "whirlpool": whirlpool, "crc32": crc32, "ntlm": ntlm, "windows local (ntlm)": ntlm, "crc64": crc64,
     "tiger192": tiger192
@@ -90,7 +89,7 @@ IDENTIFICATION = {
     300: "sha1", 310: "sha224", 320: "sha256", 330: "sha384", 340: "sha512",
     400: "sha3_224", 410: "sha3_256", 420: "sha3_384", 430: "sha3_512",
     # SHA special indicators
-    351: "half sha1", 352: "sha1(sha1(pass))", 353: "ssha", 354: "sha1(sha1(sha1(pass)))",
+    351: "half sha1", 352: "sha1(rounds(pass))", 353: "ssha",
 
     # Database and external hash indicators
     500: "blowfish", 510: "mysql", 520: "oracle 11g", 530: "oracle 10g", 540: "mssql 2005", 550: "postgresql",
@@ -107,6 +106,8 @@ IDENTIFICATION = {
 }
 # Regular expression to see if you already have a bruteforce wordlist created
 WORDLIST_RE = re.compile("Dagon-bfdict-[a-zA-Z]{7}.txt")
+# default for how many rounds the algorithm does
+DEFAULT_ROUNDS = 10
 
 
 def start_up(verbose=False):

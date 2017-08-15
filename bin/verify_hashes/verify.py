@@ -89,7 +89,7 @@ HASH_TYPE_REGEX = {
     re.compile(r"^[0-9a-f]{64,70}:[a-f0-9]{32,40}:\d+:[a-f0-9]{608,620}$", re.IGNORECASE): [
         ("cloud", None), (None, None)
     ],
-    re.compile(r"^\{[^{}]*}[a-zA-Z0-9][\w/-]+=?$", re.IGNORECASE): [
+    re.compile(r"^\{SSHA\S+$", re.IGNORECASE): [
         ("ssha", None), (None, None)
     ],
     re.compile(r"^\w+:\d+:[a-z0-9]{32}:[a-z0-9]{32}:::$", re.IGNORECASE): [

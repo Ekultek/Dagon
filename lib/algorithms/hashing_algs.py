@@ -541,7 +541,7 @@ def md5_salt_pass_salt(string, salt=None, **placeholder):
     return obj1.hexdigest()
 
 
-def ssha(string, salt=None, front=False, back=False, **placeholder):
+def ssha(string, salt=None, **placeholder):
     """
       Create an SSHA hash (seeded salted sha)
 
@@ -554,14 +554,10 @@ def ssha(string, salt=None, front=False, back=False, **placeholder):
     """
     if salt is None:
         salt = os.urandom(4)
-    obj = hashlib.sha1(string)
+    obj = hashlib.sha1()
+    obj.update(string)
     obj.update(salt)
-    if front and not back:
-        return "{SSHA}" + base64.urlsafe_b64encode(salt + obj.digest())
-    elif back and not front:
-        return "{SSHA}" + base64.urlsafe_b64encode(obj.digest() + salt)
-    else:
-        return "{SSHA}" + base64.urlsafe_b64encode(obj.digest())
+    return "{SSHA}" + base64.urlsafe_b64encode(obj.digest() + salt)
 
 
 def sha1(string, salt=None, front=False, back=False, **placeholder):

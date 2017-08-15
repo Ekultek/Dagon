@@ -128,10 +128,10 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
 
     if algorithm is None:
         hash_type = verify_hash_type(verf_hash, least_likely=all_algs)
-        LOGGER.info("Found {} possible hash types to run against: {} ".format(len(hash_type) - 1 if hash_type[1] is None
-                                                                              else len(hash_type),
-                                                                              hash_type[0] if hash_type[1] is None else
-                                                                              hash_type))
+        LOGGER.info("Found {} possible hash type(s) to run against: {} ".format(len(hash_type) - 1 if hash_type[1] is None
+                                                                                else len(hash_type),
+                                                                                hash_type[0] if hash_type[1] is None else
+                                                                                hash_type))
         for alg in hash_type:
             if alg is None:
                 err_msg = (
@@ -139,7 +139,6 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
                     "algorithms currently available that match this hashes "
                     "length, and complexity.")
                 LOGGER.fatal(err_msg.format(DAGON_ISSUE_LINK))
-                hash_guarantee(verf_hash)
                 break
             else:
                 if ":::" in verf_hash:

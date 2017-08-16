@@ -4,7 +4,7 @@
 
 _Note:_ Dagon comes complete with a <u><b>Hash Guarantee</b></u>:
 
-_I personally guarantee that Dagon will be able to crack your hash successfully. At any point Dagon fails to do so, you will be given a choice to automatically create a Github issue with your hash. Once this issue is created, I will try my best to crack your hash for you. The Github issue is completely anonymous, and no questions will be asked. This is my way of thanking you for using Dagon. There are alternatives to using the automatic issue creator. If you do not want your hash publicly displayed, and feel Dagon has failed you, feel free to create your own issue._ 
+_I personally guarantee that Dagon will be able to crack your hash successfully. At any point Dagon fails to do so, you will be given a choice to automatically create a Github issue with your hash. Once this issue is created, I will try my best to crack your hash for you. The Github issue is completely anonymous, and no questions will be asked. This is my way of thanking you for using Dagon. There are alternatives to using the automatic issue creator. If you do not want your hash publicly displayed, and feel Dagon has failed you, feel free to create your own issue. Or send an email with the hash information to dagonhashguarantee@gmail.com_ 
 # Screenshots
 
 Bruteforcing made easy with a built in wordlist creator if you do not specify one. The wordlist will create 100,000 strings to use

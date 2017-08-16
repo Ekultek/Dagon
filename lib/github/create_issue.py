@@ -2,7 +2,6 @@ import os
 import sys
 import json
 import datetime
-import time
 import urllib2
 
 import lib
@@ -69,7 +68,18 @@ def request_connection(hashed_string, date_created=datetime.datetime.today()):
 
     urllib2.urlopen(req).read()
     lib.settings.LOGGER.info(
-            "Created issue with title: '{}' at {}..".format(issue_title, time.strftime("%H:%M:%S"))
+        "Your issue has been created with the title '{}'. If you so wish "
+        "you can provide more information about where you got this hash, by "
+        "sending an email to: {}.\nDoing so will help with the cracking "
+        "of your hash, and can make the cracking aspect go by faster.\n"
+        "Information that will need to be provided will be basic, just "
+        "where you got the hash (database, application, etc), and the "
+        "type of database, application, etc, that it was gained from.\n"
+        "If you choose not to provide the information, please allow up-to "
+        "7 days for an attempt at cracking your hash, along with the patch "
+        "for your hash to be pushed through.".format(
+            issue_title, lib.settings.DAGON_EMAIL
+        )
     )
 
 

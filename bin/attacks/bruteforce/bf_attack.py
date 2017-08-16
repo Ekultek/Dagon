@@ -116,6 +116,7 @@ def bruteforce_main(verf_hash, algorithm=None, wordlist=None, salt=None, placeme
     """
     wordlist_created = False
     if wordlist is None:
+        create_dir("bf-dicts", verbose=verbose)
         for item in os.listdir(os.getcwd() + "/bf-dicts"):
             if WORDLIST_RE.match(item):
                 wordlist_created = True

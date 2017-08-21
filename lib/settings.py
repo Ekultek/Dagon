@@ -1,3 +1,5 @@
+from __future__ import with_statement
+
 import logging
 import re
 import string
@@ -7,6 +9,7 @@ import math
 import platform
 
 import requests
+from chardet.universaldetector import UniversalDetector
 from colorlog import ColoredFormatter
 
 from lib.github.create_issue import request_connection
@@ -34,7 +37,7 @@ LOGGER.addHandler(stream)
 # dagons email address
 DAGON_EMAIL = "dagonhashguarantee@gmail.com"
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.14.34.56"
+VERSION = "1.14.35.57"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -322,7 +325,7 @@ def match_found(data_tuple, data_sep="-" * 75, item_found="+", least_likely="-",
         shutdown(1)
     if data_tuple[0][1] is None and all_types:
         LOGGER.warning("Only one possible type found for given hash..")
-    sort_cracked = ["Clear Text: ", "Hash: ", "Tries attempted: ", "Algorithm Used: "]
+    sort_cracked = ["Clear Text: ", "Hash: ", "Tries attempted (from file): ", "Algorithm Used: "]
     if kind == "cracked":
         print(data_sep + "\n" + "[{}] Match found:\n".format(item_found) + data_sep)
         for i, item in enumerate(sort_cracked):
@@ -365,8 +368,6 @@ def update_system():
         return 0
     else:
         return -1
-
-
 
 
 def show_available_algs(show_all=False, supp="+", not_yet="-", spacer1=" "*5, spacer2=" "*3):
@@ -465,3 +466,16 @@ def hash_guarantee(hashed_string):
     )
     if question.lower().startswith("y"):
         request_connection(hashed_string)
+
+
+def force_encoding(word, enc="utf-8"):
+    """
+      Force the encoding of a string, this will help with reading from files that
+      contain unicode characters.
+
+      > :param word: word to be encoded
+      > :param enc: the encoding to use
+      > :return: a string encoded into UTF-8
+    """
+    if type(word.strip()) == unicode:
+        return word.strip().encode(enc)

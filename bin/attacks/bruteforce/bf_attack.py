@@ -92,6 +92,8 @@ def hash_words(verify_hash, wordlist, algorithm, salt=None, placement=None,
     tries = 0
     with codecs.open(wordlist, encoding="utf-8", mode="r") as words:
         for i, word in enumerate(words.readlines(), start=1):
+            if type(word.strip()) is unicode:
+                word = word.strip().encode("utf-8")
             if salt is not None:
                 if placement == "front":
                     hashed = FUNC_DICT[algorithm.lower()](word.strip(), salt=salt, front=True,

@@ -31,6 +31,9 @@ def mysql_hash(string, salt=None, front=False, back=False, **placeholder):
         >>> mysql_hash("test")
         *94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     if salt is not None and front and not back:
         obj1 = hashlib.sha1(salt + string).digest()
         obj2 = hashlib.sha1(obj1).hexdigest()
@@ -57,6 +60,9 @@ def oracle_10g(string, salt=None, iv="\0" * 8, padding="\0", key="0123456789ABCD
         >>> oracle_10g("test")
         5CFC9D5BE82D37A2
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     if salt is None:
         salt = lib.settings.random_salt_generator(use_string=True)[0]
     constr = "".join("\0{}".format(c for c in (string + salt).upper()))
@@ -79,6 +85,9 @@ def oracle_11g(string, salt=None, **placeholder):
         >>> oracle_11g("test")
         S:1F5298FFB092EF6543B2ECB52D9F6AA9B2162FA06258684A784165746E6D
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     if salt is None:
         salt = lib.settings.random_salt_generator(use_string=True, length=10)[0]
 
@@ -98,6 +107,9 @@ def blowfish(string, **placeholder):
         >>> blowfish("test")
         $2b$12$fSX/dvlx3dJGkGYKSbBbLOTOhzqj8xQ2krOtu2QkHNeJiYTC0B/ji
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     return bcrypt.hashpw(str(string), bcrypt.gensalt())
 
 
@@ -112,6 +124,9 @@ def postgres(string, salt=None, **placeholder):
         >>> postrges("test", "testing")
         md55d6685f9c56cdd04d635c7cbed612db3
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     if salt is None:
         salt = lib.settings.random_salt_generator(use_string=True)[0]
     obj = hashlib.md5()
@@ -131,6 +146,9 @@ def mssql_2000(string, salt=None, **placeholder):
         >>> mssql_2000("testpass", salt="testsalt")
         0x01007465737473616C74C74B43A2862ECC89C7F94E02583583377F03977A11E46AC5D5F599D31D0D6078958AF1D73C64FEA9
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     obj1 = hashlib.sha1()
     obj2 = hashlib.sha1()
     if salt is None:
@@ -154,6 +172,9 @@ def mssql_2005(string, salt=None, **placeholder):
         >>> mssql_2005("test", salt="testing")
         0x010074657374696e673f0414438c1b692da8be7a1211a76d314ea0210f
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     if salt is None:
         salt = lib.settings.random_salt_generator(use_string=True)[0]
     data_string = "".join(map(lambda s: ("%s\0" if ord(s) < 256 else "%s") % s.encode("utf8"), string))
@@ -174,6 +195,9 @@ def ripemd160(string, salt=None, front=False, back=False, **placeholder):
         >>> ripemd160("test")
         5e52fee47e6b070565f74372468cdc699de89107
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     obj = hashlib.new("ripemd160")
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -195,6 +219,9 @@ def blake224(string, salt=None, front=False, back=False, **placeholder):
         >>> blake224("test")
         e9543bfe985642bc30d41903161b2252a014deca64a9af27fc0c111f
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     obj = blake.BLAKE(224)
     if salt is not None and front and not back:
         digest = obj.hexdigest(salt + string)
@@ -216,6 +243,9 @@ def blake256(string, salt=None, front=False, back=False, **placeholder):
         >>> blake256("test")
         dc1ef7d25c8658590f3498d15baa87834f39a6208ddcb28fdfb7cc3179b8bf8f
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     obj = blake.BLAKE(256)
     if salt is not None and front and not back:
         digest = obj.hexdigest(salt + string)
@@ -237,6 +267,9 @@ def blake384(string, salt=None, front=False, back=False, **placeholder):
         >>> blake384("test")
         97c456fb92567f27324497d1d41a8427eed77a1f3a1161faf49e40ebae44a7d1e2f9e8bdf7bc193ae9e37bebf50ece76
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     obj = blake.BLAKE(384)
     if salt is not None and front and not back:
         digest = obj.hexdigest(salt + string)
@@ -258,6 +291,9 @@ def blake512(string, salt=None, front=False, back=False, **placeholder):
         >>> blake512("test")
         042d11c84ee88718f4451b05beb21c0751e243ed15491a927fef891ba0ba17bbe0d2f5286639cebabe86d876e4064821cd9d5764faba5bbd3d63d02275c0593e
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     obj = blake.BLAKE(512)
     if salt is not None and front and not back:
         digest = obj.hexdigest(salt + string)
@@ -279,6 +315,9 @@ def md2(string, salt=None, front=False, back=False, **placeholder):
         >>> md2("test")
         dd34716876364a02d0195e2fb9ae2d1b
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     if salt is not None and front and not back:
         obj = md2_hash.md2h(salt + string)
     elif salt is not None and back and not front:
@@ -299,6 +338,9 @@ def md4(string, salt=None, front=False, back=False, **placeholder):
         >>> md4("test")
         db346d691d7acc4dc2625db19f9e3f52
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+
     obj = hashlib.new("md4")
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -310,6 +352,21 @@ def md4(string, salt=None, front=False, back=False, **placeholder):
 
 
 def md5_crypt(string, salt=None, magic="$1$", **placeholder):
+    """
+      Create an MD5 crypt hash
+
+      > :param string: string to be hashed
+      > :param magic: the magic header of the hash `$1$`
+      > :return: an MD5 crypt hash
+
+      Example:
+        >>> md5_crypt("test", salt="12345")
+        $1$12345$uVW.jhvKKr8H/P/g4Hsj21
+    """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     if salt is None:
         salt = lib.settings.random_salt_generator(use_string=True)[0]
     seedchars = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -405,6 +462,10 @@ def md5(string, salt=None, front=False, back=False, **placeholder):
         >>> md5("test")
         098f6bcd4621d373cade4e832627b4f6
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj = hashlib.md5()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -427,6 +488,10 @@ def half_md5(string, salt=None, front=False, back=False, posx="", **placeholder)
         >>> half_md5("test")
         098f6bcd4621d373
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj = hashlib.md5()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -458,6 +523,10 @@ def md5_pass_salt(string, salt=None, **placeholder):
         >>> md5_pass_salt("test")
         06315beb4110dc8be4669fc68efc92ea
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     if salt is None:
         salt = lib.settings.random_salt_generator(warning=False)[0]
     obj1 = hashlib.md5()
@@ -482,6 +551,10 @@ def md5_md5_pass(string, salt=None, front=False, back=False, **placeholder):
         >>> md5_md5_pass("test")
         fb469d7ef430b0baf0cab6c436e70375
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj1 = hashlib.md5()
     obj2 = hashlib.md5()
     if salt is not None and front and not back:
@@ -508,6 +581,10 @@ def md5_md5_md5_pass(string, salt=None, **placeholder):
         >>> md5_md5_md5_pass("test", salt="0x0011")
         25ab3b38f7afc116f18fa9821e44d561:0x0011
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj1 = hashlib.md5()
     obj2 = hashlib.md5()
     obj3 = hashlib.md5()
@@ -533,6 +610,10 @@ def md5_salt_pass_salt(string, salt=None, **placeholder):
         >>> md5_salt_pass_salt("test", salt="1234")
         4d4f7f073a628fc11ba04f58793bb106
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     if salt is None:
         salt = lib.settings.random_salt_generator(warning=False)[0]
     split_by = int(round(len(salt) / 2))
@@ -552,6 +633,10 @@ def ssha(string, salt=None, **placeholder):
         >>> ssha("test")
         {SSHA}icUtMxBSzwPv_dSBvwPEwXyK4lo=
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     if salt is None:
         salt = os.urandom(4)
     obj = hashlib.sha1()
@@ -571,6 +656,10 @@ def sha1(string, salt=None, front=False, back=False, **placeholder):
         >>> sha1("test")
         a94a8fe5ccb19ba61c4c0873d391e987982fbbd3
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj = hashlib.sha1()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -592,6 +681,10 @@ def half_sha1(string, salt=None, front=False, back=False, posx="", **placeholder
         >>> half_sha1("test")
         a94a8fe5ccb19ba61c4c
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj = hashlib.sha1()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -626,6 +719,10 @@ def sha1_rounds(string, rounds=10, salt=None, front=False, back=False, **placeho
         >>> sha1_rounds("test", rounds=1000)
         2d69bdd6464a76fa735656b77e1869c626e9af8c
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj = hashlib.sha1()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -652,6 +749,10 @@ def sha224(string, salt=None, front=False, back=False, **placeholder):
         >>> sha224("test")
         90a3ed9e32b2aaf4c61c410eb925426119e1a9dc53d4286ade99a809
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj = hashlib.sha224()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -673,6 +774,10 @@ def sha256(string, salt=None, front=False, back=False, **placeholder):
         >>> sha256("test")
         9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj = hashlib.sha256()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -694,6 +799,10 @@ def sha384(string, salt=None, front=False, back=False, **placeholder):
         >>> sha384("test")
         768412320f7b0aa5812fce428dc4706b3cae50e02a64caa16a782249bfe8efc4b7ef1ccb126255d196047dfedf17a0a9
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj = hashlib.sha384()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -715,6 +824,8 @@ def sha512(string, salt=None, front=False, back=False, **placeholder):
         >>> sha512("test")
         ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
     obj = hashlib.sha512()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -737,6 +848,8 @@ def sha3_224(string, salt=None, front=False, back=False, **placeholder):
         >>> sha3_224("test")
         3797bf0afbbfca4a7bbba7602a2b552746876517a7f9b7ce2db0ae7b
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
     obj = sha3.sha3_224()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -758,6 +871,8 @@ def sha3_256(string, salt=None, front=False, back=False, **placeholder):
         >>> sha3_256("test")
         36f028580bb02cc8272a9a020f4200e346e276ae664e45ee80745574e2f5ab80
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
     obj = sha3.sha3_256()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -779,6 +894,8 @@ def sha3_384(string, salt=None, front=False, back=False, **placeholder):
         >>> sha3_384("test")
         e516dabb23b6e30026863543282780a3ae0dccf05551cf0295178d7ff0f1b41eecb9db3ff219007c4e097260d58621bd
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
     obj = sha3.sha3_384()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -800,6 +917,10 @@ def sha3_512(string, salt=None, front=False, back=False, **placeholder):
         >>> sha3_512("test")
         9ece086e9bac491fac5c1d1046ca11d737b92a2b2ebd93f005d7b710110c0a678288166e7fbe796883a4f2e9b3ca9f484f521d0ce464345cc1aec96779149c14
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
+        if type(string) is unicode:
+            string = lib.settings.force_encoding(string)
     obj = sha3.sha3_512()
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -821,6 +942,8 @@ def whirlpool(string, salt=None, front=False, back=False, **placeholder):
         >>> whirlpool("test")
         b913d5bbb8e461c2c5961cbe0edcdadfd29f068225ceb37da6defcf89849368f8c6c2eb6a4c4ac75775d032a0ecfdfe8550573062b653fe92fc7b8fb3b7be8d6
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
     obj = hashlib.new("whirlpool")
     if salt is not None and front and not back:
         obj.update(salt + string)
@@ -842,6 +965,8 @@ def tiger192(string, salt=None, front=False, back=False, **placeholder):
         >>> tiger192("test")
         8d1fd829fc83b37af1e5ba697ce8680d1d8bc430d76682f1
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
     if salt is not None and front and not back:
         obj = tiger.hash(salt + string)
     elif salt is not None and back and not front:
@@ -864,6 +989,8 @@ def crc32(string, salt=None, front=False, back=False, use_hex=False, **placehold
         >>> crc32("test", use_hex=True)
         0xd87f7e0cL
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
     if salt is not None and front and not back:
         long_int = hex(zlib.crc32(salt + string) % 2 ** 32)
     elif salt is not None and back and not front:
@@ -890,6 +1017,8 @@ def crc64(string, salt=None, front=False, back=False, use_hex=False, **placehold
         >>> crc64("test", use_hex=True)
         0xbf3d60cae58eeb8eL
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
     if salt is not None and front and not back:
         long_int = _crc64.crc64(salt + string)
     elif salt is not None and back and not front:
@@ -914,6 +1043,8 @@ def ntlm(string, **placeholder):
         >>> ntlm("test")
         0cb6948805f797bf2a82807973b89537
     """
+    if type(string) is unicode:
+        string = lib.settings.force_encoding(string)
     obj = hashlib.new("md4")
     obj.update(string.encode("utf-16le"))
     data = obj.digest()

@@ -9,11 +9,13 @@ import math
 import platform
 
 import requests
-from chardet.universaldetector import UniversalDetector
 from colorlog import ColoredFormatter
 
-from lib.github.create_issue import request_connection
 from lib.algorithms.hashing_algs import *
+from lib.github.create_issue import (
+    request_connection,
+    dagon_failure
+)
 
 # Create logging
 log_level = logging.DEBUG
@@ -37,7 +39,7 @@ LOGGER.addHandler(stream)
 # dagons email address
 DAGON_EMAIL = "dagonhashguarantee@gmail.com"
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.14.35.57"
+VERSION = "1.15.35.58"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?
@@ -466,6 +468,16 @@ def hash_guarantee(hashed_string):
     )
     if question.lower().startswith("y"):
         request_connection(hashed_string)
+
+
+def auto_issue(hashed_string, error, issue):
+    """ automatically create a Github issue from a given exception """
+    question = prompt(
+        "Dagon has encountered an unhandled exception, would you like to "
+        "anonymously create a Github issue and get this patched", "y/N"
+    )
+    if question.lower().startswith("y"):
+        dagon_failure(issue, hashed_string, error)
 
 
 def force_encoding(word, enc="utf-8"):

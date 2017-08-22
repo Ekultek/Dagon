@@ -30,7 +30,8 @@ from lib.settings import (
     update_system,
     verify_python_version,
     create_dir, create_file_list,
-    hash_guarantee
+    hash_guarantee,
+    auto_issue
 )
 
 if __name__ == '__main__':
@@ -66,7 +67,7 @@ if __name__ == '__main__':
     tech.add_option("-b", "--bruteforce", action="store_true", dest="bruteforceCrack",
                     help="Attempt to bruteforce a given hash")
     tech.add_option("-r", "--rainbow", dest="rainbowTableAttack", metavar="FILE-PATH",
-                    help=optparse.SUPPRESS_HELP)  # Not implemented yet
+                    help=optparse.SUPPRESS_HELP)  # Not implemented yet TODO://
 
     # Manipulation arguments to manipulate the hashes into what you want them to be
     manipulation = optparse.OptionGroup(parser, "Manipulation arguments",
@@ -319,7 +320,7 @@ if __name__ == '__main__':
                         shutdown(-1)
                     except Exception as e:
                         LOGGER.fatal("{} failed with error code: '{}'.".format(os.path.basename(__file__), e))
-                        hash_guarantee(opt.hashToCrack)
+                        auto_issue(opt.hashToCrack, e, e.message)
 
                 # Bruteforce a list of hashes
                 elif opt.bruteforceCrack and opt.hashListToCrack is not None and opt.hashToCrack is None:
@@ -342,6 +343,7 @@ if __name__ == '__main__':
                                     print("\n")
                     except Exception as e:
                         LOGGER.fatal("Failed with error code: '{}'. Check the file and try again..".format(e))
+                        auto_issue("None, used list", e, e.message)
 
                 # TODO:/ create rainbow attacks
 

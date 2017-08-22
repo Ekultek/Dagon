@@ -15,7 +15,6 @@ from lib.settings import (
     random_salt_generator,
     shutdown,
     create_dir,
-    hash_guarantee
 )
 
 # The name of the wordlist
@@ -40,8 +39,8 @@ def create_wordlist(warning=True, verbose=False, add=False):
         "Bruteforce requires extreme amounts of memory to accomplish and "
         "it is possible that it could take a lifetime to successfully "
         "crack your hash. To run a dictionary attack all you need to do is"
-        " pass the wordlist switch ('--wordlist PATH') with the path to "
-        "your wordlist. (IE: --bruteforce --wordlist ~/dicts/dict.txt)"
+        " pass the wordlist switch ('-w/--wordlist PATH') with the path to "
+        "your wordlist. (IE: --bruteforce -w ~/dicts/dict.txt)"
     )
 
     if warning:

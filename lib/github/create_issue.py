@@ -3,6 +3,9 @@ import sys
 import json
 import datetime
 import urllib2
+import string
+import random
+import platform
 
 import lib
 
@@ -83,3 +86,29 @@ def request_connection(hashed_string, date_created=datetime.datetime.today()):
     )
 
 
+def dagon_failure(issue, hashed_string, error):
+
+    def __create_issue_ext():
+        retval = []
+        for _ in range(5):
+            retval.append(random.choice(string.ascii_letters))
+        return ''.join(retval)
+
+    issue_title = "Unhandled Exception {}({})".format(issue, __create_issue_ext())
+    issue_data = {
+        "title": issue_title,
+        "body": open("{}/lib/github/issue_template".format(os.getcwd())).read().format(
+            type(error).__name__, (error.args, error.message), platform.platform(),
+            hashed_string, sys.argv
+        )
+    }
+    req = urllib2.Request(
+        url="https://api.github.com/repos/ekultek/Dagon/issues", data=json.dumps(issue_data),
+        headers={"Authorization": "token {}".format(__handle(__get_encoded_string()))})
+
+    urllib2.urlopen(req).read()
+    lib.settings.LOGGER.info(
+        "Your issue has been created with the title '{}'.".format(
+            issue_title
+        )
+    )

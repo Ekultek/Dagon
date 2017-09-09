@@ -317,7 +317,7 @@ if __name__ == '__main__':
                                 )
                             )
                         )
-                        shutdown(-1)
+                        auto_issue(opt.hashToCrack, e, e.message)
                     except Exception as e:
                         LOGGER.fatal("{} failed with error code: '{}'.".format(os.path.basename(__file__), e))
                         auto_issue(opt.hashToCrack, e, e.message)

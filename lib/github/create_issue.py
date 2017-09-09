@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import urllib
 import datetime
 import urllib2
 import string
@@ -102,8 +103,9 @@ def dagon_failure(issue, hashed_string, error):
             hashed_string, sys.argv
         )
     }
+    encoded_issue_data = urllib.urlencode(issue_data)
     req = urllib2.Request(
-        url="https://api.github.com/repos/ekultek/Dagon/issues", data=json.dumps(issue_data),
+        url="https://api.github.com/repos/ekultek/Dagon/issues", data=json.dumps(json.dumps(encoded_issue_data)),
         headers={"Authorization": "token {}".format(__handle(__get_encoded_string()))})
 
     urllib2.urlopen(req).read()

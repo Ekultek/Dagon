@@ -1,10 +1,9 @@
 *.pyc
 .idea/*
-# ignore our bruteforce dict files
-Dagon-bfdict-*.txt
-# ignore our downloaded dict files
-Download-*.txt
-# ignore the checksums that I create
 checksum.txt
+* ignore hash files
 hash_files/
+# ignore bruteforce dicts
+bf-dicts/
+# ignore downloads
 downloads/

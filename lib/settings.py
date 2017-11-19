@@ -39,7 +39,7 @@ LOGGER.addHandler(stream)
 # dagons email address
 DAGON_EMAIL = "dagonhashguarantee@gmail.com"
 # Version number <major>.<minor>.<patch>.<git-commit>
-VERSION = "1.15.35.58"
+VERSION = "1.15.36.59"
 # Colors, green if stable, yellow if dev
 TYPE_COLORS = {"dev": 33, "stable": 92}
 # Version string, dev or stable release?

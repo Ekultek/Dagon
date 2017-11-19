@@ -2,7 +2,6 @@ from __future__ import print_function
 
 import re
 
-from lib.github.create_issue import request_connection
 from lib.settings import (
     DAGON_ISSUE_LINK,
     LOGGER,
@@ -65,13 +64,13 @@ HASH_TYPE_REGEX = {
         ("sha384", "sha3_384", "mssql 2000"), ("skein512(384)", "skein1024(384")
     ],
     build_re(40, prefix=r"\*", suffix=""):  [
-        ("mysql 5.x", "mysql 4.1"), (None, None)
+        ("mysql", None), (None, None)
     ],
     build_re(48, suffix=""): [
         ("tiger192", None),
         ("haval192", "sha1(oracle)", "xsha v10.4-v10.6")
     ],
-    re.compile("^\$1\$\w+\$\w+(.)?\w+..$", re.IGNORECASE): [
+    re.compile("\A\$1\$.{1,8}\$[./a-zA-Z0-9]+\Z", re.IGNORECASE): [
         ("md5 crypt", None), (None, None)
     ],
     #re.compile(r"^\$\w+\$\w+(\$)?\w+(.)?$", re.IGNORECASE): [

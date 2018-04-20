@@ -53,7 +53,8 @@ def __find_algorithm_used(cmd_line=sys.argv, alg_cmd="-A"):
 
 def request_connection(hashed_string, date_created=datetime.datetime.today()):
 
-    def __create_title(s):
+    lib.settings.LOGGER.warning("automatic issue creation has been turned off for the time being.")
+    '''def __create_title(s):
         return s[:9]
 
     issue_title = "Hash guarantee ({})".format(__create_title(hashed_string))
@@ -113,4 +114,4 @@ def dagon_failure(issue, hashed_string, error):
         "Your issue has been created with the title '{}'.".format(
             issue_title
         )
-    )
+    )'''

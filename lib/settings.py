@@ -467,7 +467,8 @@ def hash_guarantee(hashed_string):
         "issue containing your hash", "y/N"
     )
     if question.lower().startswith("y"):
-        request_connection(hashed_string)
+        LOGGER.warning("`hash_guarantee` has been turned off for the time being")
+        # request_connection(hashed_string)
 
 
 def auto_issue(hashed_string, error, issue):

@@ -303,7 +303,8 @@ if __name__ == '__main__':
                                             batch=opt.runInBatchMode, rounds=opt.useRounds or DEFAULT_ROUNDS)
                     except KeyError as e:
                         LOGGER.fatal("It seems that algorithm is not implemented yet: {}..".format(e))
-                        hash_guarantee(opt.hashToCrack)
+                        # hash_guarantee(opt.hashToCrack)
+                        LOGGER.warning("`hash_guarantee` has been turned off for the time being")
                         shutdown(-1)
                     except UnicodeError as e:
                         LOGGER.fatal(

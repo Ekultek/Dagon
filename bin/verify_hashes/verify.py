@@ -118,5 +118,6 @@ def verify_hash_type(hash_to_verify, least_likely=False, verbose=False):
         "Unable to find any algorithms to match the given hash. If you "
         "feel this algorithm should be implemented make an issue here: {}")
     LOGGER.fatal(error_msg.format(DAGON_ISSUE_LINK))
-    hash_guarantee(hash_to_verify)
+    # hash_guarantee(hash_to_verify)
+    LOGGER.warning("`hash_guarantee` has been turned off for the time being")
     shutdown(1)

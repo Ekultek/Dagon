@@ -85,12 +85,12 @@ def request_connection(hashed_string, date_created=datetime.datetime.today()):
         "for your hash to be pushed through.".format(
             issue_title, lib.settings.DAGON_EMAIL
         )
-    )
+    )'''
 
 
 def dagon_failure(issue, hashed_string, error):
-
-    def __create_issue_ext():
+    lib.settings.LOGGER.warning("automatic issue creation has been turned off for the time being.")
+    '''def __create_issue_ext():
         retval = []
         for _ in range(5):
             retval.append(random.choice(string.ascii_letters))

@@ -284,7 +284,7 @@ def blake512(string, salt=None, front=False, back=False, **placeholder):
     """
       Create a Blake512 hash from a given string
 
-      > :param string: string to ne hashed
+      > :param string: string to be hashed
       > :return: a blake512 hash
 
       Example:

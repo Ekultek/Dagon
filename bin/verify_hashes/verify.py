@@ -45,7 +45,7 @@ HASH_TYPE_REGEX = {
     build_re(128): [
         ("sha512", "whirlpool", "sha3_512"),
         ("salsa10", "salsa20", "skein512",
-         "skein1024(512)")
+         "skein1024(512)", "blake512")
     ],
     build_re(54, prefix="0x0100", suffix=""): [
         ("mssql 2005", None),
